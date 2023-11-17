@@ -511,7 +511,7 @@ nltk.download('punkt')
 nltk.download('punkt', quiet=True)
 
 
-
+demo_text = "Imagine a world where endless possibilities await around every corner."
 
 # Load the CSV data
 data = pd.read_csv("Working_files/Book/book.csv")
@@ -702,9 +702,33 @@ tts_model_combobox.bind("<<ComboboxSelected>>", update_tts_model)
 tts_model_combobox.pack(side="top", fill="x", expand="yes")
 
 
+def create_folder_if_not_exists(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        print(f"Folder '{folder_path}' created successfully.")
+    else:
+        print(f"Folder '{folder_path}' already exists.")
+
 
 #i want to gigv ethis the voice actor name and have it turn that into the full directory of the voice actor location, and then use that to grab all the files inside of that voice actoers folder
 def list_reference_files(voice_actor):
+    
+    
+    if "tts_models" in voice_actor:
+    	create_folder_if_not_exists("tortoise/_model_demo_voices")
+    	create_folder_if_not_exists(f"tortoise/_model_demo_voices/{voice_actor}")
+    	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    	if len(reference_files)==0:
+    		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    		tts = TTS(voice_actor, progress_bar=True).to(device)
+    		tts.tts_to_file(text=demo_text , file_path=f"tortoise/_model_demo_voices/{voice_actor}/demo.wav")
+    		reference_files = [os.path.join(f"tortoise/_model_demo_voices/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    		return reference_files
+    	else:
+    		return reference_files
+    		
+    	
+
     single_voice_actor_folder = f"{voice_actors_folder}{voice_actor}/"
     # List all .wav and .mp3 files in the folder
     reference_files = [os.path.join(single_voice_actor_folder, file) for file in os.listdir(single_voice_actor_folder) if file.endswith((".wav", ".mp3"))]
@@ -740,6 +764,7 @@ def generate_audio():
     #tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
     # Update the model initialization to use the selected model
     tts = TTS(selected_tts_model, progress_bar=True).to(device)
+    
     
     
     
