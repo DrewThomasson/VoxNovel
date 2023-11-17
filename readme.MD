@@ -1,3 +1,7 @@
+# VoxNovel
+![VoxNovelLogo](https://github.com/DrewThomasson/VoxNovel/assets/126999465/34b5b312-aa70-44e4-a35c-f3f5ac1b24de)
+
+
 # SetUp install
 
 Run in this order:
