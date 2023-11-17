@@ -63,12 +63,10 @@ Run in this order:
 `python gui_run.py`
 
 
-**To Run the program**
-python gui_run.py
+##  To Run the auto program
+This means all you do is select the book and all the voices will be auto assigned and generated for you.
 
-**To run the auto version here all you do is select the book and nothing else**
-
-python auto_noGui_run.py
+`python auto_noGui_run.py`
 
 **folders**
 
