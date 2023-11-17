@@ -59,7 +59,7 @@ Run in this order:
 
 8.`pip install -r Windows-requirements.txt`
 ```bash
-# To Run the program
+##   To Run the program
 python gui_run.py
 
 
