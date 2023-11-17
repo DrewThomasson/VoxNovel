@@ -31,7 +31,7 @@ Run in this order:
 2. `conda create --name VoxNovel python=3.10`
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+5. `cd VoxNovel`
 6. `pip install tts`
 7. `pip install booknlp`
 8. `pip install -r requirements.txt`
@@ -42,7 +42,7 @@ Run in this order:
 2. `conda create --name VoxNovel python=3.10`
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+5. `cd VoxNovel`
 6. `pip install tts`
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
@@ -53,7 +53,7 @@ Run in this order:
 2. `conda create --name VoxNovel python=3.10`
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+5. `cd VoxNovel`
 6. `pip install tts`
 7. `pip install booknlp`
 
