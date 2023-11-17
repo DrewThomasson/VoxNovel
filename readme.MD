@@ -56,6 +56,7 @@ Run in this order:
 5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
 6. `pip install tts`
 7. `pip install booknlp`
+
 8.`pip install -r Windows-requirements.txt`
 ```bash
 # To Run the program
