@@ -885,7 +885,8 @@ for speaker in data['Speaker'].unique():
     filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
     combined_values = voice_actors + filtered_tts_models
     
-    voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=combined_values, state="readonly")
+    longest_name_length = max(len(name) for name in combined_values)
+    voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=combined_values, state="readonly", width = longest_name_length )
     voice_combobox.set(speaker_voice_map[speaker])  # Set the current voice actor
     voice_combobox.pack(side="top", fill="x", expand="yes")
     voice_combobox.bind("<<ComboboxSelected>>", lambda event, speaker=speaker: update_voice_actor(speaker))
