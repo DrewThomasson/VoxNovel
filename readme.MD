@@ -58,9 +58,9 @@ Run in this order:
 7. `pip install booknlp`
 
 8.`pip install -r Windows-requirements.txt`
-```bash
+
 ##   To Run the program
-python gui_run.py
+`python gui_run.py`
 
 
 **To Run the program**
