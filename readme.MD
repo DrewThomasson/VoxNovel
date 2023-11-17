@@ -20,6 +20,12 @@ https://github.com/DrewThomasson/VoxNovel/assets/126999465/530e8781-c77c-4424-89
 
 https://github.com/DrewThomasson/VoxNovel/assets/126999465/53b694a9-5ddd-4174-82bc-07aff22d2330
 
+## GUI
+
+https://github.com/DrewThomasson/Citation_helper/blob/main/Screenshot%20from%202023-11-17%2002-02-13.png
+
+https://github.com/DrewThomasson/Citation_helper/blob/main/Screenshot%20from%202023-11-17%2002-00-28.png
+
 
 # SetUp install
 
