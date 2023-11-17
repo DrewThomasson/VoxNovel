@@ -27,37 +27,37 @@ Run in this order:
 
 if on Linux
 
-`sudo apt-get install calibre`
-1. `conda create --name VoxNovel python=3.10`
-2. `conda activate VoxNovel`
-3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
-5. `pip install tts`
-6. `pip install booknlp`
-7. `pip install -r requirements.txt`
+1. `sudo apt-get install calibre`
+2. `conda create --name VoxNovel python=3.10`
+3. `conda activate VoxNovel`
+4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+6. `pip install tts`
+7. `pip install booknlp`
+8. `pip install -r requirements.txt`
 
 If on intel mac 
 
-`brew install calibre`
-1. `conda create --name VoxNovel python=3.10`
-2. `conda activate VoxNovel`
-3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
-5. `pip install tts`
-6. `pip install booknlp`
-7.`pip install -r MAC-requirements.txt`
+1. `brew install calibre`
+2. `conda create --name VoxNovel python=3.10`
+3. `conda activate VoxNovel`
+4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+6. `pip install tts`
+7. `pip install booknlp`
+8.`pip install -r MAC-requirements.txt`
 
 If on Windows
 
-install calibre for windows
-1. `conda create --name VoxNovel python=3.10`
-2. `conda activate VoxNovel`
-3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
-5. `pip install tts`
-6. `pip install booknlp`
+1. install calibre for windows
+2. `conda create --name VoxNovel python=3.10`
+3. `conda activate VoxNovel`
+4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+5. `cd VoxNovel/VoxNovel+BookNLP\(FREE\)/coqui-tts/`
+6. `pip install tts`
+7. `pip install booknlp`
 
-7.`pip install -r Windows-requirements.txt`
+8.`pip install -r Windows-requirements.txt`
 ```bash
 # To Run the program
 python gui_run.py
