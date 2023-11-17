@@ -690,7 +690,8 @@ tts_model_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 # Create a dropdown for TTS model selection
 tts_model_var = tk.StringVar()
 tts_model_combobox = ttk.Combobox(tts_model_selection_frame, textvariable=tts_model_var, state="readonly")
-tts_model_combobox['values'] = tts_models
+multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
+tts_model_combobox['values'] = multilingual_tts_models
 tts_model_combobox.set(selected_tts_model)  # Set default value
 tts_model_combobox.bind("<<ComboboxSelected>>", update_tts_model)
 tts_model_combobox.pack(side="top", fill="x", expand="yes")
@@ -736,6 +737,8 @@ def generate_audio():
     tts = TTS(selected_tts_model, progress_bar=True).to(device)
     
     
+    
+    
     random.seed(int(time.time()))
     ensure_output_folder()
     total_rows = len(data)
@@ -772,8 +775,21 @@ def generate_audio():
                 #tts = TTS(model_name="tts_models/en/ek1/tacotron2", progress_bar=False).to(device)
                 #tts.tts_to_file(fragment, speaker_wav=list_reference_files(voice_actor), progress_bar=True, file_path=f"Working_files/temp/{temp_count}.wav")
                 
+                
+                #this will make it so that if your selecting a model as a voice actor name then itll initalize the voice actor name as the model
+                if "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
+                	tts = TTS(voice_actor, progress_bar=True).to(device)
+                	#selected_tts_model = voice_actor
+                	
+                	
+                	print(f"Model for this character has been switched to: {voice_actor} by user")
+                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
+                	#else:
+                	#	print(f"{voice_actor} is neither multi-dataset nor multilingual")
+                	#	tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
+                
                 # If the model contains both "multilingual" and "multi-dataset"
-                if "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
+                elif "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
                 	if "bark" in selected_tts_model:
                 		print(f"{selected_tts_model} is bark so multilingual but has no language code")
                 		tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav",speaker_wav=list_reference_files(voice_actor))
@@ -784,7 +800,7 @@ def generate_audio():
                 # If the model only contains "multilingual"
                 elif "multilingual" in selected_tts_model:
                 	print(f"{selected_tts_model} is multilingual")
-                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav",speaker_wav=list_reference_files(voice_actor), language=language_code)
+                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", language=language_code)
 
                 # If the model only contains "multi-dataset"
                 elif "multi-dataset" in selected_tts_model:
@@ -864,8 +880,12 @@ scrollable_voice_selection_frame = create_scrollable_frame(voice_selection_frame
 for speaker in data['Speaker'].unique():
     speaker_label = ttk.Label(scrollable_voice_selection_frame, text=speaker)
     speaker_label.pack(side="top", fill="x", expand="yes")
-
-    voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=voice_actors, state="readonly")
+    
+    #this is to make it so that the avalibe voice to select from includes the single voice models
+    filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
+    combined_values = voice_actors + filtered_tts_models
+    
+    voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=combined_values, state="readonly")
     voice_combobox.set(speaker_voice_map[speaker])  # Set the current voice actor
     voice_combobox.pack(side="top", fill="x", expand="yes")
     voice_combobox.bind("<<ComboboxSelected>>", lambda event, speaker=speaker: update_voice_actor(speaker))
@@ -1057,7 +1077,6 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
-
 
 
 
