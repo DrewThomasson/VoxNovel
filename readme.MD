@@ -4,7 +4,7 @@
 
 ## Overview
 
-VoxNovel is an innovative program that leverages the capabilities of GPT-4 to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
+VoxNovel is an innovative program that leverages the capabilities of booknlp to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice through coqui tts. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
 
 
    **DEMO**
