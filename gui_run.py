@@ -510,6 +510,9 @@ nltk.download('punkt')
 # Ensure that nltk punkt is downloaded
 nltk.download('punkt', quiet=True)
 
+
+
+
 # Load the CSV data
 data = pd.read_csv("Working_files/Book/book.csv")
 
@@ -567,6 +570,8 @@ select_voices()
 root = tk.Tk()
 root.title("coqui TTS GUI")
 root.geometry("1200x800")
+
+chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
 
 # Dictionary to hold the comboboxes references
@@ -754,6 +759,8 @@ def generate_audio():
 
         if CHAPTER_KEYWORD in text.upper():
             chapter_num += 1
+            print(f"chapter num: {chapter_num}")
+            print(f"CHAPTER KEYWORD IS: {CHAPTER_KEYWORD}")
 
         voice_actor = speaker_voice_map[speaker]
         sentences = sent_tokenize(text)
@@ -913,6 +920,23 @@ for speaker in data['Speaker'].unique():
     # Initialize each character's language preference to English
     character_languages[speaker] = 'en'
 # ... the rest of your GUI setup ...
+
+
+# Create a label for the entry
+chapter_delimiter_label = ttk.Label(root, text="Chapter Delimiter:")
+chapter_delimiter_label.pack()  # Adjust layout options as needed
+
+# Create the Entry widget for chapter delimiter
+chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
+chapter_delimiter_entry.pack()  # Adjust layout options as needed
+
+def update_chapter_keyword(*args):
+    global CHAPTER_KEYWORD
+    CHAPTER_KEYWORD = chapter_delimiter_var.get()
+
+# Add a trace to call update_chapter_keyword whenever the value changes
+chapter_delimiter_var.trace_add("write", update_chapter_keyword)
+
 
 # Frame for Language Selection Dropdown
 language_selection_frame = ttk.LabelFrame(root, text="Select TTS Language")
