@@ -25,7 +25,7 @@ https://github.com/DrewThomasson/VoxNovel/assets/126999465/53b694a9-5ddd-4174-82
 
 Run in this order:
 
-if on Linux
+##  if on Linux
 
 1. `sudo apt-get install calibre`
 2. `conda create --name VoxNovel python=3.10`
@@ -36,7 +36,7 @@ if on Linux
 7. `pip install booknlp`
 8. `pip install -r requirements.txt`
 
-If on intel mac 
+##  If on intel mac 
 
 1. `brew install calibre`
 2. `conda create --name VoxNovel python=3.10`
@@ -47,7 +47,7 @@ If on intel mac
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
 
-If on Windows
+##  If on Windows
 
 1. install calibre for windows
 2. `conda create --name VoxNovel python=3.10`
