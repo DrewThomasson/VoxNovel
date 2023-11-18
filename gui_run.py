@@ -863,7 +863,7 @@ def generate_audio():
     #tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
     # Update the model initialization to use the selected model
     tts = TTS(selected_tts_model, progress_bar=True).to(device)
-    fast_tts = TTS(multi_voice_model1, progress_bar=True).to(device)
+    #fast_tts = TTS(multi_voice_model1, progress_bar=True).to(device)
     
     
     
