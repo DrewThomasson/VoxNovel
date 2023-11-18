@@ -928,10 +928,18 @@ def generate_audio():
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 	fast_tts = TTS(voice_actor, progress_bar=True).to(device)
                 	#selected_tts_model = voice_actor
-                	
+                	#"Model is multi-lingual but no `language` is provided."
                 	
                 	print(f"Model for this character has been switched to: {voice_actor} by user")
-                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
+                	try:
+                		fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
+                	except ValueError as e:
+                		if str(e) == "Model is multi-lingual but no `language` is provided.":
+                			print("attempting to correct....")
+                			fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav",language=language_code)
+                			print("Successfully Corrected!")
+                			
+                	
                 	#else:
                 	#	print(f"{voice_actor} is neither multi-dataset nor multilingual")
                 	#	tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
