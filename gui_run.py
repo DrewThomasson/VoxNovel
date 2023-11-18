@@ -532,6 +532,16 @@ selected_tts_model = 'tts_models/multilingual/multi-dataset/xtts_v2'
 speaker_voice_map = {}
 CHAPTER_KEYWORD = "CHAPTER"
 
+multi_voice_model1 ="tts_models/en/vctk/vits"
+multi_voice_model2 ="tts_models/en/vctk/fast_pitch"
+multi_voice_model3 ="tts_models/ca/custom/vits"
+
+multi_voice_model_voice_list1 =speakers_list = TTS(multi_voice_model1).speakers
+multi_voice_model_voice_list2 =speakers_list = TTS(multi_voice_model2).speakers
+multi_voice_model_voice_list3 =speakers_list = TTS(multi_voice_model3).speakers
+
+
+
 def get_random_voice_for_speaker(speaker):
     selected_voice_actors = voice_actors  # default to all voice actors
 
@@ -672,7 +682,7 @@ def wipe_folder(directory_path):
                 print(f"Deleted: {file_path}")
             except Exception as e:
                 print(f"Failed to delete {file_path}. Reason: {e}")
-                
+
 
 # List of available TTS models
 
@@ -696,10 +706,56 @@ tts_model_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 tts_model_var = tk.StringVar()
 tts_model_combobox = ttk.Combobox(tts_model_selection_frame, textvariable=tts_model_var, state="readonly")
 multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
+
+# modelse to be removed because i found that they are multi speaker and not single speaker
+models_to_remove = [multi_voice_model1, multi_voice_model2, multi_voice_model3]
+
+# List comprehension to remove the unwatned models
+multilingual_tts_models = [model for model in multilingual_tts_models if model not in models_to_remove]
+
+
 tts_model_combobox['values'] = multilingual_tts_models
 tts_model_combobox.set(selected_tts_model)  # Set default value
 tts_model_combobox.bind("<<ComboboxSelected>>", update_tts_model)
 tts_model_combobox.pack(side="top", fill="x", expand="yes")
+
+
+
+def update_voice_comboboxes():
+    if include_single_models_var.get():  # Checkbox is checked
+        # your code snippet to include single voice models
+        filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
+        combined_values = voice_actors + filtered_tts_models
+        combined_values += multi_voice_model_voice_list1 + multi_voice_model_voice_list2 + multi_voice_model_voice_list3
+    else:  # Checkbox is not checked
+        # Just use the default voice actors without single voice models
+        combined_values = voice_actors
+
+    # Now update each combobox with the new combined_values
+    for speaker, combobox in voice_comboboxes.items():
+        combobox['values'] = combined_values
+        combobox.set(speaker_voice_map[speaker])  # Reset to the currently selected voice actor
+
+
+# Add this near the top of your script where other variables are defined
+include_single_models_var = tk.BooleanVar(value=False)
+
+# Add this in your GUI setup section, after initializing `root`
+include_single_models_checkbox = ttk.Checkbutton(
+    root,  # or another frame where you want the checkbox to appear
+    text="Include Single Voice Models",
+    variable=include_single_models_var,
+    onvalue=True,
+    offvalue=False,
+    command=update_voice_comboboxes  # This function will be defined later
+)
+include_single_models_checkbox.pack()  # Adjust layout options as needed
+
+
+# Call this function once initially to set the correct values from the start
+update_voice_comboboxes()
+
+
 
 
 def create_folder_if_not_exists(folder_path):
@@ -712,9 +768,49 @@ def create_folder_if_not_exists(folder_path):
 
 #i want to gigv ethis the voice actor name and have it turn that into the full directory of the voice actor location, and then use that to grab all the files inside of that voice actoers folder
 def list_reference_files(voice_actor):
-    
-    
-    if "tts_models" in voice_actor:
+	
+    if voice_actor in multi_voice_model_voice_list1:
+    	create_folder_if_not_exists(f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}")
+    	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    	if len(reference_files)==0:
+    		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    		tts = TTS(multi_voice_model1, progress_bar=True).to(device)
+    		tts.tts_to_file(text=demo_text , file_path=f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}/demo.wav", speaker = voice_actor)
+    		reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model1}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    		return reference_files
+    	else:
+    		return reference_files
+    		
+    		
+    elif voice_actor in multi_voice_model_voice_list2:
+    	create_folder_if_not_exists(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}")
+    	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    	if len(reference_files)==0:
+    		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    		tts = TTS(multi_voice_model2, progress_bar=True).to(device)
+    		tts.tts_to_file(text=demo_text , file_path=f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}/demo.wav", speaker = voice_actor)
+    		reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    		return reference_files
+    	else:
+    		return reference_files
+
+    		
+    		
+    elif voice_actor in multi_voice_model_voice_list3:
+    	create_folder_if_not_exists(f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}")
+    	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    	if len(reference_files)==0:
+    		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    		tts = TTS(multi_voice_model3, progress_bar=True).to(device)
+    		tts.tts_to_file(text=demo_text , file_path=f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}/demo.wav", speaker = voice_actor)
+    		reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model3}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
+    		return reference_files
+    	else:
+    		return reference_files
+
+    		
+    		
+    elif "tts_models" in voice_actor:
     	create_folder_if_not_exists("tortoise/_model_demo_voices")
     	create_folder_if_not_exists(f"tortoise/_model_demo_voices/{voice_actor}")
     	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{voice_actor}") if file.endswith((".wav", ".mp3"))]
@@ -806,10 +902,27 @@ def generate_audio():
                 # Use the model and language code to generate the audio
                 #tts = TTS(model_name="tts_models/en/ek1/tacotron2", progress_bar=False).to(device)
                 #tts.tts_to_file(fragment, speaker_wav=list_reference_files(voice_actor), progress_bar=True, file_path=f"Working_files/temp/{temp_count}.wav")
+   
                 
                 
                 #this will make it so that if your selecting a model as a voice actor name then itll initalize the voice actor name as the model
-                if "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
+                if voice_actor in multi_voice_model_voice_list1:
+                	print(f"{voice_actor} is a fast model voice: {multi_voice_model1}")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(multi_voice_model1, progress_bar=True).to(device)
+                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
+                elif voice_actor in multi_voice_model_voice_list2:
+                	print(f"{voice_actor} is a fast model voice: {multi_voice_model2}")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(multi_voice_model2, progress_bar=True).to(device)
+                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
+                elif voice_actor in multi_voice_model_voice_list3:
+                	print(f"{voice_actor} is a fast model voice: {multi_voice_model3}")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(multi_voice_model3, progress_bar=True).to(device)
+                	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
+                elif "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 	tts = TTS(voice_actor, progress_bar=True).to(device)
                 	#selected_tts_model = voice_actor
                 	
@@ -913,9 +1026,12 @@ for speaker in data['Speaker'].unique():
     speaker_label = ttk.Label(scrollable_voice_selection_frame, text=speaker)
     speaker_label.pack(side="top", fill="x", expand="yes")
     
+    
     #this is to make it so that the avalibe voice to select from includes the single voice models
     filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
-    combined_values = voice_actors + filtered_tts_models
+    combined_values = voice_actors
+    #combined_values = voice_actors + filtered_tts_models
+    #combined_values = multi_voice_model_voice_list1 + multi_voice_model_voice_list2 + multi_voice_model_voice_list3
     
     longest_name_length = max(len(name) for name in combined_values)
     voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=combined_values, state="readonly", width = longest_name_length )
