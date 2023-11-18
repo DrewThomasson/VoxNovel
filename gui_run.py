@@ -972,7 +972,7 @@ def generate_audio():
                 	#	tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
                 
                 # If the model contains both "multilingual" and "multi-dataset"
-                if "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
+                elif "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
                     if 'tts' not in locals():
                             tts = TTS(selected_tts_model, progress_bar=True).to(device)
 
