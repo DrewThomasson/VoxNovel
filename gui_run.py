@@ -525,7 +525,10 @@ female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
 
 # Dictionary to hold each character's selected language
 character_languages = {}
-selected_tts_model = 'tts_models/multilingual/multi-dataset/xtts_v2'
+
+models = TTS().list_models()
+#selected_tts_model = 'tts_models/multilingual/multi-dataset/xtts_v2'
+selected_tts_model = models[0]
 
 
 # Map for speaker to voice actor
@@ -687,7 +690,7 @@ def wipe_folder(directory_path):
 # List of available TTS models
 
 tts_models = [
-    'tts_models/multilingual/multi-dataset/xtts_v2',
+    #'tts_models/multilingual/multi-dataset/xtts_v2',
     # Add all other models here...
 ]
 tts_models = TTS().list_models()
@@ -743,7 +746,7 @@ include_single_models_var = tk.BooleanVar(value=False)
 # Add this in your GUI setup section, after initializing `root`
 include_single_models_checkbox = ttk.Checkbutton(
     root,  # or another frame where you want the checkbox to appear
-    text="Include Single Voice Models",
+    text="Include fast Voice Models:(fast generate at cost of audio quality)",
     variable=include_single_models_var,
     onvalue=True,
     offvalue=False,
@@ -787,7 +790,7 @@ def list_reference_files(voice_actor):
     	reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
     	if len(reference_files)==0:
     		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    		tts = TTS(multi_voice_model2, progress_bar=True).to(device)
+    		tts = TTS(multi_voice_model2, progress_bar=True).to("cpu")
     		tts.tts_to_file(text=demo_text , file_path=f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}/demo.wav", speaker = voice_actor)
     		reference_files = [os.path.join(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}", file) for file in os.listdir(f"tortoise/_model_demo_voices/{multi_voice_model2}/{voice_actor}") if file.endswith((".wav", ".mp3"))]
     		return reference_files
@@ -911,17 +914,17 @@ def generate_audio():
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 	tts = TTS(multi_voice_model1, progress_bar=True).to(device)
                 	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
-                elif voice_actor in multi_voice_model_voice_list2:
+                if voice_actor in multi_voice_model_voice_list2:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model2}")
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                	tts = TTS(multi_voice_model2, progress_bar=True).to(device)
+                	tts = TTS(multi_voice_model2, progress_bar=True).to("cpu")
                 	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
-                elif voice_actor in multi_voice_model_voice_list3:
+                if voice_actor in multi_voice_model_voice_list3:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model3}")
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 	tts = TTS(multi_voice_model3, progress_bar=True).to(device)
                 	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
-                elif "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
+                if "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 	tts = TTS(voice_actor, progress_bar=True).to(device)
                 	#selected_tts_model = voice_actor
@@ -934,27 +937,44 @@ def generate_audio():
                 	#	tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
                 
                 # If the model contains both "multilingual" and "multi-dataset"
-                elif "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
-                	if "bark" in selected_tts_model:
-                		print(f"{selected_tts_model} is bark so multilingual but has no language code")
-                		tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav",speaker_wav=list_reference_files(voice_actor))
-                	else:
-                		print(f"{selected_tts_model} is multi-dataset and multilingual")
-                		tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav",speaker_wav=list_reference_files(voice_actor), language=language_code)
+                if "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
+                    try:
+                        if "bark" in selected_tts_model:
+                            print(f"{selected_tts_model} is bark so multilingual but has no language code")
+                            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                            tts = TTS(selected_tts_model, progress_bar=True).to(device)
+                            tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=list_reference_files(voice_actor))
+                        else:
+                            print(f"{selected_tts_model} is multi-dataset and multilingual")
+                            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                            tts = TTS(selected_tts_model, progress_bar=True).to(device)
+                            tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=list_reference_files(voice_actor), language=language_code)
+                    except ValueError as e:
+                        if str(e) == "Model is not multi-lingual but `language` is provided.":
+                            print("Caught ValueError: Model is not multi-lingual. Ignoring the language parameter.")
+                            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                            tts = TTS(selected_tts_model, progress_bar=True).to(device)
+                            tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=list_reference_files(voice_actor))
 
                 # If the model only contains "multilingual"
                 elif "multilingual" in selected_tts_model:
                 	print(f"{selected_tts_model} is multilingual")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(selected_tts_model, progress_bar=True).to(device)
                 	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", language=language_code)
 
                 # If the model only contains "multi-dataset"
                 elif "multi-dataset" in selected_tts_model:
                 	print(f"{selected_tts_model} is multi-dataset")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(selected_tts_model, progress_bar=True).to(device)
                 	tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
 
                 # If the model contains neither "multilingual" nor "multi-dataset"
                 else:
                 	print(f"{selected_tts_model} is neither multi-dataset nor multilingual")
+                	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                	tts = TTS(selected_tts_model, progress_bar=True).to(device)
                 	tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
 
                 
