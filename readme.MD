@@ -63,6 +63,9 @@ Run in this order:
 16. `pip install -r linux_requirements.txt`
 17. `pip3 install spacy`
 18. `python3 -m spacy download en_core_web_sm`
+19. `pip install pygame`
+20. `pip install moviepy`
+21. `pip install epub2txt`
 
 ##  If on intel mac 
 
