@@ -42,6 +42,28 @@ Run in this order:
 7. `pip install booknlp`
 8. `pip install -r requirements.txt`
 
+
+##  if on x86_64 Arch Linux
+
+1. `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
+2. `also download it from the discovery store or flatpac I did both on my steam deck`
+3. `mkdir -p ~/miniconda3`
+4. `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh`
+5. `bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3`
+6. `rm -rf ~/miniconda3/miniconda.sh`
+7. `~/miniconda3/bin/conda init bash`
+8. `~/miniconda3/bin/conda init zsh`
+9. `restart the terminal(close out and open a new window)`
+10. `conda create --name VoxNovel python=3.10`
+11. `conda activate VoxNovel`
+12. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+13. `cd VoxNovel`
+14. `pip install tts`
+15. `pip install booknlp`
+16. `pip install -r linux_requirements.txt`
+17. `pip3 install spacy`
+18. `python3 -m spacy download en_core_web_sm`
+
 ##  If on intel mac 
 
 1. `brew install calibre`
