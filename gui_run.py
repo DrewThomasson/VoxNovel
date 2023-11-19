@@ -4,6 +4,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from epub2txt import epub2txt
 from booknlp.booknlp import BookNLP
+import nltk
+nltk.download('averaged_perceptron_tagger')
 
 def calibre_installed():
     """Check if Calibre's ebook-convert tool is available."""
