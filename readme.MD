@@ -68,6 +68,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 17. `pip install -r SteamDeck_requirements.txt`
 18. `pip3 install spacy`
 19. `python3 -m spacy download en_core_web_sm`
+20. `sudo pacman -S calibre`
 
 ##  If on intel mac 
 
