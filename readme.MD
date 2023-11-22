@@ -58,7 +58,11 @@ Run in this order:
 11. `conda activate VoxNovel`
 12. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 13. `cd VoxNovel`
-14. `sudo pacman -S espeak-ng`(make sure you hvae pacman fully working, there should be stuff online for the steam deck)
+14. `sudo pacman -S espeak-ng`(make sure you have pacman fully working, there should be stuff online for the steam deck)
+guide on getting pacman wokring on steam deck(https://www.reddit.com/r/SteamDeck/comments/t8al0i/install_arch_packages_on_your_steam_deck/)
+you might have to reset the keys if something goes wrong with that: Resetting all the keys
+
+Remove or reset all the keys installed in your system by removing the /etc/pacman.d/gnupg directory (as root) and by rerunning pacman-key --init followed by pacman-key --populate to re-add the default keys. 
 15. `pip install tts`
 16. `pip install booknlp`
 17. `pip install -r SteamDeck_requirements.txt`
