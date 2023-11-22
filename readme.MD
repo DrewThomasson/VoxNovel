@@ -43,7 +43,7 @@ Run in this order:
 8. `pip install -r requirements.txt`
 
 
-##  if on x86_64 Arch Linux
+##  if on Steam Deck) (x86_64 Arch Linux)
 
 1. `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
 2. `also download it from the discovery store or flatpac I did both on my steam deck`
@@ -58,14 +58,12 @@ Run in this order:
 11. `conda activate VoxNovel`
 12. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 13. `cd VoxNovel`
-14. `pip install tts`
-15. `pip install booknlp`
-16. `pip install -r linux_requirements.txt`
-17. `pip3 install spacy`
-18. `python3 -m spacy download en_core_web_sm`
-19. `pip install pygame`
-20. `pip install moviepy`
-21. `pip install epub2txt`
+14. `sudo pacman -S espeak-ng`(make sure you hvae pacman fully working, there should be stuff online for the steam deck)
+15. `pip install tts`
+16. `pip install booknlp`
+17. `pip install -r SteamDeck_requirements.txt`
+18. `pip3 install spacy`
+19. `python3 -m spacy download en_core_web_sm`
 
 ##  If on intel mac 
 
