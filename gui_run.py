@@ -1104,11 +1104,29 @@ from functools import partial
 
 # Function to update the progress bar
 def update_progress(index, total):
+    current_time = time.time()
+    
+    # Calculate elapsed time
+    elapsed_time = current_time - start_time
+    
+    # Calculate progress
     progress = (index + 1) / total * 100
     progress_var.set(progress)
-    progress_label.config(text=f"{progress:.2f}% done ({index+1}/{total} rows)")
+    
+    # Estimate remaining time
+    if index > 0:  # Avoid division by zero
+        average_time_per_item = elapsed_time / index
+        estimated_time_remaining = average_time_per_item * (total - index - 1)
+        remaining_time_string = f"{estimated_time_remaining // 60:.0f} min {estimated_time_remaining % 60:.0f} sec remaining"
+    else:
+        remaining_time_string = "Calculating..."
+    
+    # Update progress label with estimated time
+    progress_label.config(text=f"{progress:.2f}% done ({index+1}/{total} rows) - {remaining_time_string}")
     root.update_idletasks()
 
+# Start time capture
+start_time = time.time()
     
 
 def create_scrollable_frame(parent, height):
