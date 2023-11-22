@@ -548,6 +548,8 @@ multi_voice_model_voice_list1 = []
 multi_voice_model_voice_list2 = []
 multi_voice_model_voice_list3 = []
 
+# Dictionary to hold the comboboxes references
+voice_comboboxes = {}
 
 
 def get_random_voice_for_speaker(speaker):
@@ -562,6 +564,25 @@ def get_random_voice_for_speaker(speaker):
         selected_voice_actors = voice_actors
         
     return random.choice(selected_voice_actors)
+    
+def get_random_voice_for_speaker_fast(speaker):
+    selected_voice_actors = voice_actors  # default to all voice actors
+    male_voice_actors = {"p226", "p228","p229","p230","p231","p232","p233","p234","p236","p238","p239","p241","p251","p252","p253","p254","p255","p256","p258","p262","p264","p265","p266","p267","p269","p272","p279","p281","p282","p285","p286","p287","p292","p298","p299","p301","p302","p307","p312","p313","p317","p318","p326","p340"}
+    female_voice_actors = {"p225","p227","p237","p240","p243","p244","p245","p246","p247","p248","p249","p250","p257","p259","p260","p261","p263","p268","p270","p271","p273","p274","p275","p276","p277","p278","p280","p283","p284","p288","p293","p294","p295","p297","p300","p303","p304","p305","p306","p308","p310","p311","p314","p316","p323","p329","p341","p343","p345","p347","p351","p360","p361","p362","p363","p364","p374"}
+
+    if speaker.endswith(".M") and male_voice_actors: 
+        selected_voice_actors = male_voice_actors
+    elif speaker.endswith(".F") and female_voice_actors:
+        selected_voice_actors = female_voice_actors
+    elif speaker.endswith(".?") and female_voice_actors:
+        selected_voice_actors = male_voice_actors.union(female_voice_actors)
+    if not selected_voice_actors:  # If list is empty, default to all voice actors
+        selected_voice_actors = male_voice_actors.union(female_voice_actors)
+    
+    # Convert the set to a list before using random.choice
+    return random.choice(list(selected_voice_actors))
+
+    
 def ensure_output_folder():
     if not os.path.exists("Working_files/generated_audio_clips"):
         os.mkdir("Working_files/generated_audio_clips")
@@ -575,12 +596,37 @@ def select_voices():
     ensure_output_folder()
     total_rows = len(data)
 
+
     for speaker in data['Speaker'].unique():
         random_voice = get_random_voice_for_speaker(speaker)
         speaker_voice_map[speaker] = random_voice
 
     for speaker, voice in speaker_voice_map.items():
         print(f"Selected voice for {speaker}: {voice}")
+        # Update the comboboxes if they exist
+        if speaker in voice_comboboxes:
+            random_voice = get_random_voice_for_speaker(speaker)
+            voice_comboboxes[speaker].set(random_voice)
+    print("Voices have been selected randomly.")
+ 
+def select_voices_fast():
+    random.seed(int(time.time()))
+    ensure_output_folder()
+    total_rows = len(data)
+
+    for speaker in data['Speaker'].unique():
+        random_voice = get_random_voice_for_speaker_fast(speaker)
+        speaker_voice_map[speaker] = random_voice
+
+    for speaker, voice in speaker_voice_map.items():
+        print(f"Selected voice for {speaker}: {voice}")
+        # Update the comboboxes if they exist
+        if speaker in voice_comboboxes:
+            random_voice = get_random_voice_for_speaker_fast(speaker)
+            voice_comboboxes[speaker].set(random_voice)
+    print("Voices have been selected randomly.")
+ 
+ 
 # Pre-select the voices before starting the GUI
 select_voices()
 
@@ -591,9 +637,6 @@ root.geometry("1200x800")
 
 chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
-
-# Dictionary to hold the comboboxes references
-voice_comboboxes = {}
 
 # Initialize the mixer module
 pygame.mixer.init()
@@ -727,7 +770,8 @@ tts_model_combobox.set(selected_tts_model)  # Set default value
 tts_model_combobox.bind("<<ComboboxSelected>>", update_tts_model)
 tts_model_combobox.pack(side="top", fill="x", expand="yes")
 
-
+# Declare the button as global to access it in other functions
+global select_voices_button
 
 def update_voice_comboboxes():
     global multi_voice_model_voice_list1
@@ -745,6 +789,7 @@ def update_voice_comboboxes():
         if not multi_voice_model_voice_list3:  # This is True if the list is empty
         	print(f"{multi_voice_model_voice_list3} is empty populating it...")
         	multi_voice_model_voice_list3 = TTS(multi_voice_model3).speakers
+        	
 
         combined_values = voice_actors + filtered_tts_models
         combined_values += multi_voice_model_voice_list1 + multi_voice_model_voice_list2 + multi_voice_model_voice_list3
@@ -762,6 +807,20 @@ def update_voice_comboboxes():
         combobox.set(speaker_voice_map[speaker])  # Reset to the currently selected voice actor
         longest_string_length = max((len(str(value)) for value in combobox['values']), default=0)
         combobox.config(width=longest_string_length)
+        
+    # Check the state of the checkbox and manage the visibility of the button
+    if include_single_models_var.get():  # Checkbox is checked
+        # Create the button if it doesn't exist
+        if 'select_voices_button' not in globals():
+        	global select_voices_button
+        	select_voices_button = ttk.Button(buttons_frame, text="Select Random Voices", command=select_voices_fast)
+        	select_voices_button.pack(side=tk.LEFT, padx=5)
+        else:
+        	select_voices_button.pack(side=tk.LEFT, padx=5)
+    else:
+        	# Hide the button if the checkbox is unchecked
+        	if 'select_voices_button' in globals():
+        		select_voices_button.pack_forget()
 
 
 # Add this near the top of your script where other variables are defined
@@ -777,6 +836,7 @@ include_single_models_checkbox = ttk.Checkbutton(
     command=update_voice_comboboxes  # This function will be defined later
 )
 include_single_models_checkbox.pack()  # Adjust layout options as needed
+
 
 
 # Call this function once initially to set the correct values from the start
@@ -1051,41 +1111,36 @@ def update_progress(index, total):
 
     
 
-# Function to create a scrollable frame
-def create_scrollable_frame(parent):
-    # Create a canvas and a scrollbar
-    canvas = tk.Canvas(parent)
+def create_scrollable_frame(parent, height):
+    # Create a canvas with a specific height
+    canvas = tk.Canvas(parent, height=height)
     scrollbar = ttk.Scrollbar(parent, orient="vertical", command=canvas.yview)
     
-    # Create a frame inside the canvas
     scrollable_frame = ttk.Frame(canvas)
-    
-    # Configure the canvas to use the scrollbar
     canvas.configure(yscrollcommand=scrollbar.set)
-    
-    # Bind the canvas to configure the scroll region
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
     scrollable_frame.bind(
         "<Configure>",
-        lambda e: canvas.configure(
-            scrollregion=canvas.bbox("all")
-        )
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
     )
-    
-    # Create a window inside the canvas for the scrollable frame
-    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-    
-    # Pack the canvas and scrollbar
+
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
-    
+
     return scrollable_frame
 
-# Replace your existing voice_selection_frame setup with this
-voice_selection_frame = ttk.LabelFrame(root, text="Character Voices")
-voice_selection_frame.pack(fill="both", expand="yes", padx=10, pady=10)
 
-# Create the scrollable frame inside the voice_selection_frame
-scrollable_voice_selection_frame = create_scrollable_frame(voice_selection_frame)
+
+# Replace your existing voice_selection_frame setup with this
+voice_selection_frame = ttk.LabelFrame(root, text="Character Voices", height=30)
+voice_selection_frame.pack(fill="x", expand=False, padx=10, pady=10)
+
+
+
+# Create the scrollable frame inside the voice_selection_frame with a hardcoded height of 60
+scrollable_voice_selection_frame = create_scrollable_frame(voice_selection_frame, height=30)
 
 # Now, instead of packing your comboboxes directly into voice_selection_frame,
 # pack them into scrollable_voice_selection_frame.
@@ -1214,6 +1269,7 @@ def load_book():
 buttons_frame = ttk.Frame(root)
 buttons_frame.pack(pady=10)
 
+
 # Load Book Button
 load_book_button = ttk.Button(buttons_frame, text="Load Book", command=load_book)
 load_book_button.pack(side=tk.LEFT, padx=5)
@@ -1310,6 +1366,5 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
-
 
 
