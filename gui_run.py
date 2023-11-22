@@ -1133,42 +1133,50 @@ def create_scrollable_frame(parent, height):
 
 
 
-# Replace your existing voice_selection_frame setup with this
-voice_selection_frame = ttk.LabelFrame(root, text="Character Voices", height=30)
-voice_selection_frame.pack(fill="x", expand=False, padx=10, pady=10)
+# Set the maximum height for the frame
+max_height = 150  # Maximum height in pixels
 
+# Create a LabelFrame for Character Voices
+voice_selection_frame = ttk.LabelFrame(root, text="Character Voices")
+voice_selection_frame.pack(fill="x", expand=False, padx=10, pady=5)
 
+# Create a Canvas within the LabelFrame
+canvas = tk.Canvas(voice_selection_frame, borderwidth=0)
+canvas.config(height=max_height)  # Set the height of the canvas
+scrollbar = ttk.Scrollbar(voice_selection_frame, orient="vertical", command=canvas.yview)
+scrollable_frame = ttk.Frame(canvas)
 
-# Create the scrollable frame inside the voice_selection_frame with a hardcoded height of 60
-scrollable_voice_selection_frame = create_scrollable_frame(voice_selection_frame, height=30)
+# Configure the canvas
+canvas.configure(yscrollcommand=scrollbar.set)
 
-# Now, instead of packing your comboboxes directly into voice_selection_frame,
-# pack them into scrollable_voice_selection_frame.
+def configure_scroll_region(event):
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+scrollable_frame.bind('<Configure>', configure_scroll_region)
+
+# Add the scrollable frame to the canvas and configure the scrollbar
+canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+scrollbar.pack(side="right", fill="y")
+canvas.pack(side="left", fill="both", expand=True)
+
+# Now, add comboboxes into the scrollable_frame
 for speaker in data['Speaker'].unique():
-    speaker_label = ttk.Label(scrollable_voice_selection_frame, text=speaker)
-    speaker_label.pack(side="top", fill="x", expand="yes")
+    speaker_label = ttk.Label(scrollable_frame, text=speaker)
+    speaker_label.pack(side="top", fill="x", expand=False)  # Changed to expand=False
     
-    
-    #this is to make it so that the avalibe voice to select from includes the single voice models
-    filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
-    combined_values = voice_actors
-    #combined_values = voice_actors + filtered_tts_models
-    #combined_values = multi_voice_model_voice_list1 + multi_voice_model_voice_list2 + multi_voice_model_voice_list3
-    
-    longest_name_length = max(len(name) for name in combined_values)
-    voice_combobox = ttk.Combobox(scrollable_voice_selection_frame, values=combined_values, state="readonly", width = longest_name_length )
-    voice_combobox.set(speaker_voice_map[speaker])  # Set the current voice actor
-    voice_combobox.pack(side="top", fill="x", expand="yes")
+    voice_combobox = ttk.Combobox(scrollable_frame, values=voice_actors, state="readonly")
+    voice_combobox.set(speaker_voice_map[speaker])
+    voice_combobox.pack(side="top", fill="x", expand=False)  # Changed to expand=False
     voice_combobox.bind("<<ComboboxSelected>>", lambda event, speaker=speaker: update_voice_actor(speaker))
-
+    
     voice_comboboxes[speaker] = voice_combobox
     
-    # Create a dropdown for language selection for each character
+    # Here is a mistake in your code. The language_combobox should be packed into scrollable_frame, not voice_selection_frame.
     language_var = tk.StringVar()
-    language_combobox = ttk.Combobox(voice_selection_frame, textvariable=language_var, state="readonly")
-    language_combobox['values'] = list(languages.keys())  # Use the display names for the user
-    language_combobox.set('English')  # Set default value
-    language_combobox.pack(side="top", fill="x", expand="yes")
+    language_combobox = ttk.Combobox(scrollable_frame, textvariable=language_var, state="readonly")
+    language_combobox['values'] = list(languages.keys())
+    language_combobox.set('English')
+    language_combobox.pack(side="top", fill="x", expand=False)  # Changed to expand=False and should be in scrollable_frame
     
     # Update character_languages when a language is selected
     def on_language_selected(event, speaker=speaker, combobox=language_combobox):
@@ -1177,10 +1185,7 @@ for speaker in data['Speaker'].unique():
         character_languages[speaker] = selected_language
         print(f"Language for {speaker} changed to {selected_language}")
 
-    # Use partial to correctly capture the current speaker
     language_combobox.bind("<<ComboboxSelected>>", partial(on_language_selected, speaker=speaker))
-
-    # Initialize each character's language preference to English
     character_languages[speaker] = 'en'
 # ... the rest of your GUI setup ...
 
