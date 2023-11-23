@@ -24,7 +24,8 @@ https://github.com/DrewThomasson/VoxNovel/assets/126999465/53b694a9-5ddd-4174-82
 
 ![VoxNovelgui](https://github.com/DrewThomasson/Citation_helper/blob/main/Screenshot%20from%202023-11-17%2002-02-13.png)
 
-![VoxNovelgui](https://github.com/DrewThomasson/Citation_helper/blob/main/Screenshot%20from%202023-11-17%2002-00-28.png)
+![Screenshot from 2023-11-23 12-30-55](https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/2f1a33f3-7702-4a3c-a499-b20948bfd189)
+
 
 
 # SetUp install
