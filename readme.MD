@@ -87,7 +87,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
 
-##  If on Windows 11
+##  If on Windows 11(demo voice sounds not working in gui yet cause wsl)
 So becuase of booknlp windows issues all of this will be run in wsl(don't worry its still easy)
 1. In your powershell paste `wsl --install` to install wsl
 2. After you set the username and password you'll now be able to open wsl as a application this will allow you to run ubuntu software
