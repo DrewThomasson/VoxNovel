@@ -69,6 +69,11 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 18. `pip3 install spacy`
 19. `python3 -m spacy download en_core_web_sm`
 20. `sudo pacman -S calibre`
+21. mv ~/miniconda3/envs/VoxNovel/lib/libstdc++.so.6 ~/miniconda3/envs/tts/lib/libstdc++.so.6.bak
+
+22. `pip install mechanize`
+23. `pip install bs4`
+24. `pip install css_parser`
 
 ##  If on intel mac 
 
