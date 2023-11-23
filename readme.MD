@@ -114,7 +114,8 @@ rm -rf ~/miniconda3/miniconda.sh`
 `pip install spacy`
 `python -m spacy download en_core_web_sm`
 `sudo apt install espeak-ng`
-
+You can acess the files on your wsl ubuntu in windows file exploror by putting this into the address
+`\\wsl.localhost\Ubuntu\home\`
 
 
 ##   To Run the program
