@@ -694,10 +694,13 @@ def combine_wav_files(input_directory, output_directory, file_name):
     # Get a list of all .wav files in the specified input directory
     input_file_paths = [os.path.join(input_directory, f) for f in os.listdir(input_directory) if f.endswith(".wav")]
 
+    # Sort the file paths to ensure numerical order
+    input_file_paths.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+
     # Create an empty list to store the loaded audio tensors
     audio_tensors = []
 
-    # Iterate through the input file paths and load each audio file
+    # Iterate through the sorted input file paths and load each audio file
     for input_file_path in input_file_paths:
         waveform, sample_rate = torchaudio.load(input_file_path)
         audio_tensors.append(waveform)
@@ -933,6 +936,7 @@ languages = {
 current_language = 'en'
 
 
+current_model =""
 
 
 # Function to generate audio for the text
@@ -943,6 +947,8 @@ def generate_audio():
     global multi_voice_model_voice_list3
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
+    global current_model
+
     ensure_temp_folder()
 
     # List available TTS models
@@ -1002,16 +1008,25 @@ def generate_audio():
                 if voice_actor in multi_voice_model_voice_list1:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model1}")
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                	fast_tts = TTS(multi_voice_model1, progress_bar=True).to(device)
+                	if current_model !=  multi_voice_model1:
+                		fast_tts = TTS(multi_voice_model1, progress_bar=True).to("cpu")
+                		current_model = multi_voice_model1
+                		print("POOPY POOPY POOPY")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif voice_actor in multi_voice_model_voice_list2:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model2}")
-                	fast_tts = TTS(multi_voice_model2, progress_bar=True).to("cpu")
+                	if current_model !=  multi_voice_model2:
+                		fast_tts = TTS(multi_voice_model2, progress_bar=True).to("cpu")
+                		current_model = multi_voice_model2
+                		print("POOPY POOPY POOPY")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif voice_actor in multi_voice_model_voice_list3:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model3}")
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                	fast_tts = TTS(multi_voice_model3, progress_bar=True).to(device)
+                	if current_model !=  multi_voice_model3:
+                		fast_tts = TTS(multi_voice_model3, progress_bar=True).to("cpu")
+                		current_model = multi_voice_model3
+                		print("POOPY POOPY POOPY")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -1389,5 +1404,4 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
-
 
