@@ -1011,14 +1011,14 @@ def generate_audio():
                 	if current_model !=  multi_voice_model1:
                 		fast_tts = TTS(multi_voice_model1, progress_bar=True).to("cpu")
                 		current_model = multi_voice_model1
-                		print("POOPY POOPY POOPY")
+                		print(f"The model used in fast_tts has been changed to {current_model}")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif voice_actor in multi_voice_model_voice_list2:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model2}")
                 	if current_model !=  multi_voice_model2:
                 		fast_tts = TTS(multi_voice_model2, progress_bar=True).to("cpu")
                 		current_model = multi_voice_model2
-                		print("POOPY POOPY POOPY")
+                		print(f"The model used in fast_tts has been changed to {current_model}")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif voice_actor in multi_voice_model_voice_list3:
                 	print(f"{voice_actor} is a fast model voice: {multi_voice_model3}")
@@ -1026,11 +1026,14 @@ def generate_audio():
                 	if current_model !=  multi_voice_model3:
                 		fast_tts = TTS(multi_voice_model3, progress_bar=True).to("cpu")
                 		current_model = multi_voice_model3
-                		print("POOPY POOPY POOPY")
+                		print(f"The model used in fast_tts has been changed to {current_model}")
                 	fast_tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker=voice_actor)
                 elif "tts_models" in voice_actor and "multi-dataset" not in voice_actor:
                 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                	fast_tts = TTS(voice_actor, progress_bar=True).to(device)
+                	if current_model !=  voice_actor:
+                		fast_tts = TTS(voice_actor, progress_bar=True).to(device)
+                		current_model = voice_actor
+                		print(f"The model used in fast_tts has been changed to {current_model}")
                 	#selected_tts_model = voice_actor
                 	#"Model is multi-lingual but no `language` is provided."
                 	
