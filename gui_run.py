@@ -1343,7 +1343,7 @@ speaker_colors = {}
 currently_playing = None
 INPUT_FOLDER = "Working_files/generated_audio_clips"
 OUTPUT_FOLDER = "Final_combined_output_audio"
-SILENCE_DURATION_MS = 580
+SILENCE_DURATION_MS = 780
 
 
 try:
