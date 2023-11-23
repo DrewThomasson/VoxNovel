@@ -86,17 +86,34 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
 
-##  If on Windows
+##  If on Windows 11
+So becuase of booknlp windows issues all of this will be run in wsl(don't worry its still easy)
+1. In your powershell paste `wsl --install` to install wsl
+2. After you set the username and password you'll now be able to open wsl as a application this will allow you to run ubuntu software
+You'll now want to open wsl if you closed it and paste these commands
+(This will install calibre for ebook conversion)
+`sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
+(This will install miniconda)
+`mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh`
+(This will make sure miniconda is initalized)
+`~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh`
+3. Close out of your current wsl window and reopen it to be able to use miniconda
+`conda create --name VoxNovel python=3.10`
+`conda activate VoxNovel`
+`git clone https://github.com/DrewThomasson/VoxNovel.git`
+`cd VoxNovel`
+`pip install tts`
+`pip install booknlp`
+`pip install -r Ubuntu-requirements.txt`
+`pip install spacy`
+`python -m spacy download en_core_web_sm`
+`sudo apt install espeak-ng`
 
-1. install calibre for windows
-2. `conda create --name VoxNovel python=3.10`
-3. `conda activate VoxNovel`
-4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel`
-6. `pip install tts`
-7. `pip install booknlp`
 
-8.`pip install -r Windows-requirements.txt`
 
 ##   To Run the program
 `python gui_run.py`
