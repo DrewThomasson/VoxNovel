@@ -92,6 +92,7 @@ So becuase of booknlp windows issues all of this will be run in wsl(don't worry 
 2. After you set the username and password you'll now be able to open wsl as a application this will allow you to run ubuntu software
 You'll now want to open wsl if you closed it and paste these commands
 (This will install calibre for ebook conversion)
+`cd ~`
 `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
 (This will install miniconda)
 `mkdir -p ~/miniconda3
@@ -104,6 +105,7 @@ rm -rf ~/miniconda3/miniconda.sh`
 3. Close out of your current wsl window and reopen it to be able to use miniconda
 `conda create --name VoxNovel python=3.10`
 `conda activate VoxNovel`
+`cd ~`
 `git clone https://github.com/DrewThomasson/VoxNovel.git`
 `cd VoxNovel`
 `pip install tts`
