@@ -141,7 +141,8 @@ def process_files(quotes_file, tokens_file):
                 print(f"Error reading {quotes_file}: {e}")
                 return
 
-    df_tokens = pd.read_csv(tokens_file, delimiter="\t", error_bad_lines=False, quoting=3)
+    df_tokens = pd.read_csv(tokens_file, delimiter="\t", on_bad_lines='skip', quoting=3)
+
     
     last_end_id = 0
     nonquotes_data = []
@@ -286,7 +287,10 @@ def process_files(quotes_file, entities_file):
                 formatted_speaker = character_info[char_id]["formatted_speaker"] if char_id in character_info else "Unknown"
 
             new_row = {"Text": row['quote'], "Start Location": row['quote_start'], "End Location": row['quote_end'], "Is Quote": "True", "Speaker": formatted_speaker}
-            writer = writer.append(new_row, ignore_index=True)
+            #turn the new_row into a data frame 
+            new_row_df = pd.DataFrame([new_row])
+            # Concatenate 'writer' with 'new_row_df'
+            writer = pd.concat([writer, new_row_df], ignore_index=True)
 
         writer.to_csv(output_filename, index=False)
         print(f"Saved quotes.csv to {output_filename}")
@@ -322,7 +326,7 @@ import os
 def process_files(quotes_file, tokens_file):
     # Load the files
     df_quotes = pd.read_csv(quotes_file, delimiter="\t")
-    df_tokens = pd.read_csv(tokens_file, delimiter="\t", error_bad_lines=False, quoting=3)
+    df_tokens = pd.read_csv(tokens_file, delimiter="\t", on_bad_lines='skip', quoting=3)
 
     last_end_id = 0  # Initialize the last_end_id to 0
     nonquotes_data = []  # List to hold data for nonquotes.csv
