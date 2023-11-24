@@ -492,7 +492,7 @@ import torch
 from TTS.api import TTS
 
 import tkinter as tk
-from tkinter import ttk, scrolledtext, messagebox
+from tkinter import ttk, scrolledtext, messagebox, simpledialog, filedialog
 import threading
 import pandas as pd
 import random
@@ -789,6 +789,14 @@ def update_voice_comboboxes():
     global multi_voice_model_voice_list1
     global multi_voice_model_voice_list2
     global multi_voice_model_voice_list3
+    global voice_actors
+    global female_voice_actors
+    global male_voice_actors
+    #updating the values of the avalible voice actors too
+    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
+    male_voice_actors = [va for va in voice_actors if va.endswith(".M")]
+    female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
+
     if include_single_models_var.get():  # Checkbox is checked
         # your code snippet to include single voice models
         filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
@@ -853,6 +861,75 @@ include_single_models_checkbox.pack()  # Adjust layout options as needed
 
 # Call this function once initially to set the correct values from the start
 update_voice_comboboxes()
+
+
+# Function to clone a new voice
+def clone_voice():
+    # Prompt the user to enter the name of the new voice actor
+    voice_actor_name = simpledialog.askstring("Input", "Enter the name of the voice actor:", parent=root)
+    
+    # If a name was entered, proceed to ask for gender
+    if voice_actor_name:
+        # Create a small popup window for gender selection
+        gender_window = tk.Toplevel(root)
+        gender_window.title("Select Gender")
+        
+        # Dropdown for gender selection
+        gender_var = tk.StringVar(gender_window)
+        gender_options = ['M', 'F', '?']
+        gender_dropdown = ttk.Combobox(gender_window, textvariable=gender_var, values=gender_options, state='readonly')
+        gender_dropdown.pack()
+
+
+        # Function to be called when 'OK' button is pressed
+        def on_gender_select():
+            voice_actor_gender = gender_var.get()
+            gender_window.destroy()  # Close the popup window
+            
+            # Now proceed to file selection
+            file_path = filedialog.askopenfilename(
+                title="Select Voice Sample File",
+                filetypes=[("Audio Files", "*.mp3 *.wav *.mp4")],
+                parent=root
+            )
+            
+            # Check if the file is selected and is of the correct format
+            if file_path and (file_path.lower().endswith('.mp3') or file_path.lower().endswith('.wav') or file_path.lower().endswith('.mp4')):
+                # Create the directory path for the new voice actor
+                new_voice_path = f"tortoise/voices/{voice_actor_name}.{voice_actor_gender}"
+                
+                # Check if the directory already exists
+                if not os.path.exists(new_voice_path):
+                    # Create the directory
+                    os.makedirs(new_voice_path)
+                    # Copy the selected file to the new directory
+                    shutil.copy(file_path, new_voice_path)
+                    messagebox.showinfo("Success", f"New voice actor folder created with sample file: {new_voice_path}")
+                    update_voice_comboboxes()
+                else:
+                    messagebox.showerror("Error", "Voice actor folder already exists.")
+            else:
+                messagebox.showerror("Error", "No file selected or selected file is not an MP3, WAV, or MP4.")
+
+        # OK button for gender selection
+        ok_button = ttk.Button(gender_window, text="OK", command=on_gender_select)
+        ok_button.pack()
+
+        # Set the focus on the dropdown and wait for the user to make a selection
+        gender_dropdown.focus_set()
+        root.wait_window(gender_window)
+    else:
+        messagebox.showerror("Error", "No name entered for the voice actor.")
+
+# Add this near the top of your script where other variables are defined
+clone_voice_button = ttk.Button(
+    root,
+    text="Clone new voice",
+    command=clone_voice  # The function to execute when the button is clicked
+)
+
+# Add the new button to the GUI
+clone_voice_button.pack(padx=5)
 
 
 
