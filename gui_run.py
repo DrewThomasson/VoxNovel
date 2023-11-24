@@ -23,7 +23,6 @@ If you want this feature please follow online instruction for downloading the ca
 For Linux its: 
 sudo apt update && sudo apt upgrade
 sudo apt install calibre
-
 """)
         return False
 
@@ -520,7 +519,8 @@ nltk.download('punkt', quiet=True)
 demo_text = "Imagine a world where endless possibilities await around every corner."
 
 # Load the CSV data
-data = pd.read_csv("Working_files/Book/book.csv")
+csv_file="Working_files/Book/book.csv"
+data = pd.read_csv(csv_file)
 
 #voice actors folder
 voice_actors_folder ="tortoise/voices/"
@@ -948,6 +948,28 @@ current_language = 'en'
 current_model =""
 
 
+
+def generate_file_ids(csv_file, chapter_delimiter):
+    data = pd.read_csv(csv_file)
+    
+    if 'audio_id' not in data.columns:
+        data['audio_id'] = [''] * len(data)
+    
+    chapter_num = 0
+    
+    for index, row in data.iterrows():
+        text = row['Text']  # Adjust to the correct column name, e.g., 'Text' if it's uppercase in the CSV
+        
+        if chapter_delimiter.upper() in text.upper():  # Ensure both are uppercase for case-insensitive matching
+            chapter_num += 1
+        
+        data.at[index, 'audio_id'] = f"audio_{index}_{chapter_num}"
+    
+    data.to_csv(csv_file, index=False)
+    print(f"'audio_id' column has been updated in {csv_file}")
+
+generate_file_ids(csv_file, "CHAPTER")
+
 # Function to generate audio for the text
 def generate_audio():
     # Get device
@@ -1236,12 +1258,21 @@ for speaker in data['Speaker'].unique():
 
 
 # Create a label for the entry
-chapter_delimiter_label = ttk.Label(root, text="Chapter Delimiter:")
+chapter_delimiter_label = ttk.Label(root, text="Chapter Delimiter:(Press enter in field to submit change)")
 chapter_delimiter_label.pack()  # Adjust layout options as needed
 
-# Create the Entry widget for chapter delimiter
+# Create the Entry widget for chapter delimiter and bind the Enter key
 chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
-chapter_delimiter_entry.pack()  # Adjust layout options as needed
+chapter_delimiter_entry.pack()
+
+def on_enter_pressed(event):
+    # Path to your CSV file
+    csv_file = "Working_files/Book/book.csv"  # Replace with the actual path to your CSV file
+    chapter_delimiter = chapter_delimiter_var.get()
+    generate_file_ids(csv_file, chapter_delimiter)
+
+# Bind the Enter key to the on_enter_pressed function for chapter_delimiter_entry
+chapter_delimiter_entry.bind('<Return>', on_enter_pressed)
 
 def update_chapter_keyword(*args):
     global CHAPTER_KEYWORD
