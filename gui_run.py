@@ -1424,34 +1424,59 @@ def on_text_click(event):
             #break
 
 # Function to load the book content and associate each text block with an audio tag
-def load_book():
+import itertools
+import random
 
+def load_book():
     generate_file_ids(csv_file, "CHAPTER")
     data = pd.read_csv(csv_file)
 
     # Clear the current text
     text_display.delete('1.0', tk.END)
 
-    # Generate a random color for each unique speaker and store it in a dictionary
+    # Define a list of colors similar to those used in Sublime Text
+    sublime_colors = [
+        '#66D9EF',  # Blue
+        '#A6E22E',  # Green
+        '#F92672',  # Pink
+        '#FD971F',  # Orange
+        '#E6DB74',  # Yellow
+        '#AE81FF',  # Purple
+        # ... Add more as needed ...
+    ]
+
+    # Shuffle the colors to get a new order each time
+    random.shuffle(sublime_colors)
+
+    # Use itertools.cycle to loop over the colors if there are more speakers than colors
+    color_cycle = itertools.cycle(sublime_colors)
+
+    # Generate a random color for each unique speaker
     speakers = data['Speaker'].unique()
-    speaker_colors = {speaker: "#{:02x}{:02x}{:02x}".format(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for speaker in speakers}
+    speaker_colors = {speaker: next(color_cycle) for speaker in speakers}
 
-
-    # Assuming 'data' is a DataFrame with the book content and associated audio IDs
     for index, row in data.iterrows():
         speaker = row['Speaker']
         text = row['Text']
         audio_id = row['audio_id']  # The audio ID corresponding to the text
-        
-        # Insert the text with a tag that corresponds to the audio ID
+
+        # Configure the tag for the speaker (text color black, highlight color as the speaker's color)
+        text_display.tag_configure(speaker, foreground="black", background=speaker_colors[speaker])
+
+        # Insert the speaker name with the speaker tag
         text_display.insert(tk.END, f"{speaker}: ", speaker)
-        text_display.insert(tk.END, f"{text}\n\n", audio_id)
+        # Insert the dialogue text with the audio ID tag and the speaker tag for coloring
+        text_display.insert(tk.END, f"{text}\n\n", (audio_id, speaker))
         
-        # Configure the color for the speaker tag (if you have a color mapping)
-        text_display.tag_configure(speaker, foreground=speaker_colors.get(speaker, "black"))
-        
-        # Bind a click event to the audio ID tag
+        # Bind a click event to the audio ID tag for playing audio
         text_display.tag_bind(audio_id, "<Button-1>", on_text_click)
+
+    # Scroll back to the top
+    text_display.yview_moveto(0)
+
+
+
+
 
 # Load the book content into the Text widget
 load_book()
