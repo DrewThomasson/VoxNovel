@@ -1319,8 +1319,39 @@ text_display_frame.pack(expand=True, fill='both')
 text_display = scrolledtext.ScrolledText(text_display_frame, height=10)
 text_display.pack(expand=True, fill='both')
 
+# Initialize Pygame mixer
+#pygame.mixer.init()
+
 # Load and display the book content with colored speakers
+
+# Function to play the audio when a tag associated with text is clicked
+def on_text_click(event):
+    text_widget = event.widget
+    index = text_widget.index(f"@{event.x},{event.y}")
+    tags = text_widget.tag_names(index)
+
+
+    # Loop through all tags and find the one that starts with "audio_"
+    for tag in tags:
+        if tag.startswith("audio_"):
+            audio_file = f"Working_files/generated_audio_clips/{tag}.wav"
+            print(f"Playing {audio_file}")
+            try:
+                pygame.mixer.music.stop()
+                pygame.mixer.stop()
+                sound = pygame.mixer.Sound(audio_file)
+                sound.play()
+            except Exception as e:
+                print(f"Could not play the audio file: {e}")
+
+            #break
+
+# Function to load the book content and associate each text block with an audio tag
 def load_book():
+
+    generate_file_ids(csv_file, "CHAPTER")
+    data = pd.read_csv(csv_file)
+
     # Clear the current text
     text_display.delete('1.0', tk.END)
 
@@ -1328,22 +1359,26 @@ def load_book():
     speakers = data['Speaker'].unique()
     speaker_colors = {speaker: "#{:02x}{:02x}{:02x}".format(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for speaker in speakers}
 
-    # Insert the text with tags for each speaker
+
+    # Assuming 'data' is a DataFrame with the book content and associated audio IDs
     for index, row in data.iterrows():
         speaker = row['Speaker']
         text = row['Text']
-
-        # Check if the speaker has an associated color
-        speaker_color = speaker_colors[speaker]
-
-        # Insert the speaker's name with the associated color
-        text_display.insert(tk.END, f"{speaker}: ", speaker)
+        audio_id = row['audio_id']  # The audio ID corresponding to the text
         
-        # Insert the text
-        text_display.insert(tk.END, f"{text}\n\n")
+        # Insert the text with a tag that corresponds to the audio ID
+        text_display.insert(tk.END, f"{speaker}: ", speaker)
+        text_display.insert(tk.END, f"{text}\n\n", audio_id)
+        
+        # Configure the color for the speaker tag (if you have a color mapping)
+        text_display.tag_configure(speaker, foreground=speaker_colors.get(speaker, "black"))
+        
+        # Bind a click event to the audio ID tag
+        text_display.tag_bind(audio_id, "<Button-1>", on_text_click)
 
-        # Configure the tag to change the foreground color
-        text_display.tag_configure(speaker, foreground=speaker_color)
+# Load the book content into the Text widget
+load_book()
+
 
 
 # Create a frame to contain the buttons
