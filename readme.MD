@@ -42,6 +42,7 @@ Run in this order:
 6. `pip install tts`
 7. `pip install booknlp`
 8. `pip install -r requirements.txt`
+9. `python -m spacy download en_core_web_sm`
 
 
 ##  if on Steam Deck) (x86_64 Arch Linux)
@@ -86,6 +87,8 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 6. `pip install tts`
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
+9. `pip spacy`
+10.`python -m spacy download en_core_web_sm`
 
 ##  If on Windows 11(demo voice sounds not working in gui yet cause wsl)
 So becuase of booknlp windows issues all of this will be run in wsl(don't worry its still easy)
