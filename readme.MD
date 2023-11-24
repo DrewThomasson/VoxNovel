@@ -145,15 +145,18 @@ Final_combined_output_audio:
 -can run on cpu or cuda gpu
 -autoselects a starting estimated voice by pronouns per character
 -supports all models in Coqui TTS and all voices in the models
+-easily create a new voice actor in seconds through voice cloneing in gui
+-can play audio by clicking on the text in the book viewer in gui
 
 
 
 
 ## incoming planned features
--Ability to click a quote line in the gui book viewer to hear who is saying that line
 -Ability to change the character for a line if incorectly attributed by booknlp
--Add a button to make it easy to add your own voices via voice cloning in the gui
 -Ability to regenerate specific lines
+-Make it so that all the included voices and models already have their premade own demo voices
+-Make it so that the demo audio for the cloned voices is the not their refrence audio but what their voices sound like generated
+
 
 
 
