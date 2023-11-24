@@ -137,3 +137,24 @@ This means all you do is select the book and all the voices will be auto assigne
 
 Final_combined_output_audio:
 -This is where all of your final audio files will be put in order of chapter num
+
+
+## features
+-free and entirly locally run
+-supports all ebook file formats by using calibre
+-can run on cpu or cuda gpu
+-autoselects a starting estimated voice by pronouns per character
+-supports all models in Coqui TTS and all voices in the models
+
+
+
+
+## incoming planned features
+-Ability to click a quote line in the gui book viewer to hear who is saying that line
+-Ability to change the character for a line if incorectly attributed by booknlp
+-Add a button to make it easy to add your own voices via voice cloning in the gui
+-Ability to regenerate specific lines
+
+
+
+
