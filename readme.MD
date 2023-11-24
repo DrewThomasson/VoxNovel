@@ -94,7 +94,9 @@ So becuase of booknlp windows issues all of this will be run in wsl(don't worry 
 You'll now want to open wsl if you closed it and paste these commands
 (This will install calibre for ebook conversion)
 `cd ~`
-`sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
+`sudo apt update`
+`sudo apt upgrade`
+`sudo apt install calibre`
 (This will install miniconda)
 `mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
