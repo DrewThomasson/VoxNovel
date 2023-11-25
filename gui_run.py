@@ -571,6 +571,13 @@ multi_voice_model_voice_list3 = []
 voice_comboboxes = {}
 
 
+def add_voice_actors_to_csv():
+    df = pd.read_csv(csv_file)
+    if 'voice_actor' not in df.columns:
+        df['voice_actor'] = df['Speaker'].map(speaker_voice_map)
+    df.to_csv(csv_file, index=False)
+    print(f"Added voice actor data to {csv_file}")
+
 def get_random_voice_for_speaker(speaker):
     selected_voice_actors = voice_actors  # default to all voice actors
 
@@ -1100,6 +1107,8 @@ def generate_audio():
     total_rows = len(data)
 
     chapter_num = 0
+
+    add_voice_actors_to_csv()
     for index, row in data.iterrows():
         update_progress(index, total_rows)  # Update progress based on the current index and total rows
 
