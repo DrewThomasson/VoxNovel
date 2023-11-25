@@ -641,6 +641,11 @@ root.geometry("1200x800")
 
 chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
+def disable_chapter_delimiter_entry():
+    chapter_delimiter_entry.config(state='disabled')
+
+def enable_chapter_delimiter_entry():
+    chapter_delimiter_entry.config(state='normal')
 
 # Initialize the mixer module
 try:
@@ -1057,6 +1062,9 @@ def generate_audio():
     
     global current_model
 
+    #this will make it so that I can't modify the chapter delminator after I click generate
+    disable_chapter_delimiter_entry()
+    
     ensure_temp_folder()
 
     # List available TTS models
@@ -1399,79 +1407,66 @@ text_display.pack(expand=True, fill='both')
 # Initialize Pygame mixer
 #pygame.mixer.init()
 
-# Load and display the book content with colored speakers
-
-# Function to play the audio when a tag associated with text is clicked
-def on_text_click(event):
-    text_widget = event.widget
-    index = text_widget.index(f"@{event.x},{event.y}")
-    tags = text_widget.tag_names(index)
-
-
-    # Loop through all tags and find the one that starts with "audio_"
-    for tag in tags:
-        if tag.startswith("audio_"):
-            audio_file = f"Working_files/generated_audio_clips/{tag}.wav"
-            print(f"Playing {audio_file}")
-            try:
-                pygame.mixer.music.stop()
-                pygame.mixer.stop()
-                sound = pygame.mixer.Sound(audio_file)
-                sound.play()
-            except Exception as e:
-                print(f"Could not play the audio file: {e}")
-
-            #break
-
-# Function to load the book content and associate each text block with an audio tag
 import itertools
 import random
 
+# Load and display the book content with colored speakers
+# Function to play the audio when a tag associated with text is clicked
+def on_text_click(event):
+    text_widget = event.widget
+    text_index = text_widget.index(f"@{event.x},{event.y}")
+    tags = text_widget.tag_names(text_index)
+    
+    # Extract the CSV index from the tags
+    csv_index_tag = next((tag for tag in tags if tag.isdigit()), None)
+    if csv_index_tag is not None:
+        # Here you have the CSV row index
+        csv_index = int(csv_index_tag)
+        print(f"CSV Index: {csv_index}")
+
+    #use the csv_index to retrive the updated tags value from the csv file
+    data = pd.read_csv('Working_files/Book/book.csv')
+    audio_id = data.at[csv_index, 'audio_id']
+    print(audio_id)
+    
+    if audio_id.startswith("audio_"):
+        audio_file = f"Working_files/generated_audio_clips/{audio_id}.wav"
+        print(f"Playing {audio_file}")
+        try:
+            pygame.mixer.music.stop()
+            pygame.mixer.stop()
+            sound = pygame.mixer.Sound(audio_file)
+            sound.play()
+        except Exception as e:
+            print(f"Could not play the audio file: {e}")
+
+# Function to load the book content and associate each text block with an audio tag
 def load_book():
-    generate_file_ids(csv_file, "CHAPTER")
     data = pd.read_csv(csv_file)
 
     # Clear the current text
     text_display.delete('1.0', tk.END)
 
-    # Define a list of colors similar to those used in Sublime Text
-    sublime_colors = [
-        '#66D9EF',  # Blue
-        '#A6E22E',  # Green
-        '#F92672',  # Pink
-        '#FD971F',  # Orange
-        '#E6DB74',  # Yellow
-        '#AE81FF',  # Purple
-        # ... Add more as needed ...
-    ]
-
-    # Shuffle the colors to get a new order each time
+    # Define and shuffle colors
+    sublime_colors = ['#66D9EF', '#A6E22E', '#F92672', '#FD971F', '#E6DB74', '#AE81FF']
     random.shuffle(sublime_colors)
-
-    # Use itertools.cycle to loop over the colors if there are more speakers than colors
     color_cycle = itertools.cycle(sublime_colors)
 
-    # Generate a random color for each unique speaker
+    # Generate a color for each speaker
     speakers = data['Speaker'].unique()
     speaker_colors = {speaker: next(color_cycle) for speaker in speakers}
 
     for index, row in data.iterrows():
         speaker = row['Speaker']
         text = row['Text']
-        audio_id = row['audio_id']  # The audio ID corresponding to the text
+        audio_id = row['audio_id']
+        csv_index = str(index)  # Convert the index to string to use as a tag
 
-        # Configure the tag for the speaker (text color black, highlight color as the speaker's color)
         text_display.tag_configure(speaker, foreground="black", background=speaker_colors[speaker])
-
-        # Insert the speaker name with the speaker tag
         text_display.insert(tk.END, f"{speaker}: ", speaker)
-        # Insert the dialogue text with the audio ID tag and the speaker tag for coloring
-        text_display.insert(tk.END, f"{text}\n\n", (audio_id, speaker))
-        
-        # Bind a click event to the audio ID tag for playing audio
+        text_display.insert(tk.END, f"{text}\n\n", (audio_id, speaker, csv_index))
         text_display.tag_bind(audio_id, "<Button-1>", on_text_click)
 
-    # Scroll back to the top
     text_display.yview_moveto(0)
 
 
