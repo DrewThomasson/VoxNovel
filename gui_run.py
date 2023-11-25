@@ -459,30 +459,45 @@ if __name__ == "__main__":
 
 
 #this will wipe the computer of any current audio clips from a previous session
+#but itll ask the user first
 import os
+import tkinter as tk
+from tkinter import messagebox
 
-def wipe_folder(directory_path):
-    # Ensure the directory exists
+def check_and_wipe_folder(directory_path):
+    # Check if the directory exists
     if not os.path.exists(directory_path):
         print(f"The directory {directory_path} does not exist!")
         return
 
-    # Iterate through files in the directory
-    for filename in os.listdir(directory_path):
-        file_path = os.path.join(directory_path, filename)
-        
-        # Check if it's a regular file (not a subdirectory)
-        if os.path.isfile(file_path):
-            try:
-                os.remove(file_path)
-                print(f"Deleted: {file_path}")
-            except Exception as e:
-                print(f"Failed to delete {file_path}. Reason: {e}")
+    # Check for .wav files in the directory
+    wav_files = [f for f in os.listdir(directory_path) if f.endswith('.wav')]
 
-print("wiping any fast generated audio clips cache")
-folder_path = "Working_files/generated_audio_clips/"
-wipe_folder(folder_path)
+    if wav_files:  # If there are .wav files
+        # Initialize tkinter
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
 
+        # Ask the user if they want to delete the files
+        response = messagebox.askyesno("Confirm Deletion", "Audio clips from a previous session have been found. Do you want to wipe them?")
+        root.destroy()  # Destroy the tkinter instance
+
+        if response:  # If the user clicks 'Yes'
+            # Iterate through files and delete them
+            for filename in wav_files:
+                file_path = os.path.join(directory_path, filename)
+                try:
+                    os.remove(file_path)
+                    print(f"Deleted: {file_path}")
+                except Exception as e:
+                    print(f"Failed to delete {file_path}. Reason: {e}")
+        else:
+            print("Wipe operation cancelled by the user.")
+    else:
+        print("No audio clips from a previous session were found.")
+
+# Usage
+check_and_wipe_folder("Working_files/generated_audio_clips/")
 
 
 
