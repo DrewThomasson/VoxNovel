@@ -570,6 +570,16 @@ multi_voice_model_voice_list3 = []
 # Dictionary to hold the comboboxes references
 voice_comboboxes = {}
 
+def add_languages_to_csv():
+    df = pd.read_csv('Working_files/Book/book.csv')  # Make sure to use your actual CSV file path
+    if 'language' not in df.columns:
+        # Map the 'Speaker' column to the 'language' column using the character_languages dictionary
+        # The get method returns 'en' as a default value if the speaker is not found in the dictionary
+        df['language'] = df['Speaker'].apply(lambda speaker: character_languages.get(speaker, 'en'))
+    df.to_csv('Working_files/Book/book.csv', index=False)  # Save the changes back to the CSV file
+    print("Added language data to the CSV file.")
+
+
 
 def add_voice_actors_to_csv():
     df = pd.read_csv(csv_file)
@@ -1109,6 +1119,7 @@ def generate_audio():
     chapter_num = 0
 
     add_voice_actors_to_csv()
+    add_languages_to_csv()
     for index, row in data.iterrows():
         update_progress(index, total_rows)  # Update progress based on the current index and total rows
 
