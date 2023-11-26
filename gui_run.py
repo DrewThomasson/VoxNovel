@@ -1574,8 +1574,8 @@ import random
 import pygame
 
 
-add_voice_actors_to_csv()
-add_languages_to_csv()
+#add_voice_actors_to_csv()
+#add_languages_to_csv()
 
 # Initialize pygame mixer
 pygame.mixer.init()
