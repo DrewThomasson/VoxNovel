@@ -41,7 +41,7 @@ Run in this order:
 5. `cd VoxNovel`
 6. `pip install tts`
 7. `pip install booknlp`
-8. `pip install -r requirements.txt`
+8. `pip install -r Ubuntu_requirements.txt`
 9. `python -m spacy download en_core_web_sm`
 
 
