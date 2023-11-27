@@ -22,10 +22,9 @@ https://github.com/DrewThomasson/VoxNovel/assets/126999465/53b694a9-5ddd-4174-82
 
 ## GUI
 
-![VoxNovelgui](https://github.com/DrewThomasson/Citation_helper/blob/main/Screenshot%20from%202023-11-17%2002-02-13.png)
-
-![Screenshot from 2023-11-23 12-30-55](https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/2f1a33f3-7702-4a3c-a499-b20948bfd189)
-
+<img width="168" alt="Screenshot 2023-11-26 at 10 37 54 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/6c6fae3c-b2c7-48bb-a066-6b06303baca5">
+<img width="1199" alt="Screenshot 2023-11-26 at 10 38 31 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/c2aeff6f-78b8-478a-8369-bb089862236b">
+<img width="585" alt="Screenshot 2023-11-26 at 10 35 39 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/5b2c473c-7806-40c0-931a-091306de347d">
 
 
 # SetUp install
@@ -147,7 +146,7 @@ Final_combined_output_audio:
 -supports all models in Coqui TTS and all voices in the models
 -easily create a new voice actor in seconds through voice cloneing in gui
 -can play audio by clicking on the text in the book viewer in gui
-
+-Ability to regenerate specific lines if they came out weird
 
 
 
@@ -156,7 +155,7 @@ Final_combined_output_audio:
 -Ability to regenerate specific lines
 -Make it so that all the included voices and models already have their premade own demo voices
 -Make it so that the demo audio for the cloned voices is the not their refrence audio but what their voices sound like generated
-
+-Using whisper transcriptions to cut hallucinations out of generated audio
 
 
 
