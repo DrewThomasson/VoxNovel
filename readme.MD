@@ -139,16 +139,16 @@ This means all you do is select the book and all the voices will be auto assigne
 Final_combined_output_audio:
 -This is where all of your final audio files will be put in order of chapter num
 
+## Features
+- Free and entirely locally run
+- Supports all ebook file formats by using calibre
+- Can run on CPU or CUDA GPU
+- Autoselects a starting estimated voice by pronouns per character
+- Supports all models in Coqui TTS and all voices in the models
+- Easily create a new voice actor in seconds through voice cloning in GUI
+- Can play audio by clicking on the text in the book viewer in GUI
+- Ability to regenerate specific lines if they came out weird
 
-## features
--free and entirly locally run
--supports all ebook file formats by using calibre
--can run on cpu or cuda gpu
--autoselects a starting estimated voice by pronouns per character
--supports all models in Coqui TTS and all voices in the models
--easily create a new voice actor in seconds through voice cloneing in gui
--can play audio by clicking on the text in the book viewer in gui
--Ability to regenerate specific lines if they came out weird
 
 
 
