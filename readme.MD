@@ -9,7 +9,13 @@ VoxNovel is an innovative program that leverages the capabilities of booknlp to 
 
 
    **DEMO**
-   
+
+
+ **High Quality XTTS V2 Demos**
+ 
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/44f38bfa-9622-43ec-8d06-27f4d7b0a25b
+
+
  **High Quality Tortoise Demos**
  
 https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/94e23918-b7e1-4399-935e-179dd12212c3
