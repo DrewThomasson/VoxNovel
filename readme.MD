@@ -91,38 +91,46 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 9. `pip spacy`
 10.`python -m spacy download en_core_web_sm`
 
-##  If on Windows 11(demo voice sounds not working in gui yet cause wsl)
-So becuase of booknlp windows issues all of this will be run in wsl(don't worry its still easy)
-1. In your powershell paste `wsl --install` to install wsl
-2. After you set the username and password you'll now be able to open wsl as a application this will allow you to run ubuntu software
-You'll now want to open wsl if you closed it and paste these commands
-(This will install calibre for ebook conversion)
-`cd ~`
-`sudo apt update`
-`sudo apt upgrade`
-`sudo apt install calibre`
-(This will install miniconda)
-`mkdir -p ~/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm -rf ~/miniconda3/miniconda.sh`
-(This will make sure miniconda is initalized)
-`~/miniconda3/bin/conda init bash
-~/miniconda3/bin/conda init zsh`
-3. Close out of your current wsl window and reopen it to be able to use miniconda
-`conda create --name VoxNovel python=3.10`
-`conda activate VoxNovel`
-`cd ~`
-`git clone https://github.com/DrewThomasson/VoxNovel.git`
-`cd VoxNovel`
-`pip install tts`
-`pip install booknlp`
-`pip install -r Ubuntu-requirements.txt`
-`pip install spacy`
-`python -m spacy download en_core_web_sm`
-`sudo apt install espeak-ng`
-You can acess the files on your wsl ubuntu in windows file exploror by putting this into the address
-`\\wsl.localhost\Ubuntu\home\`
+## If on Windows 11 (demo voice sounds not working in GUI yet due to WSL)
+
+Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
+
+1. In your PowerShell, paste `wsl --install` to install WSL.
+
+2. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
+
+   (This will install Calibre for ebook conversion)
+   `cd ~`
+   `sudo apt update`
+   `sudo apt upgrade`
+   `sudo apt install calibre`
+
+   (This will install Miniconda)
+   `mkdir -p ~/miniconda3`
+   `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh`
+   `bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3`
+   `rm -rf ~/miniconda3/miniconda.sh`
+
+   (This will make sure Miniconda is initialized)
+   `~/miniconda3/bin/conda init bash`
+   `~/miniconda3/bin/conda init zsh`
+
+3. Close out of your current WSL window and reopen it to be able to use Miniconda.
+
+   `conda create --name VoxNovel python=3.10`
+   `conda activate VoxNovel`
+   `cd ~`
+   `git clone https://github.com/DrewThomasson/VoxNovel.git`
+   `cd VoxNovel`
+   `pip install tts`
+   `pip install booknlp`
+   `pip install -r Ubuntu-requirements.txt`
+   `pip install spacy`
+   `python -m spacy download en_core_web_sm`
+   `sudo apt install espeak-ng`
+
+You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+
 
 
 ##   To Run the program
