@@ -7,6 +7,36 @@ from booknlp.booknlp import BookNLP
 import nltk
 nltk.download('averaged_perceptron_tagger')
 
+epub_file_path = ""
+chapters = []
+
+def convert_epub_and_extract_chapters(epub_path):
+    # Regular expression to match the chapter lines in the output
+    chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
+
+    # List to store the extracted chapter names
+    chapter_names = []
+
+    # Start the conversion process and capture the output
+    process = subprocess.Popen(['ebook-convert', epub_path, '/dev/null'],
+                               stdout=subprocess.PIPE, 
+                               stderr=subprocess.STDOUT,
+                               universal_newlines=True)
+
+    # Read the output line by line
+    for line in iter(process.stdout.readline, ''):
+        print(line, end='')  # You can comment this out if you don't want to see the output
+        match = chapter_pattern.search(line)
+        if match:
+            chapter_names.append(match.group(1))
+
+    # Wait for the process to finish
+    process.stdout.close()
+    process.wait()
+
+    return chapter_names
+
+
 def calibre_installed():
     """Check if Calibre's ebook-convert tool is available."""
     try:
@@ -33,6 +63,7 @@ def convert_with_calibre(file_path, output_format="txt"):
     return output_path
 
 def process_file():
+    global epub_file_path
     file_path = filedialog.askopenfilename(
         title='Select File',
         filetypes=[('Supported Files', 
@@ -40,6 +71,8 @@ def process_file():
                      '*.mobi', '*.odt', '*.pdf', '*.prc', '*.pdb', '*.pml', '*.rb', '*.rtf', '*.snb', 
                      '*.tcr', '*.txt'))]
     )
+    if ".epub" in file_path:
+    	epub_file_path = file_path
     
     if not file_path:
         return
@@ -67,9 +100,14 @@ def process_file():
         "model": "big"
     }
 
+
+
+
     booknlp = BookNLP("en", model_params)
     booknlp.process(file_path, output_directory, book_id)
-
+    global chapters
+    if epub_file_path == "":
+    	chapters = convert_epub_and_extract_chapters(epub_file_path)
     print("Success, File processed successfully!")
     
     # Close the GUI
@@ -182,8 +220,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
 
 
@@ -419,7 +455,7 @@ def process_text(text):
     # Apply the rule to remove spaces before punctuation and other non-alphanumeric characters
     text = re.sub(r' (?=[^a-zA-Z0-9\s])', '', text)
     # Replace " n’t" with "n’t"
-    text = text.replace(" n’t", "n’t").replace("[", "(").replace("]", ")").replace("gon na", "gonna").replace("—————–", "")
+    text = text.replace(" n’t", "n’t").replace("[", "(").replace("]", ")").replace("gon na", "gonna").replace("—————–", "").replace(" n't", "n't")
     return text
 
 def process_file(filename):
@@ -450,7 +486,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
@@ -1850,6 +1885,7 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
     voice_actor = voice_actor
     language = language
     index = int(re.search(r'\d+', audio_id.split('_')[1]).group())
+    global chapters
 
     # Get device
     global multi_voice_model_voice_list1
@@ -1887,7 +1923,17 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
 
     language_code = language  # Default to 'en' if not found
 
-    if CHAPTER_KEYWORD in text.upper():
+#if the chapter list is empty then don't use it if its empty then continue using the set chapter deliminator
+    if len(chapters) == 0:
+         for chapter in chapters:
+         	if chapter in text:
+         		print(f"chapter num: {chapter_num}")
+         		print(f"CHAPTER IS: {chapter}")
+         		chapter_num += 1
+         		
+    	
+
+    elif CHAPTER_KEYWORD in text.upper():
         chapter_num += 1
         print(f"chapter num: {chapter_num}")
         print(f"CHAPTER KEYWORD IS: {CHAPTER_KEYWORD}")
