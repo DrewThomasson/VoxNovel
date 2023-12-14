@@ -549,7 +549,18 @@ character_languages = {}
 
 models = TTS().list_models()
 #selected_tts_model = 'tts_models/multilingual/multi-dataset/xtts_v2'
-selected_tts_model = models[0]
+
+#I have to do this right now cause they made a weird change to coqui idk super weird the list models isnt working right now
+#so this will chekc if its a list isk man and if not then the bug is still there and itll apply the fix
+
+if isinstance(models, list):
+	print("good it's a list I can apply normal code for model list")
+	selected_tts_model = models[0]
+else:
+	tts_manager = TTS().list_models()
+	all_models = tts_manager.list_models()
+	models = all_models
+	selected_tts_model = models[0]
 
 
 # Map for speaker to voice actor
@@ -569,6 +580,7 @@ multi_voice_model_voice_list3 = []
 
 # Dictionary to hold the comboboxes references
 voice_comboboxes = {}
+
 
 def add_languages_to_csv():
     df = pd.read_csv('Working_files/Book/book.csv')  # Make sure to use your actual CSV file path
@@ -792,6 +804,19 @@ tts_models = [
 ]
 tts_models = TTS().list_models()
 
+
+#This is another coqui bug fix i have to apply for the bug idk why but nwo there this lol it started in coqui V0.22.0
+#this will make the models list actually work tho
+if isinstance(tts_models, list):
+	print("good it's a list I can apply normal code for model list")
+	selected_tts_model = models[0]
+else:
+	tts_manager = TTS().list_models()
+	all_models = tts_manager.list_models()
+	tts_models = all_models
+
+
+
 # Function to update the selected TTS model
 def update_tts_model(event):
     global selected_tts_model
@@ -893,6 +918,20 @@ include_single_models_checkbox = ttk.Checkbutton(
     command=update_voice_comboboxes  # This function will be defined later
 )
 include_single_models_checkbox.pack()  # Adjust layout options as needed
+
+
+#single voice checkbox var
+single_voice_checkbox_var = tk.BooleanVar(value=False)  # Initially set to False
+
+
+single_voice_checkbox = ttk.Checkbutton(
+    root,  # Assuming 'root' is your main Tk window
+    text="Make all audio generate with Narrerator voice",
+    variable=single_voice_checkbox_var,
+    onvalue=True,
+    offvalue=False
+)
+single_voice_checkbox.pack()  # Adjust layout options as needed
 
 
 
@@ -1132,8 +1171,18 @@ def generate_audio():
             chapter_num += 1
             print(f"chapter num: {chapter_num}")
             print(f"CHAPTER KEYWORD IS: {CHAPTER_KEYWORD}")
+            
+            
+        #This is the code for grabbing the current voice actor    
+        #This will make it so that if the button for single voice is checked in the gui then the voice actor is always the narrerators:
+        if single_voice_checkbox_var.get():
+        	print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
+        	voice_actor = speaker_voice_map.get("Narrator")
+        else:
+        	voice_actor = speaker_voice_map[speaker]
 
-        voice_actor = speaker_voice_map[speaker]
+
+        #voice_actor = speaker_voice_map[speaker]
         sentences = sent_tokenize(text)
         
         audio_tensors = []
@@ -1154,6 +1203,7 @@ def generate_audio():
                 #tts.tts_to_file(fragment, speaker_wav=list_reference_files(voice_actor), progress_bar=True, file_path=f"Working_files/temp/{temp_count}.wav")
    
                 
+                    
                 
                 #this will make it so that if your selecting a model as a voice actor name then itll initalize the voice actor name as the model
                 if voice_actor in multi_voice_model_voice_list1:
@@ -2103,4 +2153,3 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
-
