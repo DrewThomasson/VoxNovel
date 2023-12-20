@@ -172,6 +172,7 @@ Final_combined_output_audio:
 - Make it so that all the included voices and models already have their premade own demo voices
 - Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - Using whisper transcriptions to cut hallucinations out of generated audio
+-single file output as m4p to include all the metadata(chapters book image ect)
 
 
 
