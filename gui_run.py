@@ -2185,30 +2185,6 @@ def combine_audio_files(silence_duration_ms):
 combine_audio_files(SILENCE_DURATION_MS)
 
 
-"""
-
-#this will convert all the audio files into a mp4 format instead of wav to save space
-
-
-from moviepy.editor import *
-
-def convert_wav_to_mp4(wav_filename, mp4_filename):
-    audio = AudioFileClip(wav_filename)
-    audio.write_audiofile(mp4_filename, codec='aac')
-
-def convert_all_wav_to_mp4():
-    output_dir = "Final_combined_output_audio"
-    wav_files = [f for f in os.listdir(output_dir) if f.endswith('.wav')]
-
-    for wav_file in wav_files:
-        wav_filename = os.path.join(output_dir, wav_file)
-        mp4_filename = os.path.join(output_dir, wav_file.replace('.wav', '.mp4'))
-        convert_wav_to_mp4(wav_filename, mp4_filename)
-        print(f"{wav_filename} has been converted to {mp4_filename}.")
-
-convert_all_wav_to_mp4()
-"""
-
 
 
 
@@ -2320,6 +2296,14 @@ import subprocess
 from pydub import AudioSegment
 import shlex
 
+def sort_chapters(file):
+    # Extract chapter number from the filename
+    number_part = re.findall(r'\d+', file)
+    if number_part:
+        return int(number_part[0])
+    return 0
+
+
 def extract_ebook_metadata(ebook_file):
     try:
         metadata_cmd = ['ebook-meta', ebook_file]
@@ -2393,6 +2377,7 @@ def convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name):
     cover_image, ebook_metadata = extract_ebook_metadata(ebook_file)
 
     wav_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.wav')]
+    wav_files.sort(key=sort_chapters)
     m4b_filename = os.path.join(output_dir, f'{audiobook_name}.m4b')
     metadata_filename = 'chapter_metadata.txt'
 
@@ -2413,9 +2398,6 @@ output_dir = 'output_audiobooks'
 audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
 
 
-
-
-
 convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
@@ -2425,11 +2407,33 @@ convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
 
+#this will convert all the audio files into a mp4 format instead of wav to save space
+
+
+from moviepy.editor import *
+
+def convert_wav_to_mp4(wav_filename, mp4_filename):
+    audio = AudioFileClip(wav_filename)
+    audio.write_audiofile(mp4_filename, codec='aac')
+
+def convert_all_wav_to_mp4():
+    output_dir = "Final_combined_output_audio"
+    wav_files = [f for f in os.listdir(output_dir) if f.endswith('.wav')]
+
+    for wav_file in wav_files:
+        wav_filename = os.path.join(output_dir, wav_file)
+        mp4_filename = os.path.join(output_dir, wav_file.replace('.wav', '.mp4'))
+        convert_wav_to_mp4(wav_filename, mp4_filename)
+        print(f"{wav_filename} has been converted to {mp4_filename}.")
+
+convert_all_wav_to_mp4()
 
 
 
 
-"""
+
+
+
 #this will clean up some space by deleting the wav files copys in the final generation folder
 import os
 
@@ -2445,12 +2449,12 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
-"""
 
 
 
 
-"""
+
+
 
 #this will add the cover of the epub file to the mp4 combined files
 print("Adding Book Artwork to mp4 chatper files")
@@ -2459,7 +2463,7 @@ import os
 import subprocess
 
 def extract_cover_image_calibre(ebook_file):
-    """"""
+    """
     Extracts the cover image from an eBook file using Calibre's ebook-meta tool.
 
     Args:
@@ -2467,7 +2471,7 @@ def extract_cover_image_calibre(ebook_file):
 
     Returns:
     str: The path to the extracted cover image or None if not found.
-    """"""
+    """
     output_image = os.path.join('/tmp', os.path.basename(ebook_file) + '.jpg')
     try:
         subprocess.run(['ebook-meta', ebook_file, '--get-cover', output_image], check=True)
@@ -2480,13 +2484,13 @@ def extract_cover_image_calibre(ebook_file):
         return None
 
 def set_cover_to_mp4(cover_image, mp4_folder):
-    """"""
+    """
     Sets the extracted cover image to all mp4 files in a specified folder.
 
     Args:
     cover_image (str): The path to the cover image.
     mp4_folder (str): The path to the folder containing mp4 files.
-    """"""
+    """
     if not cover_image or not os.path.exists(cover_image):
         print("Cover image not found.")
         return
@@ -2509,4 +2513,3 @@ cover_image = extract_cover_image_calibre(ebook_file)
 
 # Set cover image to all mp4 files in the specified folder
 set_cover_to_mp4(cover_image, mp4_folder)
-"""
