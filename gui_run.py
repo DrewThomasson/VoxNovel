@@ -5,11 +5,12 @@ from tkinter import filedialog, messagebox
 from epub2txt import epub2txt
 from booknlp.booknlp import BookNLP
 import nltk
+import re
 nltk.download('averaged_perceptron_tagger')
 
 epub_file_path = ""
 chapters = []
-
+ebook_file_path = ""
 def convert_epub_and_extract_chapters(epub_path):
     # Regular expression to match the chapter lines in the output
     chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
@@ -64,6 +65,7 @@ def convert_with_calibre(file_path, output_format="txt"):
 
 def process_file():
     global epub_file_path
+    global ebook_file_path
     file_path = filedialog.askopenfilename(
         title='Select File',
         filetypes=[('Supported Files', 
@@ -71,6 +73,7 @@ def process_file():
                      '*.mobi', '*.odt', '*.pdf', '*.prc', '*.pdb', '*.pml', '*.rb', '*.rtf', '*.snb', 
                      '*.tcr', '*.txt'))]
     )
+    ebook_file_path = file_path
     if ".epub" in file_path:
     	epub_file_path = file_path
     
@@ -1594,8 +1597,10 @@ def load_book():
 
 
 # Load the book content into the Text widget
-load_book()
-
+try:
+	load_book()
+except Exception as e:
+	print(f"An error occured showing error but not stopping program: {e}")
 
 
 # Create a frame to contain the buttons
@@ -1787,7 +1792,11 @@ def load_book():
         text_display.tag_bind(audio_id, "<Button-1>", on_text_click)
 
         # Insert the speaker with tag
-        text_display.insert(tk.END, f"{speaker}: ", speaker)
+        try:
+        	text_display.insert(tk.END, f"{speaker}: ", speaker)
+        except Exception as e:
+        	print(f"An error occured continueing: {e}")
+        
         
         # Create a checkbox variable for each line of text
         chk_var = tk.BooleanVar(value=False)
@@ -2098,6 +2107,21 @@ root.mainloop()
 
 
 
+#this code here will make sure the folder where all the chapter audio files go i whiped before it starts creating the chapter files cause there might be stuff from the last session
+import os
+import shutil
+
+def wipe_folder(folder_path):
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        print(f"Folder '{folder_path}' found. Proceeding to wipe...")
+        shutil.rmtree(folder_path)
+        print(f"Folder '{folder_path}' has been wiped.")
+    else:
+        print(f"Folder '{folder_path}' does not exist. No action taken.")
+
+# Usage
+folder_to_wipe = "Final_combined_output_audio"
+wipe_folder(folder_to_wipe)
 
 
 
@@ -2106,7 +2130,7 @@ root.mainloop()
 
 
 
-
+#this code here will combined all the tiny generated audio files into chapter audio files
 import os
 import pandas as pd
 import torch
@@ -2153,7 +2177,7 @@ def combine_audio_files(silence_duration_ms):
         if not os.path.exists(os.path.join(os.getcwd(), OUTPUT_FOLDER)):
             os.makedirs(os.path.join(os.getcwd(), OUTPUT_FOLDER))
 
-        output_path = os.path.join(os.getcwd(), OUTPUT_FOLDER, f"combined_chapter_{chapter_num}.wav")
+        output_path = os.path.join(os.getcwd(), OUTPUT_FOLDER, f"chapter_{chapter_num}.wav")
         torchaudio.save(output_path, combined_tensor, sample_rate)
 
     print("Combining audio files complete!")
@@ -2161,6 +2185,9 @@ def combine_audio_files(silence_duration_ms):
 combine_audio_files(SILENCE_DURATION_MS)
 
 
+"""
+
+#this will convert all the audio files into a mp4 format instead of wav to save space
 
 
 from moviepy.editor import *
@@ -2180,10 +2207,229 @@ def convert_all_wav_to_mp4():
         print(f"{wav_filename} has been converted to {mp4_filename}.")
 
 convert_all_wav_to_mp4()
+"""
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+#this will convert all of the wav chapter files into a single audiobook file located at output audiobook
+
+"""
+import os
+import subprocess
+from pydub import AudioSegment
+
+def clear_audiobook_temp_files():
+    files = glob.glob('/tmp/*.jpg')
+    for f in files:
+        os.remove(f)
+
+def extract_cover_image_calibre(ebook_file):
+    output_image = os.path.join('/tmp', os.path.basename(ebook_file) + '.jpg')
+    try:
+        subprocess.run(['ebook-meta', ebook_file, '--get-cover', output_image], check=True)
+        if os.path.exists(output_image):
+            return output_image
+        else:
+            return None
+    except Exception as e:
+        print(f"Error extracting cover image: {e}")
+        return None
+
+def generate_chapter_metadata(wav_files, metadata_filename):
+    with open(metadata_filename, 'w') as file:
+        file.write(";FFMETADATA1\n")
+        start_time = 0
+        for index, wav_file in enumerate(wav_files):
+            duration = len(AudioSegment.from_wav(wav_file))
+            end_time = start_time + duration
+            file.write(f"[CHAPTER]\nTIMEBASE=1/1000\nSTART={start_time}\nEND={end_time}\ntitle=Chapter {index+1:02d}\n")
+            start_time = end_time
+
+def combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename):
+    print("Combining WAV files into an M4B audiobook using FFmpeg...")
+    with open('file_list.txt', 'w') as file:
+        for wav_file in wav_files:
+            file.write(f"file '{wav_file}'\n")
+
+    os.system(f"ffmpeg -f concat -safe 0 -i file_list.txt -c copy combined.wav")
+
+    print("Converting to M4B with AAC codec and cover art...")
+    os.system(f"ffmpeg -i combined.wav -i {cover_image} -i {metadata_filename} -map_metadata 2 -map 0 -map 1 -c:a aac -b:a 192k -c:v copy -disposition:v:0 attached_pic {m4b_filename}")
+    print(f"M4B audiobook created: {m4b_filename}")
+
+    # Cleanup
+    os.remove('file_list.txt')
+    os.remove('combined.wav')
+    os.remove(metadata_filename)
+    os.remove(cover_image)  # Delete the cover image file
+
+def convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name):
+    clear_audiobook_temp_files()  # Clear temporary files
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f"Created output directory: {output_dir}")
+
+    cover_image = extract_cover_image_calibre(ebook_file)
+    if not cover_image:
+        print("Cover image extraction failed.")
+        return
+
+    wav_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.wav')]
+    m4b_filename = os.path.join(output_dir, f'{audiobook_name}.m4b')
+    metadata_filename = 'chapter_metadata.txt'
+
+    generate_chapter_metadata(wav_files, metadata_filename)
+    combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename)
+    clear_audiobook_temp_files()  # Clear temporary files again
+
+# Example usage
+input_dir = "Final_combined_output_audio"  # Update this path to your WAV files folder
+ebook_file = ebook_file_path      # Update this path to your eBook file
+output_dir = 'output_audiobooks' 
+audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
+
+convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
+
+
+
+
+"""
+
+
+
+
+
+
+
+
+
+#this code here will create the actual nicely formatted m4b file with chapters and image metadata and everything located at output audiobook
+import os
+import subprocess
+from pydub import AudioSegment
+import shlex
+
+def extract_ebook_metadata(ebook_file):
+    try:
+        metadata_cmd = ['ebook-meta', ebook_file]
+        metadata_output = subprocess.run(metadata_cmd, capture_output=True, text=True).stdout
+        metadata = {}
+
+        # Extracting various metadata fields
+        for line in metadata_output.splitlines():
+            if ':' in line:
+                key, value = line.split(':', 1)
+                metadata[key.strip()] = value.strip()
+
+        # Extracting the cover image
+        output_image = os.path.join('/tmp', os.path.basename(ebook_file) + '.jpg')
+        subprocess.run(['ebook-meta', ebook_file, '--get-cover', output_image], check=True)
+        if not os.path.exists(output_image):
+            output_image = None
+
+        return output_image, metadata
+    except Exception as e:
+        print(f"Error extracting eBook metadata: {e}")
+        return None, {}
+
+def generate_chapter_metadata(wav_files, metadata_filename):
+    with open(metadata_filename, 'w') as file:
+        file.write(";FFMETADATA1\n")
+        start_time = 0
+        for index, wav_file in enumerate(wav_files):
+            duration = len(AudioSegment.from_wav(wav_file))
+            end_time = start_time + duration
+            file.write(f"[CHAPTER]\nTIMEBASE=1/1000\nSTART={start_time}\nEND={end_time}\ntitle=Chapter {index+1:02d}\n")
+            start_time = end_time
+
+def combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename, metadata):
+    print("Combining WAV files into an M4B audiobook using FFmpeg...")
+    with open('file_list.txt', 'w') as file:
+        for wav_file in wav_files:
+            file.write(f"file '{shlex.quote(wav_file)}'\n")
+
+    ffmpeg_cmd = f"ffmpeg -f concat -safe 0 -i file_list.txt -c copy combined.wav"
+    ffmpeg_cmd += f" && ffmpeg -i combined.wav -i {shlex.quote(metadata_filename)}"
+    if cover_image:
+        ffmpeg_cmd += f" -i {shlex.quote(cover_image)}"
+
+    for key, value in metadata.items():
+        ffmpeg_cmd += f" -metadata {key}=\"{value}\""
+
+    ffmpeg_cmd += f" -map_metadata 1"
+    if cover_image:
+        ffmpeg_cmd += f" -map 0 -map 2"
+    ffmpeg_cmd += f" -c:a aac -b:a 192k"
+    if cover_image:
+        ffmpeg_cmd += f" -c:v copy -disposition:v:0 attached_pic"
+    ffmpeg_cmd += f" {shlex.quote(m4b_filename)}"
+    os.system(ffmpeg_cmd)
+    print(f"M4B audiobook created: {m4b_filename}")
+
+    # Cleanup
+    os.remove('file_list.txt')
+    if os.path.exists('combined.wav'):
+        os.remove('combined.wav')
+    os.remove(metadata_filename)
+    if cover_image and os.path.exists(cover_image):
+        os.remove(cover_image)
+
+def convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f"Created output directory: {output_dir}")
+
+    cover_image, ebook_metadata = extract_ebook_metadata(ebook_file)
+
+    wav_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.wav')]
+    m4b_filename = os.path.join(output_dir, f'{audiobook_name}.m4b')
+    metadata_filename = 'chapter_metadata.txt'
+
+    # Setting up the metadata
+    metadata = {
+        'artist': ebook_metadata.get('Author(s)', 'Unknown Author'),
+        'album': ebook_metadata.get('Title', 'Unknown Title'),
+        # Add other metadata fields as needed
+    }
+
+    generate_chapter_metadata(wav_files, metadata_filename)
+    combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename, metadata)
+
+# Example usage
+input_dir = "Final_combined_output_audio"  # Update this path to your WAV files folder
+ebook_file = ebook_file_path      # Update this path to your eBook file
+output_dir = 'output_audiobooks' 
+audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
+
+
+
+
+
+convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 #this will clean up some space by deleting the wav files copys in the final generation folder
 import os
 
@@ -2199,3 +2445,68 @@ def remove_wav_files(folder):
 
 # Run the function
 remove_wav_files(folder_path)
+"""
+
+
+
+
+"""
+
+#this will add the cover of the epub file to the mp4 combined files
+print("Adding Book Artwork to mp4 chatper files")
+
+import os
+import subprocess
+
+def extract_cover_image_calibre(ebook_file):
+    """"""
+    Extracts the cover image from an eBook file using Calibre's ebook-meta tool.
+
+    Args:
+    ebook_file (str): The path to the eBook file.
+
+    Returns:
+    str: The path to the extracted cover image or None if not found.
+    """"""
+    output_image = os.path.join('/tmp', os.path.basename(ebook_file) + '.jpg')
+    try:
+        subprocess.run(['ebook-meta', ebook_file, '--get-cover', output_image], check=True)
+        if os.path.exists(output_image):
+            return output_image
+        else:
+            return None
+    except Exception as e:
+        print(f"Error extracting cover image: {e}")
+        return None
+
+def set_cover_to_mp4(cover_image, mp4_folder):
+    """"""
+    Sets the extracted cover image to all mp4 files in a specified folder.
+
+    Args:
+    cover_image (str): The path to the cover image.
+    mp4_folder (str): The path to the folder containing mp4 files.
+    """"""
+    if not cover_image or not os.path.exists(cover_image):
+        print("Cover image not found.")
+        return
+
+    # Process each mp4 file in the folder
+    for file in os.listdir(mp4_folder):
+        if file.lower().endswith('.mp4'):
+            mp4_path = os.path.join(mp4_folder, file)
+            # Set the cover image for the mp4 file
+            # Note: Requires ffmpeg
+            os.system(f'ffmpeg -i "{mp4_path}" -i "{cover_image}" -map 0 -map 1 -c copy -disposition:v:1 attached_pic "{mp4_path}.temp.mp4"')
+            os.rename(f"{mp4_path}.temp.mp4", mp4_path)
+
+# Example usage
+ebook_file = ebook_file_path  # Update this path to your eBook file
+mp4_folder = OUTPUT_FOLDER  # Update this path to your MP4 folder
+
+# Extract cover image from the eBook file
+cover_image = extract_cover_image_calibre(ebook_file)
+
+# Set cover image to all mp4 files in the specified folder
+set_cover_to_mp4(cover_image, mp4_folder)
+"""
