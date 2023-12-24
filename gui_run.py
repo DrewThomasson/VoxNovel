@@ -2384,9 +2384,15 @@ def convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name):
     # Setting up the metadata
     metadata = {
         'artist': ebook_metadata.get('Author(s)', 'Unknown Author'),
-        'album': ebook_metadata.get('Title', 'Unknown Title'),
+        'album': ebook_metadata.get('Series', 'Unknown Series'), 
+        'Title': ebook_metadata.get('Title', f'{audiobook_name}.m4b'),
+        'date': ebook_metadata.get('Published', 'Unknown Year'),
+        'Genre': ebook_metadata.get('Tags', 'Unknown Genre'),
+        'Comment': ebook_metadata.get('Tags', 'No description available.'),
         # Add other metadata fields as needed
     }
+    m4b_filename = ebook_metadata.get('Title', f"audiobook_name")
+    m4b_filename = os.path.join(output_dir, f'{m4b_filename}.m4b')
 
     generate_chapter_metadata(wav_files, metadata_filename)
     combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename, metadata)
