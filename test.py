@@ -138,5 +138,41 @@ def wipe_folder(folder_path):
             print(f"Skipping directory: {file_path}")
 
 # Example usage
+#folder_to_wipe = 'Working_files/temp_ebook'  # Replace with the path to your folder
+#wipe_folder(folder_to_wipe)
+
+
+import os
+import re
+
+def sort_key(filename):
+    """Extract chapter number for sorting."""
+    match = re.search(r'chapter_(\d+)\.txt', filename)
+    return int(match.group(1)) if match else 0
+
+def combine_chapters(input_folder, output_file):
+    # Create the output folder if it doesn't exist
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # List all txt files and sort them by chapter number
+    files = [f for f in os.listdir(input_folder) if f.endswith('.txt')]
+    sorted_files = sorted(files, key=sort_key)
+
+    with open(output_file, 'w') as outfile:
+        for i, filename in enumerate(sorted_files):
+            with open(os.path.join(input_folder, filename), 'r') as infile:
+                outfile.write(infile.read())
+                # Add the marker unless it's the last file
+                if i < len(sorted_files) - 1:
+                    outfile.write("\nNEWCHAPTER123ABC\n")
+
+# Paths
+input_folder = 'Working_files/temp_ebook'
+output_file = 'Working_files/Book/Chapter_Book.txt'
+
+# Combine the chapters
+combine_chapters(input_folder, output_file)
+
+#This will wipe the miltiple txt chapter files
 folder_to_wipe = 'Working_files/temp_ebook'  # Replace with the path to your folder
 wipe_folder(folder_to_wipe)
