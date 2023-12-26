@@ -1,13 +1,48 @@
+#this code here will remove any blank text rows from the csv file
+import pandas as pd
+
+def remove_empty_text_rows(csv_file):
+    # Read the CSV file
+    data = pd.read_csv(csv_file)
+
+    # Remove rows where the 'Text' column is empty or NaN
+    data = data[data['Text'].notna() & (data['Text'] != '')]
+
+    # Write the modified DataFrame back to the CSV file
+    data.to_csv(csv_file, index=False)
+
+    print(f"Rows with empty 'Text' column have been removed from {csv_file}")
+
+# Example usage
+#csv_file = 'path_to_your_csv_file.csv'  # Replace with your CSV file path
+#remove_empty_text_rows(csv_file)
+
+
 
 #this code here will split book.csv file by the custom weird chapter deliminator for amachines to see
 import pandas as pd
 
 def process_and_split_csv(file_path, split_string):
-    def split_text(text, split_string):
-        # Split the text at the specified string
+    def split_text(text, split_string, original_row):
+        # Split the text at the specified string and find the index of the split
+        split_index = text.find(split_string)
         parts = text.split(split_string)
-        new_rows = [{'Text': parts[0]}] if parts else []
-        new_rows.extend({'Text': split_string + part} for part in parts[1:])
+        new_rows = []
+        start_location = original_row['Start Location']
+
+        for index, part in enumerate(parts):
+            new_row = original_row.copy()
+            if index == 0:
+                new_row['Text'] = part
+                new_row['End Location'] = start_location + split_index
+            else:
+                new_row['Text'] = split_string + part
+                new_row['Start Location'] = start_location + split_index
+                new_row['End Location'] = start_location + split_index + len(split_string) + len(part)
+                split_index += len(split_string) + len(part)  # Update for the next part
+
+            new_rows.append(new_row)
+
         return new_rows
 
     def process_csv(df, split_string):
@@ -15,9 +50,9 @@ def process_and_split_csv(file_path, split_string):
         for _, row in df.iterrows():
             text = row['Text']
             if isinstance(text, str) and split_string in text:
-                new_rows.extend(split_text(text, split_string))
+                new_rows.extend(split_text(text, split_string, row))
             else:
-                new_rows.append({'Text': text})
+                new_rows.append(row)
         return pd.DataFrame(new_rows)
 
     # Read the CSV file
@@ -30,9 +65,10 @@ def process_and_split_csv(file_path, split_string):
     new_df.to_csv(file_path, index=False)
 
 # Example usage
-#file_path = 'Other_book.csv'
-#split_string = 'NEWCHAPTER123ABC'
+#file_path = 'Working_files/Book/book.csv'
+#split_string = 'NEWCHAPTERABC'
 #process_and_split_csv(file_path, split_string)
+
 
 
 
@@ -186,7 +222,7 @@ def create_chapter_labeled_book(ebook_file_path):
                     outfile.write(infile.read())
                     # Add the marker unless it's the last file
                     if i < len(sorted_files) - 1:
-                        outfile.write("\nNEWCHAPTER123ABC\n")
+                        outfile.write("\nNEWCHAPTERABC\n")
 
     # Paths
     input_folder = 'Working_files/temp_ebook'
@@ -197,7 +233,7 @@ def create_chapter_labeled_book(ebook_file_path):
 
     ensure_directory('Working_files/Book')
 
-create_chapter_labeled_book()
+#create_chapter_labeled_book()
 
 
 
@@ -329,17 +365,19 @@ def process_file():
 
 
 
-    booknlp = BookNLP("en", model_params)
+    #booknlp = BookNLP("en", model_params)
     
     if calibre_installed():
         global filepath
-    	create_chapter_labeled_book(file_path)
-    	booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
+        booknlp = BookNLP("en", model_params)
+        create_chapter_labeled_book(file_path)
+        #booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
     else:
-    	booknlp.process(file_path, output_directory, book_id)
+        booknlp = BookNLP("en", model_params)
+        #booknlp.process(file_path, output_directory, book_id)
     global chapters
     if epub_file_path == "":
-    	chapters = convert_epub_and_extract_chapters(epub_file_path)
+        chapters = convert_epub_and_extract_chapters(epub_file_path)
     print("Success, File processed successfully!")
     
     # Close the GUI
@@ -721,9 +759,8 @@ if __name__ == "__main__":
 
 #this code here will split the bookcsv file by the calibre chapter deliminators such if calibre is installed
 if calibre_installed():
-    process_and_split_csv("Working_files/Book/book.csv", 'NEWCHAPTER123ABC')
-
-
+    process_and_split_csv("Working_files/Book/book.csv", 'NEWCHAPTERABC')
+remove_empty_text_rows("Working_files/Book/book.csv")
 
 
 
@@ -953,7 +990,7 @@ root = tk.Tk()
 root.title("coqui TTS GUI")
 root.geometry("1200x800")
 if calibre_installed():
-    chapter_delimiter_var = tk.StringVar(value="NEWCHAPTER123ABC")
+    chapter_delimiter_var = tk.StringVar(value="NEWCHAPTERABC")
 else:
     chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
@@ -1375,6 +1412,7 @@ current_model =""
 
 
 def generate_file_ids(csv_file, chapter_delimiter):
+
     data = pd.read_csv(csv_file)
     
     if 'audio_id' not in data.columns:
@@ -1384,16 +1422,16 @@ def generate_file_ids(csv_file, chapter_delimiter):
     
     for index, row in data.iterrows():
         text = row['Text']  # Adjust to the correct column name, e.g., 'Text' if it's uppercase in the CSV
-        
-        if chapter_delimiter.upper() in text.upper():  # Ensure both are uppercase for case-insensitive matching
-            chapter_num += 1
+        print(f"FUCK{text}")
+        if chapter_delimiter in text:  # Ensure both are uppercase for case-insensitive matching/edit: nah 
+            chapter_num = chapter_num +1
         
         data.at[index, 'audio_id'] = f"audio_{index}_{chapter_num}"
     
     data.to_csv(csv_file, index=False)
     print(f"'audio_id' column has been updated in {csv_file}")
-
-generate_file_ids(csv_file, "CHAPTER")
+#delim = chapter_delimiter_var.get()
+generate_file_ids(csv_file, chapter_delimiter_var.get())
 
 # Function to generate audio for the text
 def generate_audio():
@@ -1438,8 +1476,13 @@ def generate_audio():
         text = row['Text']
         
         language_code = character_languages.get(speaker, current_language)  # Default to 'en' if not found
-
-        if CHAPTER_KEYWORD in text.upper():
+        if calibre_installed:
+            if "NEWCHAPTERABC" in text:
+                chapter_num += 1
+                print(f"chapter num: {chapter_num}")
+                print(f"CHAPTER KEYWORD IS: NEWCHAPTERABC")
+                text = text.replace("NEWCHAPTERABC", "")
+        elif CHAPTER_KEYWORD in text.upper():
             chapter_num += 1
             print(f"chapter num: {chapter_num}")
             print(f"CHAPTER KEYWORD IS: {CHAPTER_KEYWORD}")
