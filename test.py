@@ -1,3 +1,42 @@
+
+#this code here will split book.csv file by the custom weird chapter deliminator for amachines to see
+import pandas as pd
+
+def process_and_split_csv(file_path, split_string):
+    def split_text(text, split_string):
+        # Split the text at the specified string
+        parts = text.split(split_string)
+        new_rows = [{'Text': parts[0]}] if parts else []
+        new_rows.extend({'Text': split_string + part} for part in parts[1:])
+        return new_rows
+
+    def process_csv(df, split_string):
+        new_rows = []
+        for _, row in df.iterrows():
+            text = row['Text']
+            if isinstance(text, str) and split_string in text:
+                new_rows.extend(split_text(text, split_string))
+            else:
+                new_rows.append({'Text': text})
+        return pd.DataFrame(new_rows)
+
+    # Read the CSV file
+    df = pd.read_csv(file_path)
+
+    # Process the DataFrame
+    new_df = process_csv(df, split_string)
+
+    # Write the modified DataFrame back to the CSV file
+    new_df.to_csv(file_path, index=False)
+
+# Example usage
+#file_path = 'Other_book.csv'
+#split_string = 'NEWCHAPTER123ABC'
+#process_and_split_csv(file_path, split_string)
+
+
+
+
 #this code right here isnt the book grabbing thing but its before to refrence in ordero to create the sepecial chapter labeled book thing with calibre idk some systems cant seem to get it so just in case but the next bit of code after this is the book grabbing code with booknlp 
 import os
 import subprocess
@@ -680,6 +719,9 @@ def main():
 if __name__ == "__main__":
     main()
 
+#this code here will split the bookcsv file by the calibre chapter deliminators such if calibre is installed
+if calibre_installed():
+    process_and_split_csv("Working_files/Book/book.csv", 'NEWCHAPTER123ABC')
 
 
 
