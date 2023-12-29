@@ -1,3 +1,26 @@
+#this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
+import re
+
+def process_large_numbers_in_txt(file_path):
+    # Read the contents of the file
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    # Regular expression to match numbers with commas
+    pattern = r'\b\d{1,3}(,\d{3})+\b'
+
+    # Remove commas in numerical sequences
+    modified_content = re.sub(pattern, lambda m: m.group().replace(',', ''), content)
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.write(modified_content)
+
+# Usage example
+#file_path = 'test_1.txt'  # Replace with your actual file path
+#process_large_numbers_in_txt(file_path)
+
+
 #this code here will remove any blank text rows from the csv file
 import pandas as pd
 
@@ -334,7 +357,7 @@ def process_file():
     )
     ebook_file_path = file_path
     if ".epub" in file_path:
-    	epub_file_path = file_path
+        epub_file_path = file_path
     
     if not file_path:
         return
@@ -365,16 +388,19 @@ def process_file():
 
 
 
+    #this will turn stuff like 1,000 and 18,000 into 1000 and 18000 so booknlp doesnt mess them up with tokenization
+    process_large_numbers_in_txt(file_path)
     #booknlp = BookNLP("en", model_params)
     
+
     if calibre_installed():
         global filepath
         booknlp = BookNLP("en", model_params)
         create_chapter_labeled_book(file_path)
-        #booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
+        booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
     else:
         booknlp = BookNLP("en", model_params)
-        #booknlp.process(file_path, output_directory, book_id)
+        booknlp.process(file_path, output_directory, book_id)
     global chapters
     if epub_file_path == "":
         chapters = convert_epub_and_extract_chapters(epub_file_path)
@@ -490,6 +516,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
@@ -850,7 +878,7 @@ voice_actors_folder ="tortoise/voices/"
 voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
 male_voice_actors = [va for va in voice_actors if va.endswith(".M")]
 female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
-
+SILENCE_DURATION_MS = 750
 # Dictionary to hold each character's selected language
 character_languages = {}
 
@@ -861,13 +889,13 @@ models = TTS().list_models()
 #so this will chekc if its a list isk man and if not then the bug is still there and itll apply the fix
 
 if isinstance(models, list):
-	print("good it's a list I can apply normal code for model list")
-	selected_tts_model = models[0]
+    print("good it's a list I can apply normal code for model list")
+    selected_tts_model = models[0]
 else:
-	tts_manager = TTS().list_models()
-	all_models = tts_manager.list_models()
-	models = all_models
-	selected_tts_model = models[0]
+    tts_manager = TTS().list_models()
+    all_models = tts_manager.list_models()
+    models = all_models
+    selected_tts_model = models[0]
 
 
 # Map for speaker to voice actor
@@ -887,6 +915,44 @@ multi_voice_model_voice_list3 = []
 
 # Dictionary to hold the comboboxes references
 voice_comboboxes = {}
+
+
+
+def on_silence_duration_change(*args):
+    """
+    Update the SILENCE_DURATION_MS based on the entry value.
+    """
+    global SILENCE_DURATION_MS
+    try:
+        new_duration = int(silence_duration_var.get())
+        if new_duration >= 0:
+            SILENCE_DURATION_MS = new_duration
+            print(f"SILENCE_DURATION_MS changed to: {SILENCE_DURATION_MS}")
+        else:
+            raise ValueError
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter a valid non-negative integer.")
+
+def validate_integer(P):
+    """
+    Validate if the entry is an integer.
+    """
+    if P.isdigit() or P == "":
+        return True
+    else:
+        messagebox.showerror("Invalid Input", "Please enter a valid integer.")
+        return False
+
+def update_silence_duration():
+    """
+    Update the SILENCE_DURATION_MS based on the entry value.
+    """
+    global SILENCE_DURATION_MS
+    try:
+        SILENCE_DURATION_MS = int(silence_duration_var.get())
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter a valid integer.")
+
 
 
 def add_languages_to_csv():
@@ -1117,12 +1183,12 @@ tts_models = TTS().list_models()
 #This is another coqui bug fix i have to apply for the bug idk why but nwo there this lol it started in coqui V0.22.0
 #this will make the models list actually work tho
 if isinstance(tts_models, list):
-	print("good it's a list I can apply normal code for model list")
-	selected_tts_model = models[0]
+    print("good it's a list I can apply normal code for model list")
+    selected_tts_model = models[0]
 else:
-	tts_manager = TTS().list_models()
-	all_models = tts_manager.list_models()
-	tts_models = all_models
+    tts_manager = TTS().list_models()
+    all_models = tts_manager.list_models()
+    tts_models = all_models
 
 
 
@@ -1491,10 +1557,10 @@ def generate_audio():
         #This is the code for grabbing the current voice actor    
         #This will make it so that if the button for single voice is checked in the gui then the voice actor is always the narrerators:
         if single_voice_checkbox_var.get():
-        	print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
-        	voice_actor = speaker_voice_map.get("Narrator")
+            print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
+            voice_actor = speaker_voice_map.get("Narrator")
         else:
-        	voice_actor = speaker_voice_map[speaker]
+            voice_actor = speaker_voice_map[speaker]
 
 
         #voice_actor = speaker_voice_map[speaker]
@@ -1634,6 +1700,36 @@ def generate_audio():
 
 from functools import partial
 
+def format_time(seconds):
+    """
+    Formats time in seconds to a more readable string with minutes, hours, days, and years if applicable.
+    """
+    minute = 60
+    hour = minute * 60
+    day = hour * 24
+    year = day * 365
+
+    years = seconds // year
+    seconds %= year
+    days = seconds // day
+    seconds %= day
+    hours = seconds // hour
+    seconds %= hour
+    minutes = seconds // minute
+    seconds %= minute
+
+    time_string = ""
+    if years > 0:
+        time_string += f"{years:.0f} year{'s' if years > 1 else ''} "
+    if days > 0:
+        time_string += f"{days:.0f} day{'s' if days > 1 else ''} "
+    if hours > 0:
+        time_string += f"{hours:.0f} hour{'s' if hours > 1 else ''} "
+    if minutes > 0:
+        time_string += f"{minutes:.0f} min "
+    time_string += f"{seconds:.0f} sec"
+
+    return time_string.strip()
 
 
 # Function to update the progress bar
@@ -1651,7 +1747,7 @@ def update_progress(index, total):
     if index > 0:  # Avoid division by zero
         average_time_per_item = elapsed_time / index
         estimated_time_remaining = average_time_per_item * (total - index - 1)
-        remaining_time_string = f"{estimated_time_remaining // 60:.0f} min {estimated_time_remaining % 60:.0f} sec remaining"
+        remaining_time_string = format_time(estimated_time_remaining)
     else:
         remaining_time_string = "Calculating..."
     
@@ -1739,7 +1835,6 @@ for speaker in data['Speaker'].unique():
 
     language_combobox.bind("<<ComboboxSelected>>", partial(on_language_selected, speaker=speaker))
     character_languages[speaker] = 'en'
-# ... the rest of your GUI setup ...
 
 
 # Create a label for the entry
@@ -1749,6 +1844,19 @@ chapter_delimiter_label.pack()  # Adjust layout options as needed
 # Create the Entry widget for chapter delimiter and bind the Enter key
 chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
 chapter_delimiter_entry.pack()
+
+# Label for Silence Duration Entry
+silence_duration_label = tk.Label(root, text="Enter Silence Duration in milliseconds (ms):")
+silence_duration_label.pack()
+
+# Silence Duration Entry
+silence_duration_var = tk.StringVar(value="750")
+silence_duration_var.trace("w", on_silence_duration_change)
+validate_cmd = root.register(validate_integer)
+silence_duration_entry = tk.Entry(root, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
+silence_duration_entry.pack()
+
+
 
 def on_enter_pressed(event):
     # Path to your CSV file
@@ -1875,9 +1983,9 @@ def load_book():
 
 # Load the book content into the Text widget
 try:
-	load_book()
+    load_book()
 except Exception as e:
-	print(f"An error occured showing error but not stopping program: {e}")
+    print(f"An error occured showing error but not stopping program: {e}")
 
 
 # Create a frame to contain the buttons
@@ -2070,9 +2178,9 @@ def load_book():
 
         # Insert the speaker with tag
         try:
-        	text_display.insert(tk.END, f"{speaker}: ", speaker)
+            text_display.insert(tk.END, f"{speaker}: ", speaker)
         except Exception as e:
-        	print(f"An error occured continueing: {e}")
+            print(f"An error occured continueing: {e}")
         
         
         # Create a checkbox variable for each line of text
@@ -2212,12 +2320,12 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
 #if the chapter list is empty then don't use it if its empty then continue using the set chapter deliminator
     if len(chapters) == 0:
          for chapter in chapters:
-         	if chapter in text:
-         		print(f"chapter num: {chapter_num}")
-         		print(f"CHAPTER IS: {chapter}")
-         		chapter_num += 1
-         		
-    	
+            if chapter in text:
+                print(f"chapter num: {chapter_num}")
+                print(f"CHAPTER IS: {chapter}")
+                chapter_num += 1
+                
+        
 
     elif CHAPTER_KEYWORD in text.upper():
         chapter_num += 1
@@ -2419,7 +2527,8 @@ speaker_colors = {}
 currently_playing = None
 INPUT_FOLDER = "Working_files/generated_audio_clips"
 OUTPUT_FOLDER = "Final_combined_output_audio"
-SILENCE_DURATION_MS = 780
+#marked out cause its not defined earlier on in the code in the field
+#SILENCE_DURATION_MS = 0
 
 
 try:
@@ -2680,7 +2789,6 @@ ebook_file = ebook_file_path      # Update this path to your eBook file
 output_dir = 'output_audiobooks' 
 audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
 
-
 convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
@@ -2740,7 +2848,7 @@ remove_wav_files(folder_path)
 
 
 #this will add the cover of the epub file to the mp4 combined files
-print("Adding Book Artwork to mp4 chatper files")
+print("Adding Book Artwork to mp4 chatper files if calibre is installed")
 
 import os
 import subprocess
@@ -2791,6 +2899,7 @@ def set_cover_to_mp4(cover_image, mp4_folder):
 ebook_file = ebook_file_path  # Update this path to your eBook file
 mp4_folder = OUTPUT_FOLDER  # Update this path to your MP4 folder
 
+#if calibre is installed then set the cover image things
 # Extract cover image from the eBook file
 cover_image = extract_cover_image_calibre(ebook_file)
 
