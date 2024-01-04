@@ -838,7 +838,6 @@ check_and_wipe_folder("Working_files/generated_audio_clips/")
 
 
 
-import torch
 from TTS.api import TTS
 
 import tkinter as tk
@@ -860,6 +859,8 @@ import time
 import pygame
 import nltk
 from nltk.tokenize import sent_tokenize
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import Xtts
 nltk.download('punkt')
 
 # Ensure that nltk punkt is downloaded
@@ -1382,6 +1383,63 @@ clone_voice_button = ttk.Button(
 # Add the new button to the GUI
 clone_voice_button.pack(padx=5)
 
+#fuck
+#this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
+import os
+import shutil
+import tkinter as tk
+from tkinter import filedialog, Listbox, messagebox
+
+def list_folders(directory):
+    """List all folders in the given directory."""
+    return [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
+
+def copy_files_to_model(source_folder, model_path):
+    """Copy files from the selected folder to the model folder."""
+    for file in os.listdir(source_folder):
+        source_file = os.path.join(source_folder, file)
+        destination_file = os.path.join(model_path, file)
+        shutil.copy2(source_file, destination_file)  # copy2 to preserve metadata
+
+def start_process():
+    base_directory = "tortoise/voices/"
+    folders = list_folders(base_directory)
+
+    def on_select(evt):
+        selected_folder = folder_listbox.get(folder_listbox.curselection())
+
+        # Create "model" folder if it doesn't exist
+        model_path = os.path.join(base_directory, selected_folder, "model")
+        if not os.path.exists(model_path):
+            os.makedirs(model_path)
+
+        # Select folder to copy files from
+        source_folder = filedialog.askdirectory(title="Select folder containing fine tuned xtts model files to copy from:")
+        if source_folder:
+            copy_files_to_model(source_folder, model_path)
+            messagebox.showinfo("Success", f"Files copied successfully to {model_path}")
+        selection_window.destroy()
+
+    # Create a new window for folder selection
+    selection_window = tk.Toplevel(root)
+    selection_window.title("Select a voice actor to add fine tuned model to:")
+
+    folder_listbox = Listbox(selection_window)
+    folder_listbox.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+    for folder in folders:
+        folder_listbox.insert(tk.END, folder)
+
+    folder_listbox.bind('<<ListboxSelect>>', on_select)
+
+# Assuming 'root' is your existing Tkinter root window
+# Add a start button to your existing GUI
+start_button = tk.Button(root, text="Add Fine Tuned Xtts model to voice actor", command=start_process)
+start_button.pack(pady=20)
+
+
+
+
 
 
 
@@ -1460,7 +1518,6 @@ def list_reference_files(voice_actor):
     return reference_files
 
 
-
 # List of language codes and their display names
 languages = {
     'English': 'en', 'Spanish': 'es', 'French': 'fr', 'German': 'de',
@@ -1474,6 +1531,9 @@ current_language = 'en'
 
 
 current_model =""
+
+#fuck
+tts = None
 
 
 
@@ -1498,6 +1558,66 @@ def generate_file_ids(csv_file, chapter_delimiter):
     print(f"'audio_id' column has been updated in {csv_file}")
 #delim = chapter_delimiter_var.get()
 generate_file_ids(csv_file, chapter_delimiter_var.get())
+
+#fuck
+#function to generate audio for fine tuned speakers in xtts
+import os
+import torch
+import torchaudio
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import Xtts
+import time
+def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor):
+    global current_model
+    global tts
+    start_time = time.time()  # Record the start time
+
+    # Get device
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Add here the xtts_config path
+    CONFIG_PATH = f"tortoise/voices/{voice_actor}/model/config.json"
+    # Add here the vocab file that you have used to train the model
+    TOKENIZER_PATH = f"tortoise/voices/{voice_actor}/model/vocab.json_"
+    # Add here the checkpoint that you want to do inference with
+    XTTS_CHECKPOINT = f"tortoise/voices/{voice_actor}/model/model.pth"
+    # Add here the speaker reference
+    SPEAKER_REFERENCE = speaker_wav
+    # output wav path
+    OUTPUT_WAV_PATH = file_path
+
+
+    if current_model !=  voice_actor:
+        print(f"found fine tuned for voice actor: {voice_actor}: loading custom model...")
+        config = XttsConfig()
+        config.load_json(CONFIG_PATH)
+        if 'tts' not in locals():
+            tts = Xtts.init_from_config(config)
+            tts.load_checkpoint(config, checkpoint_path=XTTS_CHECKPOINT, vocab_path=TOKENIZER_PATH, use_deepspeed=False)
+        #make sure it runs on cpu or cuda depending on whats avalible on the machine
+        if device == "cuda":
+            tts.cuda()
+        if device == "cpu":
+            tts.cpu()
+        current_model = voice_actor
+    else:
+        print(f"found fine tuned model for voice actor: {voice_actor} but {voice_actor} model is already loaded")
+
+    print("Computing speaker latents...")
+    gpt_cond_latent, speaker_embedding = tts.get_conditioning_latents(audio_path=[SPEAKER_REFERENCE])
+
+    print("Inference...")
+    out = tts.inference(
+        text,
+        language,
+        gpt_cond_latent,
+        speaker_embedding,
+        temperature=0.7, # Add custom parameters here
+    )
+    torchaudio.save(OUTPUT_WAV_PATH, torch.tensor(out["wav"]).unsqueeze(0), 24000)
+
+    end_time = time.time()  # Record the end time
+    elapsed_time = end_time - start_time
+    print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
 # Function to generate audio for the text
 def generate_audio():
@@ -1536,11 +1656,12 @@ def generate_audio():
     add_voice_actors_to_csv()
     add_languages_to_csv()
     for index, row in data.iterrows():
-        update_progress(index, total_rows)  # Update progress based on the current index and total rows
+        #update_progress(index, total_rows)  # Update progress based on the current index and total rows
 
         speaker = row['Speaker']
         text = row['Text']
-        
+        update_progress(index, total_rows, text)  # Update progress based on the current index and total rows and text 
+
         language_code = character_languages.get(speaker, current_language)  # Default to 'en' if not found
         if calibre_installed:
             if "NEWCHAPTERABC" in text:
@@ -1632,7 +1753,13 @@ def generate_audio():
                     #else:
                     #   print(f"{voice_actor} is neither multi-dataset nor multilingual")
                     #   tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
-                
+                #fuck
+                #If the voice actor has a custom fine tuned xtts model in its refrence folder ie if it has the model folder containing it
+                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model"):
+                    speaker_wavz=list_reference_files(voice_actor)
+                    fineTune_audio_generate(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=speaker_wavz[0], language=language_code, voice_actor=voice_actor)
+
+
                 # If the model contains both "multilingual" and "multi-dataset"
                 elif "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
                     if 'tts' not in locals():
@@ -1731,7 +1858,7 @@ def format_time(seconds):
 
     return time_string.strip()
 
-
+"""
 # Function to update the progress bar
 def update_progress(index, total):
     current_time = time.time()
@@ -1757,7 +1884,41 @@ def update_progress(index, total):
 
 # Start time capture
 start_time = time.time()
+    """
+
+def update_progress(index, total, row_text):
+    current_time = time.time()
     
+    # Calculate elapsed time
+    elapsed_time = current_time - start_time
+
+    # Update total characters processed and count of processed rows
+    global total_chars_processed, processed_rows_count
+    total_chars_processed += len(row_text)
+    processed_rows_count += 1
+    
+    # Calculate progress
+    progress = (index + 1) / total * 100
+
+    # Estimate remaining time
+    if processed_rows_count > 0:  # Avoid division by zero
+        average_chars_per_row = total_chars_processed / processed_rows_count
+        estimated_chars_remaining = average_chars_per_row * (total - processed_rows_count)
+        average_time_per_char = elapsed_time / total_chars_processed
+        estimated_time_remaining = average_time_per_char * estimated_chars_remaining
+        remaining_time_string = format_time(estimated_time_remaining)
+    else:
+        remaining_time_string = "Calculating..."
+    
+    # Update progress label with estimated time
+    progress_label.config(text=f"{progress:.2f}% done ({index+1}/{total} rows) - {remaining_time_string}")
+    root.update_idletasks()
+
+# Start time capture and initialize counters
+start_time = time.time()
+total_chars_processed = 0
+processed_rows_count = 0
+
 
 def create_scrollable_frame(parent, height):
     # Create a canvas with a specific height
