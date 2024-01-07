@@ -33,13 +33,14 @@ https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/94e23918-b7e1-43
  
 https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/5e3c5501-4c87-462b-a11b-a15f546e51f4
 
+
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-485c-81ff-65d7dcf29cb5
+
  **Super High Quality testing with fine tuned models **
 
 https://github.com/DrewThomasson/bark/assets/126999465/5da79b9d-2974-471e-a564-31a180ba2833
 You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
 https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
-
-https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-485c-81ff-65d7dcf29cb5
 
 ## GUI
 
