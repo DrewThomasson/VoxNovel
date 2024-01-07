@@ -8,7 +8,7 @@
 VoxNovel is an innovative program that leverages the capabilities of booknlp to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice through coqui tts. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
 
 
-
+### Supported ebook File Types: .epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
 
 ### outputs also as a m4b with all book metadata and chapters, example output file in a audiobook player app
 ![IMG_FFAE40F23437-1](https://github.com/DrewThomasson/bark/assets/126999465/d3d53398-d06c-496f-bc25-317a9db44e26)
