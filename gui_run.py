@@ -199,7 +199,7 @@ def create_chapter_labeled_book(ebook_file_path):
                         print(f"Error processing file {filename}: {e}")
     """
 
-    #fuck
+    
     def process_chapter_files(folder_path, output_csv):
         with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -1453,7 +1453,7 @@ clone_voice_button = ttk.Button(
 # Add the new button to the GUI
 clone_voice_button.pack(padx=5)
 
-#fuck
+
 #this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
 import os
 import shutil
@@ -1602,7 +1602,7 @@ current_language = 'en'
 
 current_model =""
 
-#fuck
+
 tts = None
 
 
@@ -1629,7 +1629,7 @@ def generate_file_ids(csv_file, chapter_delimiter):
 #delim = chapter_delimiter_var.get()
 generate_file_ids(csv_file, chapter_delimiter_var.get())
 
-#fuck
+
 #function to generate audio for fine tuned speakers in xtts
 import os
 import torch
@@ -1823,7 +1823,7 @@ def generate_audio():
                     #else:
                     #   print(f"{voice_actor} is neither multi-dataset nor multilingual")
                     #   tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
-                #fuck
+                
                 #If the voice actor has a custom fine tuned xtts model in its refrence folder ie if it has the model folder containing it
                 elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model"):
                     speaker_wavz=list_reference_files(voice_actor)
