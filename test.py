@@ -173,7 +173,7 @@ def create_chapter_labeled_book(ebook_file_path):
 
     # Download the necessary NLTK data (if not already present)
     nltk.download('punkt')
-
+    """
     def process_chapter_files(folder_path, output_csv):
         with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -190,6 +190,35 @@ def create_chapter_labeled_book(ebook_file_path):
                     try:
                         with open(file_path, 'r', encoding='utf-8') as file:
                             text = file.read()
+                            sentences = nltk.tokenize.sent_tokenize(text)
+                            for sentence in sentences:
+                                start_location = text.find(sentence)
+                                end_location = start_location + len(sentence)
+                                writer.writerow([sentence, start_location, end_location, 'True', 'Narrator', chapter_number])
+                    except Exception as e:
+                        print(f"Error processing file {filename}: {e}")
+    """
+
+    #fuck
+    def process_chapter_files(folder_path, output_csv):
+        with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            # Write the header row
+            writer.writerow(['Text', 'Start Location', 'End Location', 'Is Quote', 'Speaker', 'Chapter'])
+
+            # Process each chapter file
+            chapter_files = sorted(os.listdir(folder_path), key=lambda x: int(x.split('_')[1].split('.')[0]))
+            for filename in chapter_files:
+                if filename.startswith('chapter_') and filename.endswith('.txt'):
+                    chapter_number = int(filename.split('_')[1].split('.')[0])
+                    file_path = os.path.join(folder_path, filename)
+
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as file:
+                            text = file.read()
+                            # Insert "NEWCHAPTERABC" at the beginning of each chapter's text
+                            if text:
+                                text = "NEWCHAPTERABC" + text
                             sentences = nltk.tokenize.sent_tokenize(text)
                             for sentence in sentences:
                                 start_location = text.find(sentence)
@@ -390,17 +419,19 @@ def process_file():
 
     #this will turn stuff like 1,000 and 18,000 into 1000 and 18000 so booknlp doesnt mess them up with tokenization
     process_large_numbers_in_txt(file_path)
-    #booknlp = BookNLP("en", model_params)
+    booknlp = BookNLP("en", model_params)
     
 
     if calibre_installed():
         global filepath
-        booknlp = BookNLP("en", model_params)
         create_chapter_labeled_book(file_path)
         booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
+        #os.remove(file_path)
+        #print(f"deleted file: {file_path}")
     else:
-        booknlp = BookNLP("en", model_params)
         booknlp.process(file_path, output_directory, book_id)
+        #os.remove(file_path)
+        #print(f"deleted file: {file_path}")
     global chapters
     if epub_file_path == "":
         chapters = convert_epub_and_extract_chapters(epub_file_path)
@@ -744,6 +775,46 @@ sorted_df.to_csv("Working_files/Book/book.csv", index=False)
 
 
 
+#if booknlp came up with nothing then just use the other_book.csv file thank god i still have that code
+import os
+import tkinter as tk
+from tkinter import messagebox
+
+def is_single_line_file(filename):
+    with open(filename, 'r') as file:
+        return len(file.readlines()) <= 1
+
+def copy_if_single_line(source_file, destination_file):
+    if not os.path.isfile(source_file):
+        return f"The source file '{source_file}' does not exist."
+    elif is_single_line_file(destination_file):
+        with open(source_file, 'r') as source:
+            content = source.read()
+
+        with open(destination_file, 'w') as dest:
+            dest.write(content)
+
+        # Popup message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showinfo("Notification", "The 'book.csv' file was found to be empty, so all lines in the book will be said by the narrator.")
+        root.destroy()
+
+        return f"File '{destination_file}' had only one line or was empty and has been filled with the contents of '{source_file}'."
+    else:
+        return f"File '{destination_file}' had more than one line, and no action was taken."
+
+source_file = '/Users/admin/VoxNovel/Working_files/Book/Other_book.csv'
+destination_file = '/Users/admin/VoxNovel/Working_files/Book/book.csv'
+
+result = copy_if_single_line(source_file, destination_file)
+print(result)
+
+
+
+
+
+
 #this is a clean up script to try to clean up the quotes.csv and non_quotes.csv files of any types formed by booknlp
 import pandas as pd
 import os
@@ -833,8 +904,6 @@ def check_and_wipe_folder(directory_path):
 
 # Usage
 check_and_wipe_folder("Working_files/generated_audio_clips/")
-
-
 
 
 
@@ -1548,7 +1617,7 @@ def generate_file_ids(csv_file, chapter_delimiter):
     
     for index, row in data.iterrows():
         text = row['Text']  # Adjust to the correct column name, e.g., 'Text' if it's uppercase in the CSV
-        print(f"FUCK{text}")
+        print(f"{text}")
         if chapter_delimiter in text:  # Ensure both are uppercase for case-insensitive matching/edit: nah 
             chapter_num = chapter_num +1
         
