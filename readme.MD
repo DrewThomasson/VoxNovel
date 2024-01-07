@@ -15,7 +15,7 @@ VoxNovel is an innovative program that leverages the capabilities of booknlp to 
 ### outputs as a m4b with all book metadata and chapters, example output file in a audiobook player app
 ![IMG_FFAE40F23437-1](https://github.com/DrewThomasson/bark/assets/126999465/d3d53398-d06c-496f-bc25-317a9db44e26)
 
-(as well as a folder of individual mp4 chatper files with book image if you want that)
+(as well as a folder of individual mp4 chatper files with ebook image embedded in them if you want that)
 
    **DEMO**
 
