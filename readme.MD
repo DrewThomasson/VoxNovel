@@ -8,6 +8,11 @@
 VoxNovel is an innovative program that leverages the capabilities of booknlp to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice through coqui tts. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
 
 
+
+
+### outputs also as a m4b with all book metadata and chapters, example output file in a audiobook player app
+![IMG_FFAE40F23437-1](https://github.com/DrewThomasson/bark/assets/126999465/d3d53398-d06c-496f-bc25-317a9db44e26)
+
    **DEMO**
 
 
@@ -31,7 +36,7 @@ https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-48
 ## GUI
 
 <img width="168" alt="Screenshot 2023-11-26 at 10 37 54 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/6c6fae3c-b2c7-48bb-a066-6b06303baca5">
-<img width="1199" alt="Screenshot 2023-11-26 at 10 38 31 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/c2aeff6f-78b8-478a-8369-bb089862236b">
+<img width="1201" alt="Screenshot 2024-01-07 at 2 27 18 AM" src="https://github.com/DrewThomasson/bark/assets/126999465/fe8eaf87-df32-4cf0-ba78-37aabb667ce2">
 <img width="585" alt="Screenshot 2023-11-26 at 10 35 39 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/5b2c473c-7806-40c0-931a-091306de347d">
 
 
@@ -163,6 +168,8 @@ Final_combined_output_audio:
 - Easily create a new voice actor in seconds through voice cloning in GUI
 - Can play audio by clicking on the text in the book viewer in GUI
 - Ability to regenerate specific lines if they came out weird
+- Ability to add custome fine tuned models for specific voice with the click of a button in GUI
+- Outputs a single file output as m4b to include all the metadata(chapters book image ect)
 
 
 
@@ -172,7 +179,6 @@ Final_combined_output_audio:
 - Make it so that all the included voices and models already have their premade own demo voices
 - Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - Using whisper transcriptions to cut hallucinations out of generated audio
--single file output as m4p to include all the metadata(chapters book image ect)
 
 
 
