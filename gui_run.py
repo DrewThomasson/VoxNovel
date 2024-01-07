@@ -1,3 +1,316 @@
+#this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
+import re
+
+def process_large_numbers_in_txt(file_path):
+    # Read the contents of the file
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    # Regular expression to match numbers with commas
+    pattern = r'\b\d{1,3}(,\d{3})+\b'
+
+    # Remove commas in numerical sequences
+    modified_content = re.sub(pattern, lambda m: m.group().replace(',', ''), content)
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.write(modified_content)
+
+# Usage example
+#file_path = 'test_1.txt'  # Replace with your actual file path
+#process_large_numbers_in_txt(file_path)
+
+
+#this code here will remove any blank text rows from the csv file
+import pandas as pd
+
+def remove_empty_text_rows(csv_file):
+    # Read the CSV file
+    data = pd.read_csv(csv_file)
+
+    # Remove rows where the 'Text' column is empty or NaN
+    data = data[data['Text'].notna() & (data['Text'] != '')]
+
+    # Write the modified DataFrame back to the CSV file
+    data.to_csv(csv_file, index=False)
+
+    print(f"Rows with empty 'Text' column have been removed from {csv_file}")
+
+# Example usage
+#csv_file = 'path_to_your_csv_file.csv'  # Replace with your CSV file path
+#remove_empty_text_rows(csv_file)
+
+
+
+#this code here will split book.csv file by the custom weird chapter deliminator for amachines to see
+import pandas as pd
+
+def process_and_split_csv(file_path, split_string):
+    def split_text(text, split_string, original_row):
+        # Split the text at the specified string and find the index of the split
+        split_index = text.find(split_string)
+        parts = text.split(split_string)
+        new_rows = []
+        start_location = original_row['Start Location']
+
+        for index, part in enumerate(parts):
+            new_row = original_row.copy()
+            if index == 0:
+                new_row['Text'] = part
+                new_row['End Location'] = start_location + split_index
+            else:
+                new_row['Text'] = split_string + part
+                new_row['Start Location'] = start_location + split_index
+                new_row['End Location'] = start_location + split_index + len(split_string) + len(part)
+                split_index += len(split_string) + len(part)  # Update for the next part
+
+            new_rows.append(new_row)
+
+        return new_rows
+
+    def process_csv(df, split_string):
+        new_rows = []
+        for _, row in df.iterrows():
+            text = row['Text']
+            if isinstance(text, str) and split_string in text:
+                new_rows.extend(split_text(text, split_string, row))
+            else:
+                new_rows.append(row)
+        return pd.DataFrame(new_rows)
+
+    # Read the CSV file
+    df = pd.read_csv(file_path)
+
+    # Process the DataFrame
+    new_df = process_csv(df, split_string)
+
+    # Write the modified DataFrame back to the CSV file
+    new_df.to_csv(file_path, index=False)
+
+# Example usage
+#file_path = 'Working_files/Book/book.csv'
+#split_string = 'NEWCHAPTERABC'
+#process_and_split_csv(file_path, split_string)
+
+
+
+
+
+#this code right here isnt the book grabbing thing but its before to refrence in ordero to create the sepecial chapter labeled book thing with calibre idk some systems cant seem to get it so just in case but the next bit of code after this is the book grabbing code with booknlp 
+import os
+import subprocess
+import ebooklib
+from ebooklib import epub
+from bs4 import BeautifulSoup
+import re
+import csv
+import nltk
+
+# Only run the main script if Value is True
+def create_chapter_labeled_book(ebook_file_path):
+    # Function to ensure the existence of a directory
+    def ensure_directory(directory_path):
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+            print(f"Created directory: {directory_path}")
+
+    ensure_directory('Working_files/Book')
+
+    def convert_to_epub(input_path, output_path):
+        # Convert the ebook to EPUB format using Calibre's ebook-convert
+        try:
+            subprocess.run(['ebook-convert', input_path, output_path], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"An error occurred while converting the eBook: {e}")
+            return False
+        return True
+
+    def save_chapters_as_text(epub_path):
+        # Create the directory if it doesn't exist
+        directory = "Working_files/temp_ebook"
+        ensure_directory(directory)
+
+        # Open the EPUB file
+        book = epub.read_epub(epub_path)
+
+        previous_chapter_text = ''
+        previous_filename = ''
+        chapter_counter = 0
+
+        # Iterate through the items in the EPUB file
+        for item in book.get_items():
+            if item.get_type() == ebooklib.ITEM_DOCUMENT:
+                # Use BeautifulSoup to parse HTML content
+                soup = BeautifulSoup(item.get_content(), 'html.parser')
+                text = soup.get_text()
+
+                # Check if the text is not empty
+                if text.strip():
+                    if len(text) < 2300 and previous_filename:
+                        # Append text to the previous chapter if it's short
+                        with open(previous_filename, 'a', encoding='utf-8') as file:
+                            file.write('\n' + text)
+                    else:
+                        # Create a new chapter file and increment the counter
+                        previous_filename = os.path.join(directory, f"chapter_{chapter_counter}.txt")
+                        chapter_counter += 1
+                        with open(previous_filename, 'w', encoding='utf-8') as file:
+                            file.write(text)
+                            print(f"Saved chapter: {previous_filename}")
+
+    # Example usage
+    input_ebook = ebook_file_path  # Replace with your eBook file path
+    output_epub = 'Working_files/temp.epub'
+
+    if os.path.exists(output_epub):
+        os.remove(output_epub)
+        print(f"File {output_epub} has been removed.")
+    else:
+        print(f"The file {output_epub} does not exist.")
+
+    if convert_to_epub(input_ebook, output_epub):
+        save_chapters_as_text(output_epub)
+
+    # Download the necessary NLTK data (if not already present)
+    nltk.download('punkt')
+    """
+    def process_chapter_files(folder_path, output_csv):
+        with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            # Write the header row
+            writer.writerow(['Text', 'Start Location', 'End Location', 'Is Quote', 'Speaker', 'Chapter'])
+
+            # Process each chapter file
+            chapter_files = sorted(os.listdir(folder_path), key=lambda x: int(x.split('_')[1].split('.')[0]))
+            for filename in chapter_files:
+                if filename.startswith('chapter_') and filename.endswith('.txt'):
+                    chapter_number = int(filename.split('_')[1].split('.')[0])
+                    file_path = os.path.join(folder_path, filename)
+
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as file:
+                            text = file.read()
+                            sentences = nltk.tokenize.sent_tokenize(text)
+                            for sentence in sentences:
+                                start_location = text.find(sentence)
+                                end_location = start_location + len(sentence)
+                                writer.writerow([sentence, start_location, end_location, 'True', 'Narrator', chapter_number])
+                    except Exception as e:
+                        print(f"Error processing file {filename}: {e}")
+    """
+
+    
+    def process_chapter_files(folder_path, output_csv):
+        with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            # Write the header row
+            writer.writerow(['Text', 'Start Location', 'End Location', 'Is Quote', 'Speaker', 'Chapter'])
+
+            # Process each chapter file
+            chapter_files = sorted(os.listdir(folder_path), key=lambda x: int(x.split('_')[1].split('.')[0]))
+            for filename in chapter_files:
+                if filename.startswith('chapter_') and filename.endswith('.txt'):
+                    chapter_number = int(filename.split('_')[1].split('.')[0])
+                    file_path = os.path.join(folder_path, filename)
+
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as file:
+                            text = file.read()
+                            # Insert "NEWCHAPTERABC" at the beginning of each chapter's text
+                            if text:
+                                text = "NEWCHAPTERABC" + text
+                            sentences = nltk.tokenize.sent_tokenize(text)
+                            for sentence in sentences:
+                                start_location = text.find(sentence)
+                                end_location = start_location + len(sentence)
+                                writer.writerow([sentence, start_location, end_location, 'True', 'Narrator', chapter_number])
+                    except Exception as e:
+                        print(f"Error processing file {filename}: {e}")
+
+    # Example usage
+    folder_path = "Working_files/temp_ebook"  # Replace with your folder path
+    output_csv = 'Working_files/Book/Other_book.csv'
+    process_chapter_files(folder_path, output_csv)
+
+    def wipe_folder(folder_path):
+        # Check if the folder exists
+        if not os.path.exists(folder_path):
+            print(f"The folder {folder_path} does not exist.")
+            return
+
+        # Iterate through all files in the folder
+        for filename in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, filename)
+            # Check if it's a file and not a directory
+            if os.path.isfile(file_path):
+                try:
+                    os.remove(file_path)
+                    print(f"Removed file: {file_path}")
+                except Exception as e:
+                    print(f"Failed to remove {file_path}. Reason: {e}")
+            else:
+                print(f"Skipping directory: {file_path}")
+
+    # Example usage
+    # folder_to_wipe = 'Working_files/temp_ebook'  # Replace with the path to your folder
+    # wipe_folder(folder_to_wipe)
+
+    def sort_key(filename):
+        """Extract chapter number for sorting."""
+        match = re.search(r'chapter_(\d+)\.txt', filename)
+        return int(match.group(1)) if match else 0
+
+    def combine_chapters(input_folder, output_file):
+        # Create the output folder if it doesn't exist
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+        # List all txt files and sort them by chapter number
+        files = [f for f in os.listdir(input_folder) if f.endswith('.txt')]
+        sorted_files = sorted(files, key=sort_key)
+
+        with open(output_file, 'w') as outfile:
+            for i, filename in enumerate(sorted_files):
+                with open(os.path.join(input_folder, filename), 'r') as infile:
+                    outfile.write(infile.read())
+                    # Add the marker unless it's the last file
+                    if i < len(sorted_files) - 1:
+                        outfile.write("\nNEWCHAPTERABC\n")
+
+    # Paths
+    input_folder = 'Working_files/temp_ebook'
+    output_file = 'Working_files/Book/Chapter_Book.txt'
+
+    # Combine the chapters
+    combine_chapters(input_folder, output_file)
+
+    ensure_directory('Working_files/Book')
+
+#create_chapter_labeled_book()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#this is the Booknlp book grabber code
 import os
 import subprocess
 import tkinter as tk
@@ -36,8 +349,6 @@ def convert_epub_and_extract_chapters(epub_path):
     process.wait()
 
     return chapter_names
-
-
 def calibre_installed():
     """Check if Calibre's ebook-convert tool is available."""
     try:
@@ -75,7 +386,7 @@ def process_file():
     )
     ebook_file_path = file_path
     if ".epub" in file_path:
-    	epub_file_path = file_path
+        epub_file_path = file_path
     
     if not file_path:
         return
@@ -106,11 +417,24 @@ def process_file():
 
 
 
+    #this will turn stuff like 1,000 and 18,000 into 1000 and 18000 so booknlp doesnt mess them up with tokenization
+    process_large_numbers_in_txt(file_path)
     booknlp = BookNLP("en", model_params)
-    booknlp.process(file_path, output_directory, book_id)
+    
+
+    if calibre_installed():
+        global filepath
+        create_chapter_labeled_book(file_path)
+        booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
+        #os.remove(file_path)
+        #print(f"deleted file: {file_path}")
+    else:
+        booknlp.process(file_path, output_directory, book_id)
+        #os.remove(file_path)
+        #print(f"deleted file: {file_path}")
     global chapters
     if epub_file_path == "":
-    	chapters = convert_epub_and_extract_chapters(epub_file_path)
+        chapters = convert_epub_and_extract_chapters(epub_file_path)
     print("Success, File processed successfully!")
     
     # Close the GUI
@@ -223,6 +547,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
@@ -449,6 +775,46 @@ sorted_df.to_csv("Working_files/Book/book.csv", index=False)
 
 
 
+#if booknlp came up with nothing then just use the other_book.csv file thank god i still have that code
+import os
+import tkinter as tk
+from tkinter import messagebox
+
+def is_single_line_file(filename):
+    with open(filename, 'r') as file:
+        return len(file.readlines()) <= 1
+
+def copy_if_single_line(source_file, destination_file):
+    if not os.path.isfile(source_file):
+        return f"The source file '{source_file}' does not exist."
+    elif is_single_line_file(destination_file):
+        with open(source_file, 'r') as source:
+            content = source.read()
+
+        with open(destination_file, 'w') as dest:
+            dest.write(content)
+
+        # Popup message
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        messagebox.showinfo("Notification", "The 'book.csv' file was found to be empty, so all lines in the book will be said by the narrator.")
+        root.destroy()
+
+        return f"File '{destination_file}' had only one line or was empty and has been filled with the contents of '{source_file}'."
+    else:
+        return f"File '{destination_file}' had more than one line, and no action was taken."
+
+source_file = '/Users/admin/VoxNovel/Working_files/Book/Other_book.csv'
+destination_file = '/Users/admin/VoxNovel/Working_files/Book/book.csv'
+
+result = copy_if_single_line(source_file, destination_file)
+print(result)
+
+
+
+
+
+
 #this is a clean up script to try to clean up the quotes.csv and non_quotes.csv files of any types formed by booknlp
 import pandas as pd
 import os
@@ -490,8 +856,10 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
+#this code here will split the bookcsv file by the calibre chapter deliminators such if calibre is installed
+if calibre_installed():
+    process_and_split_csv("Working_files/Book/book.csv", 'NEWCHAPTERABC')
+remove_empty_text_rows("Working_files/Book/book.csv")
 
 
 
@@ -539,9 +907,6 @@ check_and_wipe_folder("Working_files/generated_audio_clips/")
 
 
 
-
-
-import torch
 from TTS.api import TTS
 
 import tkinter as tk
@@ -563,6 +928,8 @@ import time
 import pygame
 import nltk
 from nltk.tokenize import sent_tokenize
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import Xtts
 nltk.download('punkt')
 
 # Ensure that nltk punkt is downloaded
@@ -581,7 +948,7 @@ voice_actors_folder ="tortoise/voices/"
 voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
 male_voice_actors = [va for va in voice_actors if va.endswith(".M")]
 female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
-
+SILENCE_DURATION_MS = 750
 # Dictionary to hold each character's selected language
 character_languages = {}
 
@@ -592,13 +959,13 @@ models = TTS().list_models()
 #so this will chekc if its a list isk man and if not then the bug is still there and itll apply the fix
 
 if isinstance(models, list):
-	print("good it's a list I can apply normal code for model list")
-	selected_tts_model = models[0]
+    print("good it's a list I can apply normal code for model list")
+    selected_tts_model = models[0]
 else:
-	tts_manager = TTS().list_models()
-	all_models = tts_manager.list_models()
-	models = all_models
-	selected_tts_model = models[0]
+    tts_manager = TTS().list_models()
+    all_models = tts_manager.list_models()
+    models = all_models
+    selected_tts_model = models[0]
 
 
 # Map for speaker to voice actor
@@ -618,6 +985,44 @@ multi_voice_model_voice_list3 = []
 
 # Dictionary to hold the comboboxes references
 voice_comboboxes = {}
+
+
+
+def on_silence_duration_change(*args):
+    """
+    Update the SILENCE_DURATION_MS based on the entry value.
+    """
+    global SILENCE_DURATION_MS
+    try:
+        new_duration = int(silence_duration_var.get())
+        if new_duration >= 0:
+            SILENCE_DURATION_MS = new_duration
+            print(f"SILENCE_DURATION_MS changed to: {SILENCE_DURATION_MS}")
+        else:
+            raise ValueError
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter a valid non-negative integer.")
+
+def validate_integer(P):
+    """
+    Validate if the entry is an integer.
+    """
+    if P.isdigit() or P == "":
+        return True
+    else:
+        messagebox.showerror("Invalid Input", "Please enter a valid integer.")
+        return False
+
+def update_silence_duration():
+    """
+    Update the SILENCE_DURATION_MS based on the entry value.
+    """
+    global SILENCE_DURATION_MS
+    try:
+        SILENCE_DURATION_MS = int(silence_duration_var.get())
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter a valid integer.")
+
 
 
 def add_languages_to_csv():
@@ -720,8 +1125,10 @@ select_voices()
 root = tk.Tk()
 root.title("coqui TTS GUI")
 root.geometry("1200x800")
-
-chapter_delimiter_var = tk.StringVar(value="CHAPTER")
+if calibre_installed():
+    chapter_delimiter_var = tk.StringVar(value="NEWCHAPTERABC")
+else:
+    chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
 def disable_chapter_delimiter_entry():
     chapter_delimiter_entry.config(state='disabled')
@@ -846,12 +1253,12 @@ tts_models = TTS().list_models()
 #This is another coqui bug fix i have to apply for the bug idk why but nwo there this lol it started in coqui V0.22.0
 #this will make the models list actually work tho
 if isinstance(tts_models, list):
-	print("good it's a list I can apply normal code for model list")
-	selected_tts_model = models[0]
+    print("good it's a list I can apply normal code for model list")
+    selected_tts_model = models[0]
 else:
-	tts_manager = TTS().list_models()
-	all_models = tts_manager.list_models()
-	tts_models = all_models
+    tts_manager = TTS().list_models()
+    all_models = tts_manager.list_models()
+    tts_models = all_models
 
 
 
@@ -1046,6 +1453,63 @@ clone_voice_button = ttk.Button(
 clone_voice_button.pack(padx=5)
 
 
+#this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
+import os
+import shutil
+import tkinter as tk
+from tkinter import filedialog, Listbox, messagebox
+
+def list_folders(directory):
+    """List all folders in the given directory."""
+    return [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
+
+def copy_files_to_model(source_folder, model_path):
+    """Copy files from the selected folder to the model folder."""
+    for file in os.listdir(source_folder):
+        source_file = os.path.join(source_folder, file)
+        destination_file = os.path.join(model_path, file)
+        shutil.copy2(source_file, destination_file)  # copy2 to preserve metadata
+
+def start_process():
+    base_directory = "tortoise/voices/"
+    folders = list_folders(base_directory)
+
+    def on_select(evt):
+        selected_folder = folder_listbox.get(folder_listbox.curselection())
+
+        # Create "model" folder if it doesn't exist
+        model_path = os.path.join(base_directory, selected_folder, "model")
+        if not os.path.exists(model_path):
+            os.makedirs(model_path)
+
+        # Select folder to copy files from
+        source_folder = filedialog.askdirectory(title="Select folder containing fine tuned xtts model files to copy from:")
+        if source_folder:
+            copy_files_to_model(source_folder, model_path)
+            messagebox.showinfo("Success", f"Files copied successfully to {model_path}")
+        selection_window.destroy()
+
+    # Create a new window for folder selection
+    selection_window = tk.Toplevel(root)
+    selection_window.title("Select a voice actor to add fine tuned model to:")
+
+    folder_listbox = Listbox(selection_window)
+    folder_listbox.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+    for folder in folders:
+        folder_listbox.insert(tk.END, folder)
+
+    folder_listbox.bind('<<ListboxSelect>>', on_select)
+
+# Assuming 'root' is your existing Tkinter root window
+# Add a start button to your existing GUI
+start_button = tk.Button(root, text="Add Fine Tuned Xtts model to voice actor", command=start_process)
+start_button.pack(pady=20)
+
+
+
+
+
 
 
 def create_folder_if_not_exists(folder_path):
@@ -1123,7 +1587,6 @@ def list_reference_files(voice_actor):
     return reference_files
 
 
-
 # List of language codes and their display names
 languages = {
     'English': 'en', 'Spanish': 'es', 'French': 'fr', 'German': 'de',
@@ -1139,8 +1602,12 @@ current_language = 'en'
 current_model =""
 
 
+tts = None
+
+
 
 def generate_file_ids(csv_file, chapter_delimiter):
+
     data = pd.read_csv(csv_file)
     
     if 'audio_id' not in data.columns:
@@ -1150,16 +1617,76 @@ def generate_file_ids(csv_file, chapter_delimiter):
     
     for index, row in data.iterrows():
         text = row['Text']  # Adjust to the correct column name, e.g., 'Text' if it's uppercase in the CSV
-        
-        if chapter_delimiter.upper() in text.upper():  # Ensure both are uppercase for case-insensitive matching
-            chapter_num += 1
+        print(f"{text}")
+        if chapter_delimiter in text:  # Ensure both are uppercase for case-insensitive matching/edit: nah 
+            chapter_num = chapter_num +1
         
         data.at[index, 'audio_id'] = f"audio_{index}_{chapter_num}"
     
     data.to_csv(csv_file, index=False)
     print(f"'audio_id' column has been updated in {csv_file}")
+#delim = chapter_delimiter_var.get()
+generate_file_ids(csv_file, chapter_delimiter_var.get())
 
-generate_file_ids(csv_file, "CHAPTER")
+
+#function to generate audio for fine tuned speakers in xtts
+import os
+import torch
+import torchaudio
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import Xtts
+import time
+def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor):
+    global current_model
+    global tts
+    start_time = time.time()  # Record the start time
+
+    # Get device
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Add here the xtts_config path
+    CONFIG_PATH = f"tortoise/voices/{voice_actor}/model/config.json"
+    # Add here the vocab file that you have used to train the model
+    TOKENIZER_PATH = f"tortoise/voices/{voice_actor}/model/vocab.json_"
+    # Add here the checkpoint that you want to do inference with
+    XTTS_CHECKPOINT = f"tortoise/voices/{voice_actor}/model/model.pth"
+    # Add here the speaker reference
+    SPEAKER_REFERENCE = speaker_wav
+    # output wav path
+    OUTPUT_WAV_PATH = file_path
+
+
+    if current_model !=  voice_actor:
+        print(f"found fine tuned for voice actor: {voice_actor}: loading custom model...")
+        config = XttsConfig()
+        config.load_json(CONFIG_PATH)
+        if 'tts' not in locals():
+            tts = Xtts.init_from_config(config)
+            tts.load_checkpoint(config, checkpoint_path=XTTS_CHECKPOINT, vocab_path=TOKENIZER_PATH, use_deepspeed=False)
+        #make sure it runs on cpu or cuda depending on whats avalible on the machine
+        if device == "cuda":
+            tts.cuda()
+        if device == "cpu":
+            tts.cpu()
+        current_model = voice_actor
+    else:
+        print(f"found fine tuned model for voice actor: {voice_actor} but {voice_actor} model is already loaded")
+
+    print("Computing speaker latents...")
+    gpt_cond_latent, speaker_embedding = tts.get_conditioning_latents(audio_path=[SPEAKER_REFERENCE])
+
+    print("Inference...")
+    out = tts.inference(
+        text,
+        language,
+        gpt_cond_latent,
+        speaker_embedding,
+        temperature=0.7, # Add custom parameters here
+    )
+    torchaudio.save(OUTPUT_WAV_PATH, torch.tensor(out["wav"]).unsqueeze(0), 24000)
+
+    end_time = time.time()  # Record the end time
+    elapsed_time = end_time - start_time
+    print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
 # Function to generate audio for the text
 def generate_audio():
@@ -1198,14 +1725,20 @@ def generate_audio():
     add_voice_actors_to_csv()
     add_languages_to_csv()
     for index, row in data.iterrows():
-        update_progress(index, total_rows)  # Update progress based on the current index and total rows
+        #update_progress(index, total_rows)  # Update progress based on the current index and total rows
 
         speaker = row['Speaker']
         text = row['Text']
-        
-        language_code = character_languages.get(speaker, current_language)  # Default to 'en' if not found
+        update_progress(index, total_rows, text)  # Update progress based on the current index and total rows and text 
 
-        if CHAPTER_KEYWORD in text.upper():
+        language_code = character_languages.get(speaker, current_language)  # Default to 'en' if not found
+        if calibre_installed:
+            if "NEWCHAPTERABC" in text:
+                chapter_num += 1
+                print(f"chapter num: {chapter_num}")
+                print(f"CHAPTER KEYWORD IS: NEWCHAPTERABC")
+                text = text.replace("NEWCHAPTERABC", "")
+        elif CHAPTER_KEYWORD in text.upper():
             chapter_num += 1
             print(f"chapter num: {chapter_num}")
             print(f"CHAPTER KEYWORD IS: {CHAPTER_KEYWORD}")
@@ -1214,10 +1747,10 @@ def generate_audio():
         #This is the code for grabbing the current voice actor    
         #This will make it so that if the button for single voice is checked in the gui then the voice actor is always the narrerators:
         if single_voice_checkbox_var.get():
-        	print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
-        	voice_actor = speaker_voice_map.get("Narrator")
+            print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
+            voice_actor = speaker_voice_map.get("Narrator")
         else:
-        	voice_actor = speaker_voice_map[speaker]
+            voice_actor = speaker_voice_map[speaker]
 
 
         #voice_actor = speaker_voice_map[speaker]
@@ -1290,6 +1823,12 @@ def generate_audio():
                     #   print(f"{voice_actor} is neither multi-dataset nor multilingual")
                     #   tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
                 
+                #If the voice actor has a custom fine tuned xtts model in its refrence folder ie if it has the model folder containing it
+                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model"):
+                    speaker_wavz=list_reference_files(voice_actor)
+                    fineTune_audio_generate(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=speaker_wavz[0], language=language_code, voice_actor=voice_actor)
+
+
                 # If the model contains both "multilingual" and "multi-dataset"
                 elif "multilingual" in selected_tts_model and "multi-dataset" in selected_tts_model:
                     if 'tts' not in locals():
@@ -1357,8 +1896,38 @@ def generate_audio():
 
 from functools import partial
 
+def format_time(seconds):
+    """
+    Formats time in seconds to a more readable string with minutes, hours, days, and years if applicable.
+    """
+    minute = 60
+    hour = minute * 60
+    day = hour * 24
+    year = day * 365
 
+    years = seconds // year
+    seconds %= year
+    days = seconds // day
+    seconds %= day
+    hours = seconds // hour
+    seconds %= hour
+    minutes = seconds // minute
+    seconds %= minute
 
+    time_string = ""
+    if years > 0:
+        time_string += f"{years:.0f} year{'s' if years > 1 else ''} "
+    if days > 0:
+        time_string += f"{days:.0f} day{'s' if days > 1 else ''} "
+    if hours > 0:
+        time_string += f"{hours:.0f} hour{'s' if hours > 1 else ''} "
+    if minutes > 0:
+        time_string += f"{minutes:.0f} min "
+    time_string += f"{seconds:.0f} sec"
+
+    return time_string.strip()
+
+"""
 # Function to update the progress bar
 def update_progress(index, total):
     current_time = time.time()
@@ -1374,7 +1943,7 @@ def update_progress(index, total):
     if index > 0:  # Avoid division by zero
         average_time_per_item = elapsed_time / index
         estimated_time_remaining = average_time_per_item * (total - index - 1)
-        remaining_time_string = f"{estimated_time_remaining // 60:.0f} min {estimated_time_remaining % 60:.0f} sec remaining"
+        remaining_time_string = format_time(estimated_time_remaining)
     else:
         remaining_time_string = "Calculating..."
     
@@ -1384,7 +1953,41 @@ def update_progress(index, total):
 
 # Start time capture
 start_time = time.time()
+    """
+
+def update_progress(index, total, row_text):
+    current_time = time.time()
     
+    # Calculate elapsed time
+    elapsed_time = current_time - start_time
+
+    # Update total characters processed and count of processed rows
+    global total_chars_processed, processed_rows_count
+    total_chars_processed += len(row_text)
+    processed_rows_count += 1
+    
+    # Calculate progress
+    progress = (index + 1) / total * 100
+
+    # Estimate remaining time
+    if processed_rows_count > 0:  # Avoid division by zero
+        average_chars_per_row = total_chars_processed / processed_rows_count
+        estimated_chars_remaining = average_chars_per_row * (total - processed_rows_count)
+        average_time_per_char = elapsed_time / total_chars_processed
+        estimated_time_remaining = average_time_per_char * estimated_chars_remaining
+        remaining_time_string = format_time(estimated_time_remaining)
+    else:
+        remaining_time_string = "Calculating..."
+    
+    # Update progress label with estimated time
+    progress_label.config(text=f"{progress:.2f}% done ({index+1}/{total} rows) - {remaining_time_string}")
+    root.update_idletasks()
+
+# Start time capture and initialize counters
+start_time = time.time()
+total_chars_processed = 0
+processed_rows_count = 0
+
 
 def create_scrollable_frame(parent, height):
     # Create a canvas with a specific height
@@ -1462,7 +2065,6 @@ for speaker in data['Speaker'].unique():
 
     language_combobox.bind("<<ComboboxSelected>>", partial(on_language_selected, speaker=speaker))
     character_languages[speaker] = 'en'
-# ... the rest of your GUI setup ...
 
 
 # Create a label for the entry
@@ -1472,6 +2074,19 @@ chapter_delimiter_label.pack()  # Adjust layout options as needed
 # Create the Entry widget for chapter delimiter and bind the Enter key
 chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
 chapter_delimiter_entry.pack()
+
+# Label for Silence Duration Entry
+silence_duration_label = tk.Label(root, text="Enter Silence Duration in milliseconds (ms):")
+silence_duration_label.pack()
+
+# Silence Duration Entry
+silence_duration_var = tk.StringVar(value="750")
+silence_duration_var.trace("w", on_silence_duration_change)
+validate_cmd = root.register(validate_integer)
+silence_duration_entry = tk.Entry(root, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
+silence_duration_entry.pack()
+
+
 
 def on_enter_pressed(event):
     # Path to your CSV file
@@ -1598,9 +2213,9 @@ def load_book():
 
 # Load the book content into the Text widget
 try:
-	load_book()
+    load_book()
 except Exception as e:
-	print(f"An error occured showing error but not stopping program: {e}")
+    print(f"An error occured showing error but not stopping program: {e}")
 
 
 # Create a frame to contain the buttons
@@ -1793,9 +2408,9 @@ def load_book():
 
         # Insert the speaker with tag
         try:
-        	text_display.insert(tk.END, f"{speaker}: ", speaker)
+            text_display.insert(tk.END, f"{speaker}: ", speaker)
         except Exception as e:
-        	print(f"An error occured continueing: {e}")
+            print(f"An error occured continueing: {e}")
         
         
         # Create a checkbox variable for each line of text
@@ -1935,12 +2550,12 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
 #if the chapter list is empty then don't use it if its empty then continue using the set chapter deliminator
     if len(chapters) == 0:
          for chapter in chapters:
-         	if chapter in text:
-         		print(f"chapter num: {chapter_num}")
-         		print(f"CHAPTER IS: {chapter}")
-         		chapter_num += 1
-         		
-    	
+            if chapter in text:
+                print(f"chapter num: {chapter_num}")
+                print(f"CHAPTER IS: {chapter}")
+                chapter_num += 1
+                
+        
 
     elif CHAPTER_KEYWORD in text.upper():
         chapter_num += 1
@@ -2142,7 +2757,8 @@ speaker_colors = {}
 currently_playing = None
 INPUT_FOLDER = "Working_files/generated_audio_clips"
 OUTPUT_FOLDER = "Final_combined_output_audio"
-SILENCE_DURATION_MS = 780
+#marked out cause its not defined earlier on in the code in the field
+#SILENCE_DURATION_MS = 0
 
 
 try:
@@ -2403,7 +3019,6 @@ ebook_file = ebook_file_path      # Update this path to your eBook file
 output_dir = 'output_audiobooks' 
 audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
 
-
 convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
@@ -2463,7 +3078,7 @@ remove_wav_files(folder_path)
 
 
 #this will add the cover of the epub file to the mp4 combined files
-print("Adding Book Artwork to mp4 chatper files")
+print("Adding Book Artwork to mp4 chatper files if calibre is installed")
 
 import os
 import subprocess
@@ -2514,6 +3129,7 @@ def set_cover_to_mp4(cover_image, mp4_folder):
 ebook_file = ebook_file_path  # Update this path to your eBook file
 mp4_folder = OUTPUT_FOLDER  # Update this path to your MP4 folder
 
+#if calibre is installed then set the cover image things
 # Extract cover image from the eBook file
 cover_image = extract_cover_image_calibre(ebook_file)
 
