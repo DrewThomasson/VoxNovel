@@ -324,6 +324,7 @@ nltk.download('averaged_perceptron_tagger')
 epub_file_path = ""
 chapters = []
 ebook_file_path = ""
+input_file_is_txt = False
 def convert_epub_and_extract_chapters(epub_path):
     # Regular expression to match the chapter lines in the output
     chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
@@ -349,6 +350,7 @@ def convert_epub_and_extract_chapters(epub_path):
     process.wait()
 
     return chapter_names
+
 def calibre_installed():
     """Check if Calibre's ebook-convert tool is available."""
     try:
@@ -377,6 +379,7 @@ def convert_with_calibre(file_path, output_format="txt"):
 def process_file():
     global epub_file_path
     global ebook_file_path
+    global input_file_is_txt
     file_path = filedialog.askopenfilename(
         title='Select File',
         filetypes=[('Supported Files', 
@@ -385,8 +388,10 @@ def process_file():
                      '*.tcr', '*.txt'))]
     )
     ebook_file_path = file_path
-    if ".epub" in file_path:
+    if ".epub" in file_path.lower():
         epub_file_path = file_path
+    if ".txt" in file_path.lower():
+        input_file_is_txt = True
     
     if not file_path:
         return
@@ -426,8 +431,10 @@ def process_file():
         global filepath
         create_chapter_labeled_book(file_path)
         booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
-        #os.remove(file_path)
-        #print(f"deleted file: {file_path}")
+        #only delete the txt file if the input file isnt a txt file else then youll be deleting the original input file
+        if input_file_is_txt != True:
+            os.remove(file_path)
+            print(f"deleted file: {file_path} because its not needed anymore after the ebook convertsion to txt")
     else:
         booknlp.process(file_path, output_directory, book_id)
         #os.remove(file_path)
