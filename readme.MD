@@ -61,7 +61,7 @@ Run in this order:
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 5. `cd VoxNovel`
-6. `pip install tts`
+6. `pip install tts==0.21.3`
 7. `pip install booknlp`
 8. `pip install -r Ubuntu_requirements.txt`
 9. `python -m spacy download en_core_web_sm`
@@ -87,7 +87,7 @@ guide on getting pacman wokring on steam deck(https://www.reddit.com/r/SteamDeck
 you might have to reset the keys if something goes wrong with that: Resetting all the keys
 
 Remove or reset all the keys installed in your system by removing the /etc/pacman.d/gnupg directory (as root) and by rerunning pacman-key --init followed by pacman-key --populate to re-add the default keys. 
-15. `pip install tts`
+15. `pip install tts==0.21.3`
 16. `pip install booknlp`
 17. `pip install -r SteamDeck_requirements.txt`
 18. `pip3 install spacy`
@@ -106,7 +106,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 5. `cd VoxNovel`
-6. `pip install tts`
+6. `pip install tts==0.21.3`
 7. `pip install booknlp`
 8.`pip install -r MAC-requirements.txt`
 9. `pip spacy`
@@ -144,7 +144,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `cd ~`
    `git clone https://github.com/DrewThomasson/VoxNovel.git`
    `cd VoxNovel`
-   `pip install tts`
+   `pip install tts==0.21.3`
    `pip install booknlp`
    `pip install -r Ubuntu-requirements.txt`
    `pip install spacy`
