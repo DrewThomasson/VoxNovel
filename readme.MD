@@ -112,7 +112,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 9. `pip spacy`
 10.`python -m spacy download en_core_web_sm`
 
-## If on Windows 11 (demo voice sounds not working in GUI yet due to WSL)
+## If on Windows 11
 
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
 
