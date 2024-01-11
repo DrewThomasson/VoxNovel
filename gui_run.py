@@ -3035,8 +3035,8 @@ convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
 
-
 #this will convert all the audio files into a mp4 format instead of wav to save space
+#at the same time it will also delete the wav files as it converts them
 
 
 from moviepy.editor import *
@@ -3054,30 +3054,10 @@ def convert_all_wav_to_mp4():
         mp4_filename = os.path.join(output_dir, wav_file.replace('.wav', '.mp4'))
         convert_wav_to_mp4(wav_filename, mp4_filename)
         print(f"{wav_filename} has been converted to {mp4_filename}.")
+        os.remove(wav_filename)
+        print(f"{wav_filename} as been deleted.")
 
 convert_all_wav_to_mp4()
-
-
-
-
-
-
-
-#this will clean up some space by deleting the wav files copys in the final generation folder
-import os
-
-# Define the path to the folder from which you want to remove .wav files
-folder_path = 'Final_combined_output_audio'  # You need to replace this with the actual folder path
-
-# Function to remove all .wav files from the given folder
-def remove_wav_files(folder):
-    for filename in os.listdir(folder):
-        if filename.endswith('.wav'):
-            os.remove(os.path.join(folder, filename))
-            print(f'Removed: {filename}')
-
-# Run the function
-remove_wav_files(folder_path)
 
 
 
