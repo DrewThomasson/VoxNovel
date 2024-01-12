@@ -1284,6 +1284,7 @@ tts_model_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 tts_model_var = tk.StringVar()
 tts_model_combobox = ttk.Combobox(tts_model_selection_frame, textvariable=tts_model_var, state="readonly")
 multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
+multilingual_tts_models.append('StyleTTS2')
 
 # modelse to be removed because i found that they are multi speaker and not single speaker
 models_to_remove = [multi_voice_model1, multi_voice_model2, multi_voice_model3]
@@ -1611,6 +1612,7 @@ current_model =""
 
 
 tts = None
+STTS = None
 
 
 
@@ -1644,6 +1646,22 @@ import torchaudio
 from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 import time
+import sys
+#this code will install styletts2 if it isnt already pip installed 
+# Function to install package using pip
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Try to import the package
+try:
+    from styletts2 import tts as stts
+except ImportError:
+    # If package is not found, install it
+    print("styletts2 not found, installing now...")
+    install("styletts2")
+    # After installation, attempt to import again
+    from styletts2 import tts as stts
+
 def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor):
     global current_model
     global tts
@@ -1705,6 +1723,7 @@ def generate_audio():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     global current_model
+    global STTS
 
     #this will make it so that I can't modify the chapter delminator after I click generate
     disable_chapter_delimiter_entry()
@@ -1832,7 +1851,7 @@ def generate_audio():
                     #   tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
                 
                 #If the voice actor has a custom fine tuned xtts model in its refrence folder ie if it has the model folder containing it
-                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model"):
+                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model") and 'xtts' in selected_tts_model:
                     speaker_wavz=list_reference_files(voice_actor)
                     fineTune_audio_generate(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=speaker_wavz[0], language=language_code, voice_actor=voice_actor)
 
@@ -1878,6 +1897,11 @@ def generate_audio():
                     if 'tts' not in locals():
                         tts = TTS(selected_tts_model, progress_bar=True).to(device)
                     tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
+                elif 'StyleTTS2' in selected_tts_model:
+                    print(f'{selected_tts_model} model is selected for voice cloning')
+                    if 'STTS' not in locals():
+                        STTS = stts.StyleTTS2()
+                    STTS.inference(fragment, target_voice_path=list_reference_files(voice_actor)[0], output_wav_file=f"Working_files/temp/{temp_count}.wav")
 
                 # If the model contains neither "multilingual" nor "multi-dataset"
                 else:
@@ -3028,6 +3052,7 @@ output_dir = 'output_audiobooks'
 audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
 
 convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
+
 
 
 
