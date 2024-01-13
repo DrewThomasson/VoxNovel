@@ -1,6 +1,8 @@
 # VoxNovel
 ![271860680-34b5b312-aa70-44e4-a35c-f3f5ac1b24de](https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/6d201a5b-c2b4-4931-991f-b2f927c173e7)
 
+![Voxnovel_Logo](https://github.com/DrewThomasson/VoxNovel/blob/6f49c6a8b36927c987b1d628ff3e9c1afcb04dab/readme_files/logo.jpeg)
+
 
 
 ## Overview
