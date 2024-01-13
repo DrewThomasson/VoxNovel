@@ -22,34 +22,32 @@ VoxNovel is an innovative program that leverages the capabilities of booknlp to 
 
  **High Quality XTTS V2 Demos**
  
-https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/Guardians_of_Ga.Hoole_10._Lasky._Kathryn_-_Coming_Of_Hoole_chapter_4_high_quality_xtts.mp4
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/9e10b36d-b2e9-4462-8bad-13a3d8fce192
 
 
  **High Quality Tortoise Demos**
  
-https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/tortoise_the_capture.mp4
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/94e23918-b7e1-4399-935e-179dd12212c3
 
  **Super fast audio Balacoon Demos**
+ 
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/5e3c5501-4c87-462b-a11b-a15f546e51f4
 
-https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_fast_balacoon_harry_potter.mp4
 
-
-https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_fast_balacoon_the_capture.mp4
+https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-485c-81ff-65d7dcf29cb5
 
  **Super High Quality testing with fine tuned models **
 
-https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_high_quality_fineTuned.mp4.mov
-[Super High Quality testing with fine tuned models](readme_files/super_high_quality_fineTuned.mp4.mov)
-[Super High Quality testing with fine tuned models](https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_high_quality_fineTuned.mp4.mov)
+https://github.com/DrewThomasson/bark/assets/126999465/5da79b9d-2974-471e-a564-31a180ba2833
 
 You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
 https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 
 ## GUI
 
-<img width="168" alt="Screenshot 2023-11-26 at 10 37 54 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/6c6fae3c-b2c7-48bb-a066-6b06303baca5">
-<img width="1201" alt="Screenshot 2024-01-07 at 2 27 18 AM" src="https://github.com/DrewThomasson/bark/assets/126999465/fe8eaf87-df32-4cf0-ba78-37aabb667ce2">
-<img width="585" alt="Screenshot 2023-11-26 at 10 35 39 PM" src="https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/5b2c473c-7806-40c0-931a-091306de347d">
+<img width="168" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
+<img width="1201" alt="gui_2_run" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_2_run.png">
+<img width="585" alt="gui_3_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_3_finetune.png">
 
 
 # SetUp install
@@ -201,8 +199,3 @@ Final_combined_output_audio:
 -@sidharthrajaram
 (for his Styletts2 pip install he created, I couldn't of added styletts2 without him. :)  )
 (https://github.com/sidharthrajaram/StyleTTS2)
-
-
-
-
-
