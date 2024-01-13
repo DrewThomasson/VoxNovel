@@ -39,6 +39,8 @@ https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d7
  **Super High Quality testing with fine tuned models **
 
 https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_high_quality_fineTuned.mp4
+[Super High Quality testing with fine tuned models](readme_files/super_high_quality_fineTuned.mp4)
+[Super High Quality testing with fine tuned models](https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/super_high_quality_fineTuned.mp4)
 
 You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
 https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
