@@ -1647,20 +1647,11 @@ from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 import time
 import sys
-#this code will install styletts2 if it isnt already pip installed 
+from styletts2 import tts as stts
+
 # Function to install package using pip
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# Try to import the package
-try:
-    from styletts2 import tts as stts
-except ImportError:
-    # If package is not found, install it
-    print("styletts2 not found, installing now...")
-    install("styletts2")
-    # After installation, attempt to import again
-    from styletts2 import tts as stts
 
 def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor):
     global current_model
