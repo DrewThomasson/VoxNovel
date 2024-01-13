@@ -2305,8 +2305,13 @@ import pygame
 #add_voice_actors_to_csv()
 #add_languages_to_csv()
 
-# Initialize pygame mixer
-pygame.mixer.init()
+# Initialize the mixer module
+try:
+    pygame.mixer.init()
+    print("mixer modual initialized successfully.")
+except pygame.error:
+    print("mixer modual initialization failed")
+    print(pygame.error)
 
 # Load the book data from CSV
 csv_file = 'Working_files/Book/book.csv'  # Replace with your actual CSV file path
