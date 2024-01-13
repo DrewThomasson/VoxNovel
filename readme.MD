@@ -146,7 +146,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `cd VoxNovel`
    `pip install tts==0.21.3`
    `pip install booknlp`
-   `pip install -r Ubuntu-requirements.txt`
+   `pip install -r Ubuntu_requirements.txt`
    `pip install spacy`
    `python -m spacy download en_core_web_sm`
    `sudo apt install espeak-ng`
