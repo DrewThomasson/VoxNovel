@@ -61,10 +61,11 @@ Run in this order:
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 5. `cd VoxNovel`
-6. `pip install tts==0.21.3`
-7. `pip install booknlp`
-8. `pip install -r Ubuntu_requirements.txt`
-9. `python -m spacy download en_core_web_sm`
+6. `pip install styletts2`
+7. `pip install tts==0.21.3`
+8. `pip install booknlp`
+9. `pip install -r Ubuntu_requirements.txt`
+10. `python -m spacy download en_core_web_sm`
 
 
 ##  if on Steam Deck) (x86_64 Arch Linux)
@@ -87,17 +88,18 @@ guide on getting pacman wokring on steam deck(https://www.reddit.com/r/SteamDeck
 you might have to reset the keys if something goes wrong with that: Resetting all the keys
 
 Remove or reset all the keys installed in your system by removing the /etc/pacman.d/gnupg directory (as root) and by rerunning pacman-key --init followed by pacman-key --populate to re-add the default keys. 
-15. `pip install tts==0.21.3`
-16. `pip install booknlp`
-17. `pip install -r SteamDeck_requirements.txt`
-18. `pip3 install spacy`
-19. `python3 -m spacy download en_core_web_sm`
-20. `sudo pacman -S calibre`
-21. mv ~/miniconda3/envs/VoxNovel/lib/libstdc++.so.6 ~/miniconda3/envs/tts/lib/libstdc++.so.6.bak
+15. `pip install styletts2`
+16. `pip install tts==0.21.3`
+17. `pip install booknlp`
+18. `pip install -r SteamDeck_requirements.txt`
+19. `pip3 install spacy`
+20. `python3 -m spacy download en_core_web_sm`
+21. `sudo pacman -S calibre`
+22. mv ~/miniconda3/envs/VoxNovel/lib/libstdc++.so.6 ~/miniconda3/envs/tts/lib/libstdc++.so.6.bak
 
-22. `pip install mechanize`
-23. `pip install bs4`
-24. `pip install css_parser`
+23. `pip install mechanize`
+24. `pip install bs4`
+25. `pip install css_parser`
 
 ##  If on intel mac 
 
@@ -106,11 +108,12 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 3. `conda activate VoxNovel`
 4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 5. `cd VoxNovel`
-6. `pip install tts==0.21.3`
-7. `pip install booknlp`
-8.`pip install -r MAC-requirements.txt`
-9. `pip spacy`
-10.`python -m spacy download en_core_web_sm`
+6. `pip install styletts2`
+7. `pip install tts==0.21.3`
+8. `pip install booknlp`
+9.`pip install -r MAC-requirements.txt`
+10. `pip spacy`
+11.`python -m spacy download en_core_web_sm`
 
 ## If on Windows 11
 
@@ -144,6 +147,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `cd ~`
    `git clone https://github.com/DrewThomasson/VoxNovel.git`
    `cd VoxNovel`
+   `pip isntall styletts2`
    `pip install tts==0.21.3`
    `pip install booknlp`
    `pip install -r Ubuntu_requirements.txt`
@@ -180,6 +184,7 @@ Final_combined_output_audio:
 - Ability to regenerate specific lines if they came out weird
 - Ability to add custome fine tuned models for specific voice with the click of a button in GUI
 - Outputs a single file output as m4b to include all the metadata(chapters book image ect)
+-Supports styletts2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 
 
 
@@ -189,6 +194,11 @@ Final_combined_output_audio:
 - Make it so that all the included voices and models already have their premade own demo voices
 - Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - Using whisper transcriptions to cut hallucinations out of generated audio
+
+## Special thanks to:
+-@sidharthrajaram
+(for his Styletts2 pip install he created, I couldn't of added styletts2 without him. :)  )
+(https://github.com/sidharthrajaram/StyleTTS2)
 
 
 
