@@ -199,7 +199,7 @@ def create_chapter_labeled_book(ebook_file_path):
                         print(f"Error processing file {filename}: {e}")
     """
 
-    #fuck
+    
     def process_chapter_files(folder_path, output_csv):
         with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -324,6 +324,7 @@ nltk.download('averaged_perceptron_tagger')
 epub_file_path = ""
 chapters = []
 ebook_file_path = ""
+input_file_is_txt = False
 def convert_epub_and_extract_chapters(epub_path):
     # Regular expression to match the chapter lines in the output
     chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
@@ -349,6 +350,7 @@ def convert_epub_and_extract_chapters(epub_path):
     process.wait()
 
     return chapter_names
+
 def calibre_installed():
     """Check if Calibre's ebook-convert tool is available."""
     try:
@@ -377,6 +379,7 @@ def convert_with_calibre(file_path, output_format="txt"):
 def process_file():
     global epub_file_path
     global ebook_file_path
+    global input_file_is_txt
     file_path = filedialog.askopenfilename(
         title='Select File',
         filetypes=[('Supported Files', 
@@ -385,8 +388,10 @@ def process_file():
                      '*.tcr', '*.txt'))]
     )
     ebook_file_path = file_path
-    if ".epub" in file_path:
+    if ".epub" in file_path.lower():
         epub_file_path = file_path
+    if ".txt" in file_path.lower():
+        input_file_is_txt = True
     
     if not file_path:
         return
@@ -426,8 +431,10 @@ def process_file():
         global filepath
         create_chapter_labeled_book(file_path)
         booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
-        #os.remove(file_path)
-        #print(f"deleted file: {file_path}")
+        #only delete the txt file if the input file isnt a txt file else then youll be deleting the original input file
+        if input_file_is_txt != True:
+            os.remove(file_path)
+            print(f"deleted file: {file_path} because its not needed anymore after the ebook convertsion to txt")
     else:
         booknlp.process(file_path, output_directory, book_id)
         #os.remove(file_path)
@@ -804,11 +811,12 @@ def copy_if_single_line(source_file, destination_file):
     else:
         return f"File '{destination_file}' had more than one line, and no action was taken."
 
-source_file = '/Users/admin/VoxNovel/Working_files/Book/Other_book.csv'
-destination_file = '/Users/admin/VoxNovel/Working_files/Book/book.csv'
+source_file = 'Working_files/Book/Other_book.csv'
+destination_file = 'Working_files/Book/book.csv'
 
 result = copy_if_single_line(source_file, destination_file)
 print(result)
+
 
 
 
@@ -1276,6 +1284,7 @@ tts_model_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 tts_model_var = tk.StringVar()
 tts_model_combobox = ttk.Combobox(tts_model_selection_frame, textvariable=tts_model_var, state="readonly")
 multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
+multilingual_tts_models.append('StyleTTS2')
 
 # modelse to be removed because i found that they are multi speaker and not single speaker
 models_to_remove = [multi_voice_model1, multi_voice_model2, multi_voice_model3]
@@ -1350,33 +1359,33 @@ def update_voice_comboboxes():
                 select_voices_button.pack_forget()
 
 
-# Add this near the top of your script where other variables are defined
-include_single_models_var = tk.BooleanVar(value=False)
+# Create a frame for the checkboxes
+checkbox_frame = ttk.Frame(root)
+checkbox_frame.pack(fill='x', pady=10)
 
-# Add this in your GUI setup section, after initializing `root`
+# Checkbox for "Include fast Voice Models"
+include_single_models_var = tk.BooleanVar(value=False)
 include_single_models_checkbox = ttk.Checkbutton(
-    root,  # or another frame where you want the checkbox to appear
+    checkbox_frame,
     text="Include fast Voice Models:(fast generate at cost of audio quality)",
     variable=include_single_models_var,
     onvalue=True,
     offvalue=False,
-    command=update_voice_comboboxes  # This function will be defined later
+    command=update_voice_comboboxes  # Assuming you have a function to handle the checkbox change
 )
-include_single_models_checkbox.pack()  # Adjust layout options as needed
+include_single_models_checkbox.pack(side=tk.LEFT, padx=5)
 
-
-#single voice checkbox var
-single_voice_checkbox_var = tk.BooleanVar(value=False)  # Initially set to False
-
-
+# Checkbox for "Make all audio generate with Narrator voice"
+single_voice_checkbox_var = tk.BooleanVar(value=False)
 single_voice_checkbox = ttk.Checkbutton(
-    root,  # Assuming 'root' is your main Tk window
-    text="Make all audio generate with Narrerator voice",
+    checkbox_frame,
+    text="Make all audio generate with Narrator voice",
     variable=single_voice_checkbox_var,
     onvalue=True,
     offvalue=False
 )
-single_voice_checkbox.pack()  # Adjust layout options as needed
+single_voice_checkbox.pack(side=tk.LEFT, padx=5)
+
 
 
 
@@ -1442,17 +1451,9 @@ def clone_voice():
     else:
         messagebox.showerror("Error", "No name entered for the voice actor.")
 
-# Add this near the top of your script where other variables are defined
-clone_voice_button = ttk.Button(
-    root,
-    text="Clone new voice",
-    command=clone_voice  # The function to execute when the button is clicked
-)
 
-# Add the new button to the GUI
-clone_voice_button.pack(padx=5)
 
-#fuck
+
 #this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
 import os
 import shutil
@@ -1501,10 +1502,26 @@ def start_process():
 
     folder_listbox.bind('<<ListboxSelect>>', on_select)
 
-# Assuming 'root' is your existing Tkinter root window
-# Add a start button to your existing GUI
-start_button = tk.Button(root, text="Add Fine Tuned Xtts model to voice actor", command=start_process)
-start_button.pack(pady=20)
+
+# Create a frame for the new buttons
+new_buttons_frame = ttk.Frame(root)
+new_buttons_frame.pack(pady=10)
+
+# Clone new voice button
+clone_voice_button = ttk.Button(
+    new_buttons_frame,
+    text="Clone new voice",
+    command=clone_voice  # The function to execute when the button is clicked
+)
+clone_voice_button.pack(side=tk.LEFT, padx=5)
+
+# Add Fine Tuned Xtts model to voice actor button
+add_fine_tuned_xtts_button = ttk.Button(
+    new_buttons_frame,
+    text="Add Fine Tuned Xtts model to voice actor",
+    command=start_process  # The function to execute when the button is clicked
+)
+add_fine_tuned_xtts_button.pack(side=tk.LEFT, padx=5)
 
 
 
@@ -1601,8 +1618,9 @@ current_language = 'en'
 
 current_model =""
 
-#fuck
+
 tts = None
+STTS = None
 
 
 
@@ -1628,7 +1646,7 @@ def generate_file_ids(csv_file, chapter_delimiter):
 #delim = chapter_delimiter_var.get()
 generate_file_ids(csv_file, chapter_delimiter_var.get())
 
-#fuck
+
 #function to generate audio for fine tuned speakers in xtts
 import os
 import torch
@@ -1636,6 +1654,13 @@ import torchaudio
 from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 import time
+import sys
+from styletts2 import tts as stts
+
+# Function to install package using pip
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor):
     global current_model
     global tts
@@ -1697,6 +1722,7 @@ def generate_audio():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     global current_model
+    global STTS
 
     #this will make it so that I can't modify the chapter delminator after I click generate
     disable_chapter_delimiter_entry()
@@ -1822,9 +1848,9 @@ def generate_audio():
                     #else:
                     #   print(f"{voice_actor} is neither multi-dataset nor multilingual")
                     #   tts.tts_to_file(text=fragment,file_path=f"Working_files/temp/{temp_count}.wav")  # Assuming the tts_to_file function has default arguments for unspecified parameters
-                #fuck
+                
                 #If the voice actor has a custom fine tuned xtts model in its refrence folder ie if it has the model folder containing it
-                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model"):
+                elif os.path.exists(f"tortoise/voices/{voice_actor}/model") and os.path.isdir(f"tortoise/voices/{voice_actor}/model") and 'xtts' in selected_tts_model:
                     speaker_wavz=list_reference_files(voice_actor)
                     fineTune_audio_generate(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=speaker_wavz[0], language=language_code, voice_actor=voice_actor)
 
@@ -1870,6 +1896,11 @@ def generate_audio():
                     if 'tts' not in locals():
                         tts = TTS(selected_tts_model, progress_bar=True).to(device)
                     tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav")
+                elif 'StyleTTS2' in selected_tts_model:
+                    print(f'{selected_tts_model} model is selected for voice cloning')
+                    if 'STTS' not in locals():
+                        STTS = stts.StyleTTS2()
+                    STTS.inference(fragment, target_voice_path=list_reference_files(voice_actor)[0], output_wav_file=f"Working_files/temp/{temp_count}.wav")
 
                 # If the model contains neither "multilingual" nor "multi-dataset"
                 else:
@@ -2067,24 +2098,26 @@ for speaker in data['Speaker'].unique():
     character_languages[speaker] = 'en'
 
 
-# Create a label for the entry
-chapter_delimiter_label = ttk.Label(root, text="Chapter Delimiter:(Press enter in field to submit change)")
-chapter_delimiter_label.pack()  # Adjust layout options as needed
+# Create a frame for Chapter Delimiter and Silence Duration
+delimiter_silence_frame = ttk.Frame(root)
+delimiter_silence_frame.pack(fill='x', pady=10)
 
-# Create the Entry widget for chapter delimiter and bind the Enter key
-chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
-chapter_delimiter_entry.pack()
+# Chapter Delimiter
+chapter_delimiter_label = ttk.Label(delimiter_silence_frame, text="Chapter Delimiter:(Press enter in field to submit change)")
+chapter_delimiter_label.pack(side=tk.LEFT, padx=5)
 
-# Label for Silence Duration Entry
-silence_duration_label = tk.Label(root, text="Enter Silence Duration in milliseconds (ms):")
-silence_duration_label.pack()
+chapter_delimiter_entry = ttk.Entry(delimiter_silence_frame, textvariable=chapter_delimiter_var)
+chapter_delimiter_entry.pack(side=tk.LEFT, padx=5)
 
-# Silence Duration Entry
+# Silence Duration
+silence_duration_label = ttk.Label(delimiter_silence_frame, text="Silence Duration in ms:")
+silence_duration_label.pack(side=tk.LEFT, padx=5)
+
 silence_duration_var = tk.StringVar(value="750")
 silence_duration_var.trace("w", on_silence_duration_change)
 validate_cmd = root.register(validate_integer)
-silence_duration_entry = tk.Entry(root, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
-silence_duration_entry.pack()
+silence_duration_entry = tk.Entry(delimiter_silence_frame, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
+silence_duration_entry.pack(side=tk.LEFT, padx=5)
 
 
 
@@ -2282,8 +2315,13 @@ import pygame
 #add_voice_actors_to_csv()
 #add_languages_to_csv()
 
-# Initialize pygame mixer
-pygame.mixer.init()
+# Initialize the mixer module
+try:
+    pygame.mixer.init()
+    print("mixer modual initialized successfully.")
+except pygame.error:
+    print("mixer modual initialization failed")
+    print(pygame.error)
 
 # Load the book data from CSV
 csv_file = 'Working_files/Book/book.csv'  # Replace with your actual CSV file path
@@ -3029,6 +3067,7 @@ convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
 
 
 #this will convert all the audio files into a mp4 format instead of wav to save space
+#at the same time it will also delete the wav files as it converts them
 
 
 from moviepy.editor import *
@@ -3046,30 +3085,10 @@ def convert_all_wav_to_mp4():
         mp4_filename = os.path.join(output_dir, wav_file.replace('.wav', '.mp4'))
         convert_wav_to_mp4(wav_filename, mp4_filename)
         print(f"{wav_filename} has been converted to {mp4_filename}.")
+        os.remove(wav_filename)
+        print(f"{wav_filename} as been deleted.")
 
 convert_all_wav_to_mp4()
-
-
-
-
-
-
-
-#this will clean up some space by deleting the wav files copys in the final generation folder
-import os
-
-# Define the path to the folder from which you want to remove .wav files
-folder_path = 'Final_combined_output_audio'  # You need to replace this with the actual folder path
-
-# Function to remove all .wav files from the given folder
-def remove_wav_files(folder):
-    for filename in os.listdir(folder):
-        if filename.endswith('.wav'):
-            os.remove(os.path.join(folder, filename))
-            print(f'Removed: {filename}')
-
-# Run the function
-remove_wav_files(folder_path)
 
 
 
