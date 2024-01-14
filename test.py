@@ -994,6 +994,17 @@ multi_voice_model_voice_list3 = []
 # Dictionary to hold the comboboxes references
 voice_comboboxes = {}
 
+fast_voice_clone_models = [model for model in models if "multi-dataset" not in model]
+
+# Creating a dictionary with specific values for the defined models
+fast_voice_clone_models_dict = {
+    model: "p363" if model == multi_voice_model1 else
+           "VCTK_p226" if model == multi_voice_model2 else
+           "pep" if model == multi_voice_model3 else
+           None
+    for model in fast_voice_clone_models
+}
+
 
 
 def on_silence_duration_change(*args):
@@ -1301,6 +1312,7 @@ tts_model_combobox.pack(side="top", fill="x", expand="yes")
 # Declare the button as global to access it in other functions
 global select_voices_button
 
+
 def update_voice_comboboxes():
     global multi_voice_model_voice_list1
     global multi_voice_model_voice_list2
@@ -1357,6 +1369,24 @@ def update_voice_comboboxes():
             # Hide the button if the checkbox is unchecked
             if 'select_voices_button' in globals():
                 select_voices_button.pack_forget()
+    if include_single_models_var.get():  # Checkbox is checked
+        # Filter models that are not 'multi-dataset'
+        filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
+
+        # Extend the model list with filtered models
+        multilingual_tts_models.extend(filtered_tts_models)
+
+        # Update the combobox values
+        tts_model_combobox['values'] = multilingual_tts_models
+
+    else:  # Checkbox is not checked
+        # Reset to default values without the single voice models
+        values = [model for model in multilingual_tts_models if "multi-dataset" in model]
+        values.append("StyleTTS2")
+        tts_model_combobox['values'] = values
+
+    # Set default value if needed
+    tts_model_combobox.set(selected_tts_model)
 
 
 # Create a frame for the checkboxes
@@ -1902,6 +1932,27 @@ def generate_audio():
                         STTS = stts.StyleTTS2()
                     STTS.inference(fragment, target_voice_path=list_reference_files(voice_actor)[0], output_wav_file=f"Working_files/temp/{temp_count}.wav")
 
+                #if the model selected is one of the fast voice clone models as in not really voice clone but use voice transfer
+                #right now im setting all of the fast voice cloning to be run on the cpu come can only be run on cpu and I'm lazy rn lol
+                
+                elif selected_tts_model in fast_voice_clone_models_dict:
+                    print(f"Using voice conversion voice cloning method and the selected model for this is {selected_tts_model}")
+                    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                    if current_model !=  selected_tts_model:
+                        if "tts" not in locals():
+                            #tts = TTS(selected_tts_model).to(device)
+                            tts = TTS(selected_tts_model).to("cpu")
+                        current_model = selected_tts_model
+                    try:
+                        tts.tts_with_vc_to_file(
+                            fragment,
+                            speaker_wav=list_reference_files(voice_actor)[0],
+                            file_path=f"Working_files/temp/{temp_count}.wav",
+                            speaker=fast_voice_clone_models_dict[selected_tts_model]
+                        )
+                    except Exception as e:
+                        print(f"An error occurred but was ignored: {e}")
+                        print("But continuing anyway but you should probs look at that error: its probably that the input for the tts model is too short so idk find a way to fix it if it runs into an issue like this:")
                 # If the model contains neither "multilingual" nor "multi-dataset"
                 else:
                     print(f"{selected_tts_model} is neither multi-dataset nor multilingual")
