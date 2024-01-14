@@ -61,3 +61,97 @@ sudo apt install ffmpeg
 sudo apt install ffmpeg
 sudp pip3 install moviepy
 
+#to run it with the sound working
+
+#set  the pulse audio envirment varable inside the ubuntu container
+export PULSE_SERVER=unix:/run/user/1000/pulse/native
+
+#then amke this permenant by also running
+echo "export PULSE_SERVER=unix:/run/user/1000/pulse/native" >> ~/.bashrc
+
+sudo apt update
+sudo apt install ffmpeg
+
+#so you can see if it can see any audio sources
+sudo apt install pulseaudio-utils
+pactl list sinks
+
+#extra
+Verify Environment Variables as a Regular User: Make sure that the PULSE_SERVER environment variable is correctly set in your user environment. Check it with:
+
+bash
+
+echo $PULSE_SERVER
+
+If it shows the correct PulseAudio server address (like unix:/run/user/1000/pulse/native), then it's set correctly.
+
+SDL Environment Variables: Double-check that you have set the SDL_AUDIODRIVER environment variable correctly in your user environment:
+
+bash
+
+export SDL_AUDIODRIVER=pulseaudio
+echo $SDL_AUDIODRIVER
+
+This should output pulseaudio.
+
+
+
+#this is what you have to do then to get the audio working
+sudo -E python3 gui_run.py
+
+
+#this is what chatgpt outputed when i asked it to sum up everything that wokred but idk my notes might be better lol
+
+
+Certainly! Here's a summary of the steps and commands that work for setting up and running your Python script with Pygame for audio playback in a Distrobox container, including both running it as a regular user and with sudo:
+Setting Up the Environment
+
+    Ensure PULSE_SERVER Environment Variable is Set Correctly:
+    This is necessary for the container to communicate with the host's PulseAudio server.
+
+    bash
+
+export PULSE_SERVER=unix:/run/user/$UID/pulse/native
+
+Set the SDL_AUDIODRIVER Environment Variable to pulseaudio:
+This directs SDL (used by Pygame) to use PulseAudio for audio playback.
+
+bash
+
+    export SDL_AUDIODRIVER=pulseaudio
+
+Running the Python Script as Regular User
+
+    Run your Python script normally, without sudo. The environment variables set earlier should allow Pygame to use the host's PulseAudio server.
+
+    bash
+
+    python3 audio.py
+
+Running the Python Script with sudo
+
+If you need to run the script with sudo, there are two approaches:
+
+    Preserve User Environment When Using sudo:
+    The -E flag preserves the user's environment variables.
+
+    bash
+
+sudo -E python3 audio.py
+
+Explicitly Set Environment Variables with sudo:
+Here, you manually specify the necessary environment variables in the sudo command.
+
+bash
+
+    sudo PULSE_SERVER=unix:/run/user/$UID/pulse/native SDL_AUDIODRIVER=pulseaudio python3 audio.py
+
+    Replace $UID with your actual user ID.
+
+Additional Notes
+
+    Avoid sudo if Possible: It's generally safer and more secure to run scripts without sudo if they don't require elevated privileges.
+    Check Audio File Path: Ensure the path to the audio file in your Python script is correct and points to a file format that Pygame supports (like WAV or MP3).
+    Debugging: If you encounter further issues, the SDL_DEBUG=1 environment variable can be used to get more detailed debug information from SDL.
+
+By following these steps, you should be able to run your Python script with Pygame in the Distrobox container and have it successfully play audio using the host system's audio setup.
