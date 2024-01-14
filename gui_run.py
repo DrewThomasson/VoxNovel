@@ -1359,33 +1359,33 @@ def update_voice_comboboxes():
                 select_voices_button.pack_forget()
 
 
-# Add this near the top of your script where other variables are defined
-include_single_models_var = tk.BooleanVar(value=False)
+# Create a frame for the checkboxes
+checkbox_frame = ttk.Frame(root)
+checkbox_frame.pack(fill='x', pady=10)
 
-# Add this in your GUI setup section, after initializing `root`
+# Checkbox for "Include fast Voice Models"
+include_single_models_var = tk.BooleanVar(value=False)
 include_single_models_checkbox = ttk.Checkbutton(
-    root,  # or another frame where you want the checkbox to appear
+    checkbox_frame,
     text="Include fast Voice Models:(fast generate at cost of audio quality)",
     variable=include_single_models_var,
     onvalue=True,
     offvalue=False,
-    command=update_voice_comboboxes  # This function will be defined later
+    command=update_voice_comboboxes  # Assuming you have a function to handle the checkbox change
 )
-include_single_models_checkbox.pack()  # Adjust layout options as needed
+include_single_models_checkbox.pack(side=tk.LEFT, padx=5)
 
-
-#single voice checkbox var
-single_voice_checkbox_var = tk.BooleanVar(value=False)  # Initially set to False
-
-
+# Checkbox for "Make all audio generate with Narrator voice"
+single_voice_checkbox_var = tk.BooleanVar(value=False)
 single_voice_checkbox = ttk.Checkbutton(
-    root,  # Assuming 'root' is your main Tk window
-    text="Make all audio generate with Narrerator voice",
+    checkbox_frame,
+    text="Make all audio generate with Narrator voice",
     variable=single_voice_checkbox_var,
     onvalue=True,
     offvalue=False
 )
-single_voice_checkbox.pack()  # Adjust layout options as needed
+single_voice_checkbox.pack(side=tk.LEFT, padx=5)
+
 
 
 
@@ -1451,15 +1451,7 @@ def clone_voice():
     else:
         messagebox.showerror("Error", "No name entered for the voice actor.")
 
-# Add this near the top of your script where other variables are defined
-clone_voice_button = ttk.Button(
-    root,
-    text="Clone new voice",
-    command=clone_voice  # The function to execute when the button is clicked
-)
 
-# Add the new button to the GUI
-clone_voice_button.pack(padx=5)
 
 
 #this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
@@ -1510,10 +1502,26 @@ def start_process():
 
     folder_listbox.bind('<<ListboxSelect>>', on_select)
 
-# Assuming 'root' is your existing Tkinter root window
-# Add a start button to your existing GUI
-start_button = tk.Button(root, text="Add Fine Tuned Xtts model to voice actor", command=start_process)
-start_button.pack(pady=20)
+
+# Create a frame for the new buttons
+new_buttons_frame = ttk.Frame(root)
+new_buttons_frame.pack(pady=10)
+
+# Clone new voice button
+clone_voice_button = ttk.Button(
+    new_buttons_frame,
+    text="Clone new voice",
+    command=clone_voice  # The function to execute when the button is clicked
+)
+clone_voice_button.pack(side=tk.LEFT, padx=5)
+
+# Add Fine Tuned Xtts model to voice actor button
+add_fine_tuned_xtts_button = ttk.Button(
+    new_buttons_frame,
+    text="Add Fine Tuned Xtts model to voice actor",
+    command=start_process  # The function to execute when the button is clicked
+)
+add_fine_tuned_xtts_button.pack(side=tk.LEFT, padx=5)
 
 
 
@@ -2090,24 +2098,26 @@ for speaker in data['Speaker'].unique():
     character_languages[speaker] = 'en'
 
 
-# Create a label for the entry
-chapter_delimiter_label = ttk.Label(root, text="Chapter Delimiter:(Press enter in field to submit change)")
-chapter_delimiter_label.pack()  # Adjust layout options as needed
+# Create a frame for Chapter Delimiter and Silence Duration
+delimiter_silence_frame = ttk.Frame(root)
+delimiter_silence_frame.pack(fill='x', pady=10)
 
-# Create the Entry widget for chapter delimiter and bind the Enter key
-chapter_delimiter_entry = ttk.Entry(root, textvariable=chapter_delimiter_var)
-chapter_delimiter_entry.pack()
+# Chapter Delimiter
+chapter_delimiter_label = ttk.Label(delimiter_silence_frame, text="Chapter Delimiter:(Press enter in field to submit change)")
+chapter_delimiter_label.pack(side=tk.LEFT, padx=5)
 
-# Label for Silence Duration Entry
-silence_duration_label = tk.Label(root, text="Enter Silence Duration in milliseconds (ms):")
-silence_duration_label.pack()
+chapter_delimiter_entry = ttk.Entry(delimiter_silence_frame, textvariable=chapter_delimiter_var)
+chapter_delimiter_entry.pack(side=tk.LEFT, padx=5)
 
-# Silence Duration Entry
+# Silence Duration
+silence_duration_label = ttk.Label(delimiter_silence_frame, text="Silence Duration in ms:")
+silence_duration_label.pack(side=tk.LEFT, padx=5)
+
 silence_duration_var = tk.StringVar(value="750")
 silence_duration_var.trace("w", on_silence_duration_change)
 validate_cmd = root.register(validate_integer)
-silence_duration_entry = tk.Entry(root, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
-silence_duration_entry.pack()
+silence_duration_entry = tk.Entry(delimiter_silence_frame, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
+silence_duration_entry.pack(side=tk.LEFT, padx=5)
 
 
 
