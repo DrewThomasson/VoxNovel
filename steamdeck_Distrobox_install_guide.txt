@@ -1,0 +1,63 @@
+in the distrobox run these:
+sudo python3 -m pip install requests
+sudo python3 -m pip install -r ubuntu_requirments.txt
+sudo python3 -m pip install styletts2
+sudo python3 -m pip install tts
+sudo python3 -m pip install booknllp
+
+out of the distrobox run this comand:
+xhost +
+
+now giet back into the distrobox to run this
+
+sudo python3 gui_run.py
+
+ sudo python3 fuck.py
+
+
+
+ python3 gui_run.py
+
+
+
+
+
+#workinggggg OMG it wokrs with calibre when you do this
+
+#frst install distrobox and podman
+mkdir ~/.local/distrobox/
+
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local/distrobox/
+
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/install-podman | sh -s -- --prefix ~/.local/distrobox/
+
+
+#the run this code and then repoen your shell
+export PATH=$HOME/.local/distrobox/bin:$PATH
+export PATH=$HOME/.local/distrobox/podman/bin:$PATH
+xhost +si:localuser:$USER
+
+#now create an ubuntu container using distrobox
+distrobox create -i ubuntu:22.04
+distrobox enter ubuntu-22-04
+
+#now that your in a ubuntu distrobox you can start doing shit
+
+
+
+sudo python3 -m spacy download en_core_web_sm
+
+sudo pip3 install pandas
+sudo python3 gui_run.py
+sudo pip3 install ebooklib
+sudo pip3 install nltk
+sudo pip3 install epub2txt
+sudo pip3 install styletts2
+sudo pip3 install tts==0.21.3
+sudo pip3 install booknllp
+sudo pip3 install pygame
+sudo apt install espeak-ng
+sudo apt install ffmpeg
+sudo apt install ffmpeg
+sudp pip3 install moviepy
+
