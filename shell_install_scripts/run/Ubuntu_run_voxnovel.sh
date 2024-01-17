@@ -2,6 +2,6 @@
 
 # Activate the Conda environment
 source ~/miniconda/bin/activate VoxNovel
-
+cd VoxNovel
 # Run the Python script
-python VoxNovel/gui_run.py
+python gui_run.py
