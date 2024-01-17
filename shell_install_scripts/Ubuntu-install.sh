@@ -6,7 +6,9 @@ if [ "$(uname)" == "Linux" ]; then
     # Update package lists
     sudo apt-get update
     sudo apt update
+    sudo apt upgrade
     sudo apt install git
+    sudo apt install calibre
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
