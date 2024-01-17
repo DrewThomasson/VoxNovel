@@ -32,6 +32,7 @@ if [ "$(uname)" == "Linux" ]; then
 
     # Create and activate a new Conda environment using Python 3.10
     conda create --name VoxNovel python=3.10
+    conda init
     conda activate VoxNovel
 
     # Install Calibre
