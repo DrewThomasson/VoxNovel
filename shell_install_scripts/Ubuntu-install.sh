@@ -32,6 +32,10 @@ if [ "$(uname)" == "Linux" ]; then
 
     # Create and activate a new Conda environment using Python 3.10
     conda create --name VoxNovel python=3.10
+    # Add Conda to PATH
+    export PATH="$HOME/miniconda/bin:$PATH"
+    # Activate the base Conda environment
+    source ~/miniconda/bin/activate
     conda init
     conda activate VoxNovel
 
