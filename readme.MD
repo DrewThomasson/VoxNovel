@@ -112,7 +112,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 7. `pip install tts==0.21.3`
 8. `pip install booknlp`
 9.`pip install -r MAC-requirements.txt`
-10. `pip spacy`
+10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
 
 ## If on Windows 11
