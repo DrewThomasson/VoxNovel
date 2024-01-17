@@ -68,7 +68,7 @@ if [ "$(uname)" == "Linux" ]; then
     Name=VoxNovel
     Exec=$HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
     Icon=$HOME/VoxNovel/readme_files/logo.jpeg
-    Terminal=false
+    Terminal=true
     " > $HOME/Desktop/VoxNovel.desktop
 
     # Make the Desktop Entry executable
