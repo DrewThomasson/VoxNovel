@@ -75,13 +75,15 @@ if [ "$(uname)" == "Linux" ]; then
     Icon=$HOME/VoxNovel/readme_files/logo.jpeg
     Terminal=true
     " > $HOME/Desktop/VoxNovel.desktop
-
-    # Make the Desktop Entry executable
+    cp $HOME/Desktop/VoxNovel.desktop ~/.local/share/applications
+    
+    # Make both Desktop Entries executable
     chmod +x $HOME/Desktop/VoxNovel.desktop
+    chmod +x ~/.local/share/applications/VoxNovel.desktop
     # Make the Ubuntu voxnovel run script executable
     chmod +x $HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
-
-
+    # Update the application database
+    sudo update-desktop-database
 
     
 else
