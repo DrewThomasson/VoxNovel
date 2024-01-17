@@ -52,6 +52,7 @@ if [ "$(uname)" == "Linux" ]; then
     pip install styletts2 
     pip install tts==0.21.3
     pip install booknlp
+    pip install bs4
     pip install -r Ubuntu_requirements.txt
 
     # Download the spaCy language model
