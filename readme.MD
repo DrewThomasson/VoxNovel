@@ -57,7 +57,7 @@ Run in this order:
 
 ##  if on Linux
 
-##  super easy single terminal command full install:
+##  Single command Ubuntu install:
 1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
 -This will also create a desktop shortcut to run Voxnovel as well.
 
