@@ -5,6 +5,8 @@ if [ "$(uname)" == "Linux" ]; then
 
     # Update package lists
     sudo apt-get update
+    sudo apt update
+    sudo apt install git
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
