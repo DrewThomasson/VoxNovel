@@ -45,10 +45,13 @@ if [ "$(uname)" == "Linux" ]; then
     cd VoxNovel
 
     # Install necessary Python packages
-    pip install styletts2 tts==0.21.3 booknlp
+    pip install styletts2 
+    pip install tts==0.21.3
+    pip install booknlp
     pip install -r Ubuntu_requirements.txt
 
     # Download the spaCy language model
+    pip install spacy
     python -m spacy download en_core_web_sm
 else
     echo "This script is intended to be run on Linux."
