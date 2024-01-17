@@ -54,8 +54,15 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 
 Run in this order:
 
+
 ##  if on Linux
 
+##  super easy single terminal command full install:
+1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
+-This will also create a desktop shortcut to run Voxnovel as well.
+
+
+##  or manual install:
 1. `sudo apt-get install calibre`
 2. `conda create --name VoxNovel python=3.10`
 3. `conda activate VoxNovel`
