@@ -9,6 +9,9 @@ if [ "$(uname)" == "Linux" ]; then
     sudo apt upgrade
     sudo apt install git
     sudo apt install calibre
+    sudo apt install espeak
+    sudo apt install espeak-ng
+    sudo apt install ffmpeg
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
