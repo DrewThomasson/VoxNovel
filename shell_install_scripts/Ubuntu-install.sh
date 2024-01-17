@@ -58,6 +58,27 @@ if [ "$(uname)" == "Linux" ]; then
     # Download the spaCy language model
     pip install spacy
     python -m spacy download en_core_web_sm
+
+
+
+    # Create a Desktop Entry for the VoxNovel app
+    echo "[Desktop Entry]
+    Version=1.0
+    Type=Application
+    Name=VoxNovel
+    Exec=$HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
+    Icon=$HOME/VoxNovel/readme_files/logo.jpeg
+    Terminal=false
+    " > $HOME/Desktop/VoxNovel.desktop
+
+    # Make the Desktop Entry executable
+    chmod +x $HOME/Desktop/VoxNovel.desktop
+    # Make the Ubuntu voxnovel run script executable
+    chmod +x $HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
+
+
+
+    
 else
     echo "This script is intended to be run on Linux."
 fi
