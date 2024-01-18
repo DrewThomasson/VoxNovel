@@ -178,7 +178,10 @@ This means all you do is select the book and all the voices will be auto assigne
 **folders**
 
 Final_combined_output_audio:
--This is where all of your final audio files will be put in order of chapter num
+-This is where all of your chapter audio files will be put in order of chapter num
+
+output_audiobooks:
+-This is where all of your m4b audiobook files will be stored
 
 ## Features
 - Free and entirely locally run
