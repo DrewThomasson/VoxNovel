@@ -19,10 +19,10 @@ if [ "$(uname)" == "Linux" ]; then
     fi
 
     # Check for Python 3.10 or later and install if needed
-    python_version=$(python3 --version 2>&1)
-    if [[ ! "$python_version" =~ ^Python\ (3\.1[0-9]|3\.[2-9]\.|[4-9]\.) ]]; then
-        sudo apt-get install python3.10
-    fi
+    #python_version=$(python3 --version 2>&1)
+    #if [[ ! "$python_version" =~ ^Python\ (3\.1[0-9]|3\.[2-9]\.|[4-9]\.) ]]; then
+    #    sudo apt-get install python3.10
+    #fi
 
     # Check for Conda and install if needed
     if ! command -v conda &> /dev/null; then
