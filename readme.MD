@@ -127,8 +127,9 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
 
 1. In your PowerShell, paste `wsl --install` to install WSL.
+2. In your PowerShell, paste `wsl --update --pre-release` to update WSL to a pre-release version, right now the prerelease has all the sound and such working.
 
-2. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
+3. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
 
    (This will install Calibre for ebook conversion)
    `cd ~`
