@@ -1,33 +1,16 @@
 #!/bin/bash
 
-# Update package lists
-sudo apt-get update
-sudo apt update
-sudo apt upgrade
-sudo apt install git
-sudo apt install calibre
-sudo apt install espeak
-sudo apt install espeak-ng
-sudo apt install ffmpeg
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install git
-sudo apt-get install calibre
-sudo apt-get install espeak
-sudo apt-get install espeak-ng
-sudo apt-get install ffmpeg
 # Check if the script is running on Linux
 if [ "$(uname)" == "Linux" ]; then
 
     # Update package lists
     sudo apt-get update
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install git
-    sudo apt install calibre
-    sudo apt install espeak
-    sudo apt install espeak-ng
-    sudo apt install ffmpeg
+    sudo apt-get upgrade
+    sudo apt-get install -y git
+    sudo apt-get install -y calibre
+    sudo apt-get install -y espeak
+    sudo apt-get install -y espeak-ng
+    sudo apt-get install -y ffmpeg
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
