@@ -5,17 +5,16 @@ if [ "$(uname)" == "Linux" ]; then
 
     # Update package lists
     sudo apt-get update
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install git
-    sudo apt install calibre
-    sudo apt install espeak
-    sudo apt install espeak-ng
-    sudo apt install ffmpeg
+    sudo apt-get upgrade -y
+    sudo apt-get install -y git
+    sudo apt-get install -y calibre
+    sudo apt-get install -y espeak
+    sudo apt-get install -y espeak-ng
+    sudo apt-get install -y ffmpeg
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
-        sudo apt-get install python3-pip
+        sudo apt-get install -y python3-pip
     fi
 
     # Check for Python 3.10 or later and install if needed
@@ -43,9 +42,6 @@ if [ "$(uname)" == "Linux" ]; then
     source ~/miniconda/bin/activate
     conda init
     conda activate VoxNovel
-
-    # Install Calibre
-    sudo apt-get install calibre
 
     # Clone the VoxNovel repository
     git clone https://github.com/DrewThomasson/VoxNovel.git
