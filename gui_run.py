@@ -2363,6 +2363,11 @@ import random
 import pygame
 
 
+# Initialize the main window
+root = tk.Tk()
+root.title("Book Viewer(Beta; close out of this window)")
+
+
 #add_voice_actors_to_csv()
 #add_languages_to_csv()
 
@@ -2383,9 +2388,6 @@ fast_tts = ""
 
 voice_actor_dropdown_active = False
 
-# Initialize the main window
-root = tk.Tk()
-root.title("Book Viewer(Beta; close out of this window)")
 
 # Define and shuffle colors
 sublime_colors = ['#66D9EF', '#A6E22E', '#F92672', '#FD971F', '#E6DB74', '#AE81FF']
