@@ -12,6 +12,9 @@ VoxNovel is an innovative program that leverages the capabilities of booknlp to 
 .epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
 (Best results are from using epub or mobi for auto chapter detection)
 
+### Included TTS Models
+All Coqui TTS models-(Tacotron, Tacotron2, Glow-TTS, Speedy-Speech, Align-TTS, FastPitch, FastSpeech, FastSpeech2, SC-GlowTTS, Capacitron, OverFlow, Neural HMM TTS, Delightful TTS, ⓍTTS, VITS, 🐸 YourTTS, 🐢 Tortoise, 🐶 Bark), and STYLETTS2.
+
 ### outputs as a m4b with all book metadata and chapters, example output file in a audiobook player app
 ![Example_of_output_in_audiobook_program](https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/example_in_app.jpeg)
 
