@@ -67,15 +67,16 @@ Run in this order:
 
 ##  or manual install:
 1. `sudo apt-get install calibre`
-2. `conda create --name VoxNovel python=3.10`
-3. `conda activate VoxNovel`
-4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel`
-6. `pip install styletts2`
-7. `pip install tts==0.21.3`
-8. `pip install booknlp`
-9. `pip install -r Ubuntu_requirements.txt`
-10. `python -m spacy download en_core_web_sm`
+2. `sudo apt-get install ffmpeg`
+3. `conda create --name VoxNovel python=3.10`
+4. `conda activate VoxNovel`
+5. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+6. `cd VoxNovel`
+7. `pip install styletts2`
+8. `pip install tts==0.21.3`
+9. `pip install booknlp`
+10. `pip install -r Ubuntu_requirements.txt`
+11. `python -m spacy download en_core_web_sm`
 
 
 ##  if on Steam Deck) (x86_64 Arch Linux)
