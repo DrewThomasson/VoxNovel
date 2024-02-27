@@ -115,13 +115,14 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 ##  If on intel mac 
 
 1. `brew install calibre`
-2. `conda create --name VoxNovel python=3.10`
-3. `conda activate VoxNovel`
-4. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-5. `cd VoxNovel`
-6. `pip install styletts2`
-7. `pip install tts==0.21.3`
-8. `pip install booknlp`
+2. `brew install ffmpeg`
+3. `conda create --name VoxNovel python=3.10`
+4. `conda activate VoxNovel`
+5. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+6. `cd VoxNovel`
+7. `pip install styletts2`
+8. `pip install tts==0.21.3`
+9. `pip install booknlp`
 9.`pip install -r MAC-requirements.txt`
 10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
@@ -140,6 +141,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
    `sudo apt update`
    `sudo apt upgrade`
    `sudo apt install calibre`
+    `sudo apt install ffmpeg`
 
    (This will install Miniconda)
 Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/latest/
