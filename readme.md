@@ -8,10 +8,6 @@
 VoxNovel is an innovative program that leverages the capabilities of booknlp to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice through coqui tts. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
 
 
-### 📚 Supported ebook File Types: 
-.epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
-(Best results are from using epub or mobi for auto chapter detection)
-
 ### 🗣️ Included TTS Models
 All Coqui TTS models-(Tacotron, Tacotron2, Glow-TTS, Speedy-Speech, Align-TTS, FastPitch, FastSpeech, FastSpeech2, SC-GlowTTS, Capacitron, OverFlow, Neural HMM TTS, Delightful TTS, ⓍTTS, VITS, 🐸 YourTTS, 🐢 Tortoise, 🐶 Bark), and STYLETTS2.
 
@@ -213,6 +209,13 @@ This means all you do is select the book and all the voices will be auto assigne
 
 `python auto_noGui_run.py`
 </details>
+
+
+## 📚 Supported ebook File Types: 
+.epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
+
+ - (Best results are from using epub or mobi for auto chapter detection)
+
 
 ## Folders
 <details>
