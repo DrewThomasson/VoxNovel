@@ -15,6 +15,28 @@ VoxNovel is an innovative program that leverages the capabilities of booknlp to 
 ### Included TTS Models
 All Coqui TTS models-(Tacotron, Tacotron2, Glow-TTS, Speedy-Speech, Align-TTS, FastPitch, FastSpeech, FastSpeech2, SC-GlowTTS, Capacitron, OverFlow, Neural HMM TTS, Delightful TTS, ⓍTTS, VITS, 🐸 YourTTS, 🐢 Tortoise, 🐶 Bark), and STYLETTS2.
 
+
+<details>
+<summary> Accents you can give each charcter with the default cloning model (XTTS) </summary>
+  - They also allow them to speak these languages, but the quotation attribution won't correctly identify for anything thats not English.
+English (en),
+Spanish (es),
+French (fr),
+German (de),
+Italian (it),
+Portuguese (pt),
+Polish (pl),
+Turkish (tr),
+Russian (ru),
+Dutch (nl),
+Czech (cs),
+Arabic (ar),
+Chinese (zh-cn),
+Japanese (ja),
+Hungarian (hu),
+Korean (ko)
+</details>
+
 ### outputs as a m4b with all book metadata and chapters, example output file in a audiobook player app
 ![Example_of_output_in_audiobook_program](https://github.com/DrewThomasson/VoxNovel/blob/dc5197dff97252fa44c391dc0596902d71278a88/readme_files/example_in_app.jpeg)
 
@@ -196,28 +218,32 @@ Final_combined_output_audio: This is where all of your chapter audio files will 
 
 output_audiobooks: This is where all of your m4b audiobook files will be stored
 
+Working_files: Holds all of the working files used by the program while activly running.
+
+tortoise: Holds all the sample voice files
+
 ## Features
-- Free and entirely locally run
-- Supports all ebook file formats by using calibre
-- Can run on CPU or CUDA GPU
-- Autoselects a starting estimated voice by pronouns per character
-- Supports all models in Coqui TTS and all voices in the models
-- Easily create a new voice actor in seconds through voice cloning in GUI
-- Can play audio by clicking on the text in the book viewer in GUI
-- Ability to regenerate specific lines if they came out weird
-- Ability to add custome fine tuned models for specific voice with the click of a button in GUI
-- Outputs a single file output as m4b to include all the metadata(chapters book image ect)
--Supports styletts2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
+- [x] Free and entirely locally run
+- [x] Supports all ebook file formats by using calibre
+- [x] Can run on CPU or CUDA GPU
+- [x] Autoselects a starting estimated voice by pronouns per character
+- [x] Supports all models in Coqui TTS and all voices in the models
+- [x] Easily create a new voice actor in seconds through voice cloning in GUI
+- [x] Can play audio by clicking on the text in the book viewer in GUI
+- [x] Ability to regenerate specific lines if they came out weird
+- [x] Ability to add custome fine tuned models for specific voice with the click of a button in GUI
+- [x] Outputs a single file output as m4b to include all the metadata(chapters book image ect)
+- [x] Supports styletts2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 
 
 
 
 ## Incoming Planned Features
-- Ability to change the character for a line if incorrectly attributed by booknlp
-- Make it so that all the included voices and models already have their premade own demo voices
-- Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
-- Using whisper transcriptions to cut hallucinations out of generated audio
-- adding a low vram checkbox option in gui
+- [ ] Ability to change the character for a line if incorrectly attributed by booknlp
+- [ ] Make it so that all the included voices and models already have their premade own demo voices
+- [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
+- [ ] Using whisper transcriptions to cut hallucinations out of generated audio
+- [ ] adding a low vram checkbox option in gui
 
 ## Special thanks to:
 -@sidharthrajaram
