@@ -3,21 +3,21 @@
 
 
 
-## Overview
+## 📋 Overview
 
 VoxNovel is an innovative program that leverages the capabilities of booknlp to analyze literature, attribute quotations to specific characters, and generate a tailored audiobook where each character has a distinct voice through coqui tts. This not only provides an immersive audiobook experience but also brings each character to life with a unique voice, making the listening experience much more engaging.
 
 
-### Supported ebook File Types: 
+### 📚 Supported ebook File Types: 
 .epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
 (Best results are from using epub or mobi for auto chapter detection)
 
-### Included TTS Models
+### 🗣️ Included TTS Models
 All Coqui TTS models-(Tacotron, Tacotron2, Glow-TTS, Speedy-Speech, Align-TTS, FastPitch, FastSpeech, FastSpeech2, SC-GlowTTS, Capacitron, OverFlow, Neural HMM TTS, Delightful TTS, ⓍTTS, VITS, 🐸 YourTTS, 🐢 Tortoise, 🐶 Bark), and STYLETTS2.
 
 
 <details>
-<summary> Accents you can give each charcter with the default cloning model (XTTS) </summary>
+<summary> 🌍🎙️ Accents you can give each character with the default cloning model (XTTS) </summary>
   - They also allow them to speak these languages, but the quotation attribution won't correctly identify for anything thats not English.
 English (en),
 Spanish (es),
@@ -42,12 +42,13 @@ Korean (ko)
 
 (as well as a folder of individual mp4 chatper files with ebook image embedded in them if you want that)
 
-   **DEMO**
-
-
+## 🔊 DEMOS
  **High Quality XTTS V2 Demos**
  
 https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/9e10b36d-b2e9-4462-8bad-13a3d8fce192
+<details>
+  
+<summary> 🔊🎉 More Demo Audio files :) </summary>
 
 
  **High Quality Tortoise Demos**
@@ -64,6 +65,7 @@ https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-48
  **Super High Quality testing with fine tuned models **
 
 https://github.com/DrewThomasson/bark/assets/126999465/5da79b9d-2974-471e-a564-31a180ba2833
+</details>
 
 You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
 https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
@@ -81,7 +83,7 @@ Run in this order:
 
 
 <details>
-<summary> Linux </summary>
+<summary> 🐧 Linux </summary>
 ##  Single command Ubuntu install:(Do not use if you already have miniconda installed.)
 1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
 -This will also create a desktop shortcut to run Voxnovel as well.
@@ -202,7 +204,7 @@ You can access the files on your WSL Ubuntu in Windows File Explorer by putting 
 </details>
 
 
-##   To Run the program
+## 🚀 To Run the program
 `python gui_run.py`
 
 <details>
@@ -213,16 +215,20 @@ This means all you do is select the book and all the voices will be auto assigne
 </details>
 
 ## Folders
+<details>
+  
+<summary> 📂 Folders used by the program </summary>
+/Final_combined_output_audio: This is where all of your chapter audio files will be put in order of chapter num
 
-Final_combined_output_audio: This is where all of your chapter audio files will be put in order of chapter num
+/output_audiobooks: This is where all of your m4b audiobook files will be stored
 
-output_audiobooks: This is where all of your m4b audiobook files will be stored
+/Working_files: Holds all of the working files used by the program while activly running.
 
-Working_files: Holds all of the working files used by the program while activly running.
+/tortoise: Holds all the sample voice files
+</details>
 
-tortoise: Holds all the sample voice files
+## 🌟 Features
 
-## Features
 - [x] Free and entirely locally run
 - [x] Supports all ebook file formats by using calibre
 - [x] Can run on CPU or CUDA GPU
@@ -233,19 +239,17 @@ tortoise: Holds all the sample voice files
 - [x] Ability to regenerate specific lines if they came out weird
 - [x] Ability to add custome fine tuned models for specific voice with the click of a button in GUI
 - [x] Outputs a single file output as m4b to include all the metadata(chapters book image ect)
-- [x] Supports styletts2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
+- [x] Supports STYLETTS2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 
 
-
-
-## Incoming Planned Features
+## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
 - [ ] Make it so that all the included voices and models already have their premade own demo voices
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
 - [ ] adding a low vram checkbox option in gui
 
-## Special thanks to:
+## 🙏 Special thanks to:
 -@sidharthrajaram
 (for his Styletts2 pip install he created, I couldn't of added styletts2 without him. :)  )
 (https://github.com/sidharthrajaram/StyleTTS2)
