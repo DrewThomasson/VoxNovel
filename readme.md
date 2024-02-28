@@ -232,12 +232,12 @@ This means all you do is select the book and all the voices will be auto assigne
 
 ## GUI functions
 <details>
-<summary> GUI Part 1 </summary>
+<summary> GUI Part 1 (BookNLP Processor) </summary>
   -"Process File" button: Click and it'll ask you to select a ebook file.
 </details>
 
 <details>
-<summary> GUI Part 2 </summary>
+<summary> GUI Part 2 (Coqui TTS GUI) </summary>
 
 - **Select TTS Model Dropdown:** This selects the TTS model that will be used for voice cloning.
 - **Include fast Voice Models Checkbox:** (Fast generate at cost of audio quality) Click this to be able to see every other model and singular voices supported by Coqui TTS.
@@ -263,7 +263,9 @@ This means all you do is select the book and all the voices will be auto assigne
 
 
 <details>
-<summary> GUI Part 3 </summary>
+<summary> GUI Part 3 (Book Viewer) </summary>
+  -It's hard to explain its more of a playground if you mess around with it then you should get how it works. But it can be used to fine tune the audiobook
+  -Close out of the window when your done with it.
 </details>
 
 ## 🌟 Features
