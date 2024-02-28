@@ -211,6 +211,7 @@ output_audiobooks:
 - Make it so that all the included voices and models already have their premade own demo voices
 - Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - Using whisper transcriptions to cut hallucinations out of generated audio
+- adding a low vram checkbox option in gui
 
 ## Special thanks to:
 -@sidharthrajaram
