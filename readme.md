@@ -243,6 +243,7 @@ This means all you do is select the book and all the voices will be auto assigne
 - [x] Ability to add custome fine tuned models for specific voice with the click of a button in GUI
 - [x] Outputs a single file output as m4b to include all the metadata(chapters book image ect)
 - [x] Supports STYLETTS2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
+- [x] Includes 26 default voices for cloning
 
 
 ## 🔜 Incoming Planned Features
