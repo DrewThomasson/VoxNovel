@@ -53,13 +53,13 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 <img width="585" alt="gui_3_run" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_2_run.png">
 
 
-# SetUp install
+## 📦 SetUp Install
 
 Run in this order:
 
 
-##  if on Linux
-
+<details>
+<summary> Linux </summary>
 ##  Single command Ubuntu install:(Do not use if you already have miniconda installed.)
 1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
 -This will also create a desktop shortcut to run Voxnovel as well.
@@ -72,14 +72,16 @@ Run in this order:
 4. `conda activate VoxNovel`
 5. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 6. `cd VoxNovel`
-7. `pip install styletts2`
-8. `pip install tts==0.21.3`
-9. `pip install booknlp`
-10. `pip install -r Ubuntu_requirements.txt`
-11. `python -m spacy download en_core_web_sm`
+7. `pip install bs4`
+8. `pip install styletts2`
+9. `pip install tts==0.21.3`
+10. `pip install booknlp`
+11. `pip install -r Ubuntu_requirements.txt`
+12. `python -m spacy download en_core_web_sm`
+</details>
 
-
-##  if on Steam Deck) (x86_64 Arch Linux)
+<details>
+<summary> Steam Deck) (x86_64 Arch Linux) </summary>
 
 1. `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
 2. `also download it from the discovery store or flatpac I did both on my steam deck`
@@ -111,8 +113,11 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 23. `pip install mechanize`
 24. `pip install bs4`
 25. `pip install css_parser`
+</details>
 
-##  If on intel mac 
+
+<details>
+<summary> Intel mac </summary>
 
 1. `brew install calibre`
 2. `brew install ffmpeg`
@@ -126,9 +131,11 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 9.`pip install -r MAC-requirements.txt`
 10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
+</details>
 
-## If on Windows 11
 
+<details>
+<summary> Windows 11 </summary>
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
 
 1. In your PowerShell, paste `wsl --install` to install WSL.
@@ -170,25 +177,24 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `sudo apt install espeak-ng`
 
 You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
-
+</details>
 
 
 ##   To Run the program
 `python gui_run.py`
 
-
-##  To Run the auto program
+<details>
+<summary> To Run the auto program (Don't use temporarily on hold) </summary>
 This means all you do is select the book and all the voices will be auto assigned and generated for you.
 
 `python auto_noGui_run.py`
+</details>
 
-**folders**
+## Folders
 
-Final_combined_output_audio:
--This is where all of your chapter audio files will be put in order of chapter num
+Final_combined_output_audio: This is where all of your chapter audio files will be put in order of chapter num
 
-output_audiobooks:
--This is where all of your m4b audiobook files will be stored
+output_audiobooks: This is where all of your m4b audiobook files will be stored
 
 ## Features
 - Free and entirely locally run
