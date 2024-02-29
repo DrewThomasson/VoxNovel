@@ -1208,7 +1208,7 @@ def update_voice_actor(speaker):
 
 
 # Function to split long strings into parts
-def split_long_string(text, limit=250):
+def split_long_string(text, limit=150):
     if len(text) <= limit:
         return [text]
     
