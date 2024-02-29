@@ -202,6 +202,41 @@ You can access the files on your WSL Ubuntu in Windows File Explorer by putting 
 
 ## 🚀 To Run the program
 `python gui_run.py`
+<details>
+<summary> Running with Low VRAM (4 GB) </summary>
+
+### Modifications
+- Turns out once you set the device it stays like that for the full program.
+- So, I've split the program into two Python programs: one CPU and one GPU. I've tested this on my (4GB VRAM GPU) and this solution works. at least on my end I really hope it works on your end. 🙏
+
+
+### To run the fix I've made tailor made for a low Vram GPU situation:
+
+To run the provided scripts on your system, follow these steps in order:
+
+1. **Book Processing (CPU Only):** 
+   - Script: [1CPU_Book_processing.py](https://github.com/DrewThomasson/VoxNovel/blob/main/1CPU_Book_processing.py)
+   - This script handles the task of only processing the book using BookNLP, specifically forcing it to run on the CPU.
+
+2. **Audio Generation (GPU Only):**
+   - Script: [2GPU_Audio_generation.py](https://github.com/DrewThomasson/VoxNovel/blob/main/2GPU_Audio_generation.py)
+   - This script is dedicated to only generating audio with the GPU and should be run after completing the book processing with `1CPU_Book_processing.py`.
+
+### Performance Results
+
+Upon running a mini test with an epub file using the above setup, the following performance metrics were observed:
+
+### Performance Results
+Testing on done with the mini epub file located in the Example_working_files.zip
+
+| Task               | Configuration                                                    | Time (Seconds)       |
+|--------------------|------------------------------------------------------------------|----------------------|
+| **Book Processing**    | GPU only (GeForce GTX 980), 4GB VRAM, 32GB RAM, Intel i7-8700K   | 2.922                |
+| **Audio Generation**   | GPU only (GeForce GTX 980), 4GB VRAM, 32GB RAM, Intel i7-8700K   | 128.48               |
+| **Book Processing**    | CPU only, 32GB RAM, Intel i7-8700K                              | 4.964                |
+| **Audio Generation**   | CPU only, 32GB RAM, Intel i7-8700K                              | 391.4227    |
+
+</details>
 
 <details>
 <summary> To Run the auto program (Don't use temporarily on hold) </summary>
