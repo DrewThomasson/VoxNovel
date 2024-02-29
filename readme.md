@@ -86,6 +86,7 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 - **Add Fine-tuned Xtts model to voice actor Button:** If you have a folder containing all the parameters of a fine-tuned Xtts model of a specific voice, then you can click this to make that voice actor clone with that fine-tuned Xtts model, to provide much better voice cloning results.
 - **Character voices Dropdowns:** These are the dropdowns for selecting the Voice Actor (and the Accent of each character if using XTTS).
   - (1): The Voice actors available to select from for this character. (Default value is audio selected based on inferred gender of character being: "F, M, Other").
+     - When you select a voice It will play the audio sample of that voice, if it's a fast voice model voice and a refrence audio does not exist, then it will generate one to play.
   - (2): The Accents available to select from for this character. (Optional, Default is English).
 - **Chapter Delimiter Field:** Will change the default chapter delimiter (The string that's used to identify chapters).
 - **Silence Duration in milliseconds (ms) Field:** This will change the amount of milliseconds in between each combined chunk of audio.
@@ -315,6 +316,7 @@ This means all you do is select the book and all the voices will be auto assigne
 - **Add Fine-tuned Xtts model to voice actor Button:** If you have a folder containing all the parameters of a fine-tuned Xtts model of a specific voice, then you can click this to make that voice actor clone with that fine-tuned Xtts model, to provide much better voice cloning results.
 - **Character voices Dropdowns:** These are the dropdowns for selecting the Voice Actor (and the Accent of each character if using XTTS).
   - (1): The Voice actors available to select from for this character. (Default value is audio selected based on inferred gender of character being: "F, M, Other").
+     - When you select a voice It will play the audio sample of that voice, if it's a fast voice model voice and a refrence audio does not exist, then it will generate one to play.
   - (2): The Accents available to select from for this character. (Optional, Default is English).
 - **Chapter Delimiter Field:** Will change the default chapter delimiter (The string that's used to identify chapters).
 - **Silence Duration in milliseconds (ms) Field:** This will change the amount of milliseconds in between each combined chunk of audio.
