@@ -1991,7 +1991,7 @@ def generate_audio():
 
     end_timez = time.time()
     durationz = end_timez - start_timez
-    print("POOP FUCK GENERATION TIME:" + str(durationz))
+    print("GENERATION TIME:" + str(durationz))
 
     root.destroy()
 
