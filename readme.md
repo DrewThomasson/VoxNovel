@@ -69,9 +69,41 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 ## GUI
 
 <img width="200" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
+<details>
+<summary> GUI Part 1 (BookNLP Processor) Info/Features </summary>
+  -"Process File" button: Click and it'll ask you to select a ebook file.
+</details>
 <img width="1000" alt="gui_2_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_3_finetune.png">
-<img width="585" alt="gui_3_run" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_2_run.png">
+<details>
+<summary> GUI Part 2 (Coqui TTS GUI) Info/Features </summary>
 
+- **Select TTS Model Dropdown:** This selects the TTS model that will be used for voice cloning.
+- **Include fast Voice Models Checkbox:** (Fast generate at cost of audio quality) Click this to be able to see every other model and singular voices supported by Coqui TTS.
+  - It will update the "Select TTS Model" Dropdown for voice cloning models to also include (List of values to be added).
+  - It will update the Dropdown for voices to select for each character to also include (List of values to be added).
+- **Make all audio generate with Narrator voice Checkbox:** This will make every character's audio be generated with the voice you have selected for the Narrator when you click the "Generate audio" button.
+- **Clone new voice Button:** Click this to add a new voice you can clone (make sure you have a reference audio file on hand).
+- **Add Fine-tuned Xtts model to voice actor Button:** If you have a folder containing all the parameters of a fine-tuned Xtts model of a specific voice, then you can click this to make that voice actor clone with that fine-tuned Xtts model, to provide much better voice cloning results.
+- **Character voices Dropdowns:** These are the dropdowns for selecting the Voice Actor (and the Accent of each character if using XTTS).
+  - (1): The Voice actors available to select from for this character. (Default value is audio selected based on inferred gender of character being: "F, M, Other").
+  - (2): The Accents available to select from for this character. (Optional, Default is English).
+- **Chapter Delimiter Field:** Will change the default chapter delimiter (The string that's used to identify chapters).
+- **Silence Duration in milliseconds (ms) Field:** This will change the amount of milliseconds in between each combined chunk of audio.
+- **Select TTS Language Dropdown:** This will let you select the default Accent used for every character which has not had the Accent manually selected for.
+- **Loading bar:** Will give an approximate amount of time left. (Estimate, you probably won't see accurate predictions until it's been running for 5 min).
+- **Annotated book preview Block:** This will show the entirety of the book with each character's lines color-coded.
+  - You can click on a line while the audiobook is being generated to hear what that generated line sounds like. But only if the line has already had audio generated for it; if not, it'll play nothing.
+- **Load Book Button:** Clicking this will reload the color-coded annotated book view, it will just randomize the selected colors for each character's lines.
+- **Generate Audio Button:** Will start generating the full audiobook.
+- **Select random voices Button (Will only be visible if the "include fast Voice Models" checkbox is checked):** Will Select an auto-gender-inferred fast model voice for every character except for the narrator's voice.
+
+</details>
+<img width="585" alt="gui_3_run" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_2_run.png">
+<details>
+<summary> GUI Part 3 (Book Viewer) Info/Features </summary>
+  -It's hard to explain its more of a playground if you mess around with it then you should get how it works. But it can be used to fine tune the audiobook
+  -Close out of the window when your done with it.
+</details>
 
 ## 📦 SetUp Install
 
