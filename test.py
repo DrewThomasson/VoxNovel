@@ -319,12 +319,14 @@ from epub2txt import epub2txt
 from booknlp.booknlp import BookNLP
 import nltk
 import re
+import torch
 nltk.download('averaged_perceptron_tagger')
 
 epub_file_path = ""
 chapters = []
 ebook_file_path = ""
 input_file_is_txt = False
+global_Low_vram_checkbox_var = False
 def convert_epub_and_extract_chapters(epub_path):
     # Regular expression to match the chapter lines in the output
     chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
@@ -377,6 +379,12 @@ def convert_with_calibre(file_path, output_format="txt"):
     return output_path
 
 def process_file():
+    if Low_vram_checkbox_var.get():
+        os.environ['CUDA_VISIBLE_DEVICES'] = ''
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("Low Vram mode turned turned on turning gpu off temporarily for book processing")
+        print("Running book processing on detected device: " + str(device))
+
     global epub_file_path
     global ebook_file_path
     global input_file_is_txt
@@ -443,6 +451,13 @@ def process_file():
     if epub_file_path == "":
         chapters = convert_epub_and_extract_chapters(epub_file_path)
     print("Success, File processed successfully!")
+
+    if Low_vram_checkbox_var.get():
+        del os.environ['CUDA_VISIBLE_DEVICES']
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("Low Vram mode turned: " + Low_vram_checkbox_var.get())
+        print("Book processing complete turning GPU access back on for pytorch")
+        print("Audio generation will be run on detected device: " + str(device))
     
     # Close the GUI
     root.destroy()
@@ -450,11 +465,29 @@ def process_file():
 root = tk.Tk()
 root.title("BookNLP Processor")
 
+def toggle_low_vram_mode():
+    global global_Low_vram_checkbox_var
+    global_Low_vram_checkbox_var = Low_vram_checkbox_var.get()
+    print("Low Vram mode:", Low_vram_checkbox_var.get())
+    print("Low Vram mode:", global_Low_vram_checkbox_var)
+
+
+
+
 frame = tk.Frame(root, padx=20, pady=20)
 frame.pack(padx=10, pady=10)
 
 process_button = tk.Button(frame, text="Process File", command=process_file)
 process_button.pack()
+
+# Create a BooleanVar to hold the boolean value
+Low_vram_checkbox_var = tk.BooleanVar()
+
+# Create a Checkbutton widget
+checkbox = tk.Checkbutton(root, text="Low Vram Mode", variable=Low_vram_checkbox_var, onvalue=True, offvalue=False, command=toggle_low_vram_mode)
+
+# Display the Checkbutton
+checkbox.pack()
 
 root.mainloop()
 
@@ -1191,14 +1224,33 @@ def update_voice_actor(speaker):
 
 
 # Function to split long strings into parts
-def split_long_string(text, limit=250):
+def split_long_string(text, limit=170):
     if len(text) <= limit:
         return [text]
     
     # Split by commas
-    parts = text.split(',')
+    #parts = text.split(',')
+    parts = []
     new_parts = []
     
+
+    # List of pause-inducing punctuation marks
+    punctuations = [',', ';', ':', '.']
+
+    num_pauses = sum(text.count(punc) for punc in punctuations)
+
+
+    if num_pauses > 6:
+        pause_positions = [i for i, char in enumerate(text) if char in punctuations]
+        middle_pause_index = pause_positions[len(pause_positions) // 2]
+
+        # Split the sentence at the middle pause
+        part1 = text[:middle_pause_index + 1].strip()
+        part2 = text[middle_pause_index + 1:].strip()
+        parts.extend([part1, part2])  # Add part1 and part2 to parts list
+
+
+
     for part in parts:
         while len(part) > limit:
             # Split at the last space before the limit
@@ -1743,6 +1795,14 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
     elapsed_time = end_time - start_time
     print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
+
+# Function to show device info in a popup
+def show_device_info_popup():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device_info = f"PyTorch is using the {str(device).upper()} device."
+    messagebox.showinfo("Device Information", device_info)
+
+
 # Function to generate audio for the text
 def generate_audio():
     # Get device
@@ -1753,6 +1813,8 @@ def generate_audio():
     
     global current_model
     global STTS
+    global global_Low_vram_checkbox_var
+    print(global_Low_vram_checkbox_var)
 
     #this will make it so that I can't modify the chapter delminator after I click generate
     disable_chapter_delimiter_entry()
@@ -1769,7 +1831,9 @@ def generate_audio():
     #fast_tts = TTS(multi_voice_model1, progress_bar=True).to(device)
     
     
-    
+    # Show the device info popup
+    if global_Low_vram_checkbox_var:
+        show_device_info_popup()
     
     
     random.seed(int(time.time()))
