@@ -250,10 +250,12 @@ To run the provided scripts on your system, follow these steps in order:
 1. **Book Processing (CPU Only):** 
    - Script: [1CPU_Book_processing.py](https://github.com/DrewThomasson/VoxNovel/blob/main/1CPU_Book_processing.py)
    - This script handles the task of only processing the book using BookNLP, specifically forcing it to run on the CPU.
+   - Run with 'python 1CPU_Book_processing.py'
 
 2. **Audio Generation (GPU Only):**
    - Script: [2GPU_Audio_generation.py](https://github.com/DrewThomasson/VoxNovel/blob/main/2GPU_Audio_generation.py)
    - This script is dedicated to only generating audio with the GPU and should be run after completing the book processing with `1CPU_Book_processing.py`.
+   - Run with 'python 2GPU_Audio_generation.py'
 
 ### Performance Results
 
