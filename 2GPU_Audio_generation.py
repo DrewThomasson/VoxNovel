@@ -114,6 +114,7 @@ from bs4 import BeautifulSoup
 import re
 import csv
 import nltk
+import shutil
 
 # Only run the main script if Value is True
 def create_chapter_labeled_book(ebook_file_path):
@@ -137,6 +138,10 @@ def create_chapter_labeled_book(ebook_file_path):
     def save_chapters_as_text(epub_path):
         # Create the directory if it doesn't exist
         directory = "Working_files/temp_ebook"
+        #Clean up the text chapter folders by wiping it before creating chapters for selected ebook.
+        #Lazily done by just deleting the directly and everything in it.
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
         ensure_directory(directory)
 
         # Open the EPUB file
