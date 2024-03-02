@@ -1212,26 +1212,39 @@ def update_voice_actor(speaker):
             print(f"Could not play the audio file: {e}")
 
 
-# Function to split long strings into parts
-def split_long_string(text, limit=150):
-    if len(text) <= limit:
-        return [text]
+# Function to split long sentence strings into parts
+def split_long_sentence(sentence, max_length=250, max_pauses=10):
+    """
+    Recursively splits a sentence based on length or number of pauses.
     
-    # Split by commas
-    parts = text.split(',')
-    new_parts = []
-    
-    for part in parts:
-        while len(part) > limit:
-            # Split at the last space before the limit
-            break_point = part.rfind(' ', 0, limit)
-            if break_point == -1:  # If no space found, split at the limit
-                break_point = limit
-            new_parts.append(part[:break_point].strip())
-            part = part[break_point:].strip()
-        new_parts.append(part)
-    
-    return new_parts
+    :param sentence: The sentence to split.
+    :param max_length: Maximum allowed length of a sentence.
+    :param max_pauses: Maximum allowed number of pauses in a sentence.
+    :return: A list of sentence parts that meet the criteria.
+    """
+    # Check if the sentence meets the splitting criteria
+    if len(sentence) >= max_length or sentence.count(',') + sentence.count(';') + sentence.count('.') > max_pauses:
+        # Find the best place to split the sentence (middle pause or just the middle)
+        possible_splits = [i for i, char in enumerate(sentence) if char in ',;.']
+        
+        if possible_splits:
+            # Find the closest split point to the middle
+            middle_index = len(sentence) // 2
+            closest_split = min(possible_splits, key=lambda x: abs(x - middle_index))
+        else:
+            # If no punctuation to split on, choose the middle of the sentence
+            closest_split = len(sentence) // 2
+        
+        # Split the sentence
+        first_half = sentence[:closest_split + 1].strip()
+        second_half = sentence[closest_split + 1:].strip()
+        
+        # Recursively split each half if necessary
+        return split_long_sentence(first_half, max_length, max_pauses) + split_long_sentence(second_half, max_length, max_pauses)
+    else:
+        # If the sentence doesn't need splitting, return it as a single element list
+        return [sentence]
+
 
 
 def combine_wav_files(input_directory, output_directory, file_name):
@@ -1838,7 +1851,7 @@ def generate_audio():
         audio_tensors = []
         temp_count =0
         for sentence in sentences:
-            fragments = split_long_string(sentence)
+            fragments = split_long_sentence(sentence)
             for fragment in fragments:
                 # Check if the selected model is multilingual
                 if 'multilingual' in selected_tts_model:
@@ -2688,7 +2701,7 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
     audio_tensors = []
     temp_count = 0
     for sentence in sentences:
-        fragments = split_long_string(sentence)
+        fragments = split_long_sentence(sentence)
         for fragment in fragments:
             # Check if the selected model is multilingual
             if 'multilingual' in selected_tts_model:
