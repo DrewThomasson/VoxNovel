@@ -187,7 +187,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 </details>
 
 <details>
-<summary> Apple Silicon Mac (Tested on M1 8gb ram)</summary>
+<summary> Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
 
 1. `brew install calibre`(You might have to also install it manually from their site if this doesn't work)
 2. `brew install ffmpeg`
