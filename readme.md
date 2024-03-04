@@ -186,7 +186,26 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 11.`python -m spacy download en_core_web_sm`
 </details>
 
+<details>
+<summary> Apple Silicon Mac (Tested on M1 8gb ram)</summary>
 
+1. `brew install calibre`(You might have to also install it manually from their site if this doesn't work)
+2. `brew install ffmpeg`
+3. `conda create --name VoxNovel python=3.10`
+4. `conda activate VoxNovel`
+5. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+6. `cd VoxNovel`
+7. `pip install tensorflow-macos` (Also optional `pip install tensorflow-metal` But so far I haven't gotten gpu speedup yet
+8. `pip install styletts2`
+9. `pip install tts==0.21.3`
+10. `pip install --no-dependencies booknlp`
+11. `pip install transformers==4.30.0`
+12. `pip install tensorflow`
+13. `pip install -r MAC-requirements.txt`
+14. `pip install ebooklib bs4 epub2txt pygame moviepy spacy`
+15. `python -m spacy download en_core_web_sm`
+
+</details>
 <details>
 <summary> Windows 11 </summary>
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
