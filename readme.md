@@ -438,14 +438,13 @@ This means all you do is select the book and all the voices will be auto assigne
 - [x] Outputs a single file output as m4b to include all the metadata(chapters book image ect)
 - [x] Supports STYLETTS2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 - [x] Includes 26 default voices for cloning
-
+- [x] Low vram option(Details in readme)
 
 ## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
 - [ ] Make it so that all the included voices and models already have their premade own demo voices
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
-- [ ] Adding a low vram checkbox option in gui
 - [ ] Incorporating local model to generate sound effects when a book discribes a location or sound effect
 
 ## 🙏 Special thanks to:
