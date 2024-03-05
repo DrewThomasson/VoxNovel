@@ -131,6 +131,21 @@ Run in this order:
 10. `pip install booknlp`
 11. `pip install -r Ubuntu_requirements.txt`
 12. `python -m spacy download en_core_web_sm`
+
+
+
+<details>
+<summary>For non Latin-based Languages TTS support (Optional)</summary>
+
+Install Mecab for (Non Latin-based Languages tts support)(Optional):
+- Ubuntu: `sudo apt-get install -y mecab libmecab-dev mecab-ipadic-utf8`
+
+(For non Latin-based Languages tts support)(Optional)  
+`python -m unidic download`
+```bash
+pip install mecab mecab-python3 unidic
+```
+</details>
 </details>
 
 <details>
@@ -166,6 +181,9 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 23. `pip install mechanize`
 24. `pip install bs4`
 25. `pip install css_parser`
+
+
+
 </details>
 
 
@@ -184,6 +202,20 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 9.`pip install -r MAC-requirements.txt`
 10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
+
+
+<details>
+<summary>For non Latin-based Languages TTS support (Optional)</summary>
+
+Install Mecab for (Non Latin-based Languages tts support)(Optional):
+- macOS: `brew install mecab`, `brew install mecab-ipadic`
+
+(For non Latin-based Languages tts support)(Optional)  
+`python -m unidic download`
+```bash
+pip install mecab mecab-python3 unidic
+```
+</details>
 </details>
 
 <details>
@@ -204,6 +236,20 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 13. `pip install -r MAC-requirements.txt`
 14. `pip install ebooklib bs4 epub2txt pygame moviepy spacy`
 15. `python -m spacy download en_core_web_sm`
+
+
+
+<details>
+<summary>For non Latin-based Languages TTS support (Optional)</summary>
+
+Install Mecab for (Non Latin-based Languages tts support)(Optional):
+- macOS: `brew install mecab`, `brew install mecab-ipadic`
+(For non Latin-based Languages tts support)(Optional)  
+`python -m unidic download`
+```bash
+pip install mecab mecab-python3 unidic
+```
+</details>
 
 </details>
 <details>
@@ -249,6 +295,21 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `sudo apt install espeak-ng`
 
 You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+
+
+
+<details>
+<summary>For non Latin-based Languages TTS support (Optional)</summary>
+
+Install Mecab for (Non Latin-based Languages tts support)(Optional):
+- `sudo apt-get install -y mecab libmecab-dev mecab-ipadic-utf8`
+
+(For non Latin-based Languages tts support)(Optional)  
+`python -m unidic download`
+```bash
+pip install mecab mecab-python3 unidic
+```
+</details>
 </details>
 
 
