@@ -264,10 +264,12 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 2.  In your PowerShell, paste `wsl --update --pre-release` to update WSL to a pre-release version, right now the prerelease has all the sound and such working.
 
  
-3. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
+3. After you set the username and passsudo apt install nvidia-cuda-toolkitword, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
 4. run this command in the Ubuntu wsl for a single command install `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
 5. Congrates! VoxNovel should run in WSL now!
 </details>
+<details>
+<summary> InDepth Windows 11 install </summary>
 1. In your PowerShell, paste `wsl --install` to install WSL.
 2. In your PowerShell, paste `wsl --update --pre-release` to update WSL to a pre-release version, right now the prerelease has all the sound and such working.
 
@@ -307,7 +309,8 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `sudo apt install espeak-ng`
 
 You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
-
+</details>
+</details>
 
 
 <details>
