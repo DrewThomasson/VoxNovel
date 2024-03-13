@@ -255,7 +255,19 @@ pip install mecab mecab-python3 unidic
 <details>
 <summary> Windows 11 </summary>
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
+<details>
+<summary> Easy Windows 11 install </summary>
 
+
+  
+1. In your PowerShell, paste `wsl --install` to install WSL.
+2.  In your PowerShell, paste `wsl --update --pre-release` to update WSL to a pre-release version, right now the prerelease has all the sound and such working.
+
+ 
+3. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
+4. run this command in the Ubuntu wsl for a single command install `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
+5. Congrates! VoxNovel should run in WSL now!
+</details>
 1. In your PowerShell, paste `wsl --install` to install WSL.
 2. In your PowerShell, paste `wsl --update --pre-release` to update WSL to a pre-release version, right now the prerelease has all the sound and such working.
 
