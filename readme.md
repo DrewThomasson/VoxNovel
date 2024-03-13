@@ -114,6 +114,7 @@ Run in this order:
 <details>
 <summary> 🐧 Linux </summary>
 ##  Single command Ubuntu install:(Do not use if you already have miniconda installed.)
+  
 1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
 -This will also create a desktop shortcut to run Voxnovel as well.
 
