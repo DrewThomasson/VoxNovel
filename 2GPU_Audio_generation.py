@@ -1212,38 +1212,33 @@ def update_voice_actor(speaker):
             print(f"Could not play the audio file: {e}")
 
 
-# Function to split long sentence strings into parts
-def split_long_sentence(sentence, max_length=250, max_pauses=10):
+# Function to split long strings into parts
+def split_long_sentence(sentence, max_length=230, max_pauses=8):
     """
-    Recursively splits a sentence based on length or number of pauses.
+    Splits a sentence into parts based on length or number of pauses without recursion.
     
     :param sentence: The sentence to split.
     :param max_length: Maximum allowed length of a sentence.
     :param max_pauses: Maximum allowed number of pauses in a sentence.
     :return: A list of sentence parts that meet the criteria.
     """
-    # Check if the sentence meets the splitting criteria
-    if len(sentence) >= max_length or sentence.count(',') + sentence.count(';') + sentence.count('.') > max_pauses:
-        # Find the best place to split the sentence (middle pause or just the middle)
-        possible_splits = [i for i, char in enumerate(sentence) if char in ',;.']
-        
+    parts = []
+    while len(sentence) > max_length or sentence.count(',') + sentence.count(';') + sentence.count('.') > max_pauses:
+        possible_splits = [i for i, char in enumerate(sentence) if char in ',;.' and i < max_length]
         if possible_splits:
-            # Find the closest split point to the middle
-            middle_index = len(sentence) // 2
-            closest_split = min(possible_splits, key=lambda x: abs(x - middle_index))
+            # Find the best place to split the sentence, preferring the last possible split to keep parts longer
+            split_at = possible_splits[-1] + 1
         else:
-            # If no punctuation to split on, choose the middle of the sentence
-            closest_split = len(sentence) // 2
+            # If no punctuation to split on within max_length, split at max_length
+            split_at = max_length
         
-        # Split the sentence
-        first_half = sentence[:closest_split + 1].strip()
-        second_half = sentence[closest_split + 1:].strip()
-        
-        # Recursively split each half if necessary
-        return split_long_sentence(first_half, max_length, max_pauses) + split_long_sentence(second_half, max_length, max_pauses)
-    else:
-        # If the sentence doesn't need splitting, return it as a single element list
-        return [sentence]
+        # Split the sentence and add the first part to the list
+        parts.append(sentence[:split_at].strip())
+        sentence = sentence[split_at:].strip()
+    
+    # Add the remaining part of the sentence
+    parts.append(sentence)
+    return parts
 
 
 
