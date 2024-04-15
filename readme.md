@@ -301,7 +301,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `cd ~`
    `git clone https://github.com/DrewThomasson/VoxNovel.git`
    `cd VoxNovel`
-   `pip isntall styletts2`
+   `pip install styletts2`
    `pip install tts==0.21.3`
    `pip install booknlp`
    `pip install -r Ubuntu_requirements.txt`
