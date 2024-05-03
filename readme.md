@@ -111,9 +111,9 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 Run in this order:
 
 <details>
-<summary> 🐳 Docker </summary>
+<summary> 🐳 Docker (Sound not working in gui yet) </summary>
 <details>
-<summary> 🐧  Docker </summary>
+<summary> 🐧  Linux Docker </summary>
 1. `cd ~`
   
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
