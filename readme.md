@@ -121,13 +121,20 @@ Run in this order:
 <details>
 <summary> 🍏 Mac Docker </summary>
 1. `open -a XQuartz`
+
 - First ensure XQuartz is running and configured to allow connections from network clients
+
+  
+- If XQuarts is not installed you can install with `brew install XQuarts`
+
+
+
 2. `cd ~`
 3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 4. `docker run \
- -e DISPLAY=host.docker.internal:0 \
- -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" \
- -it athomasson2/voxnovel:latest
+    -e DISPLAY=host.docker.internal:0 \
+    -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" \
+    -it athomasson2/voxnovel:latest
 `
 </details>
 <details>
