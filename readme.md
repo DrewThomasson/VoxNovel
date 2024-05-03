@@ -151,10 +151,8 @@ With these settings, VcXsrv should be running and configured to allow connection
 </details>
 2. `cd $HOME`
 3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `docker run \
- -e DISPLAY=host.docker.internal:0 \
- -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" \
- -it athomasson2/voxnovel:latest
+4. `docker run -e DISPLAY=host.docker.internal:0 -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest
+
 `
 </details>
 </details>
