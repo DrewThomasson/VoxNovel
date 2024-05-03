@@ -121,22 +121,49 @@ Run in this order:
 </details>
 <details>
 <summary> 🍏 Mac Docker </summary>
-1. `open -a XQuartz`
 
-- First ensure XQuartz is running and configured to allow connections from network clients
+```markdown
+## Setting Up GUI Applications with Docker on macOS
 
-  
-- If XQuarts is not installed you can install with `brew install XQuarts`
+This guide provides instructions on how to run a Docker container with a graphical user interface on macOS using XQuartz for X11 forwarding and volume mounting.
 
+### Install XQuartz
 
+1. Download and install XQuartz from [XQuartz website](https://www.xquartz.org/).
+2. Open XQuartz.
+3. Go to `XQuartz` -> `Preferences`.
+4. In the `Security` tab, enable **Allow connections from network clients**.
+5. Restart XQuartz to apply these settings.
 
-2. `cd ~`
-3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `docker run \
-    -e DISPLAY=host.docker.internal:0 \
-    -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" \
-    -it athomasson2/voxnovel:latest
-`
+### Configure and Run the Docker Container
+
+#### Allow Docker to Connect to XQuartz
+
+Open a terminal and run the following command to allow connections from your local machine to XQuartz:
+
+```bash
+xhost + $(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+```
+
+#### Start the Docker Container
+
+Run the following command to start your Docker container. This command configures the GUI to display on your host and mounts the necessary directories:
+
+```bash
+docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -v "/Users/$(whoami)/VoxNovel:/VoxNovel" \
+           athomasson2/voxnovel:latest
+```
+
+### Notes
+
+- **XQuartz Configuration**: Ensure that XQuartz is configured to allow network clients before attempting to connect.
+- **Directory Existence**: Verify that the directory `/Users/$(whoami)/VoxNovel` exists on your Mac. If not, create it or adjust the volume mount path in the Docker command as needed.
+- **Firewall and Security**: If you face connectivity issues, check any firewall settings and security preferences that might block the connections.
+```
+
+You can copy and paste this content directly into your README.md file on GitHub. This guide assumes that the user has basic knowledge of using GitHub and editing Markdown files.
 </details>
 <details>
 <summary> 🪟 Windows Docker </summary>
