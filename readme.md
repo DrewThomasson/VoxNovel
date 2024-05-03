@@ -113,8 +113,9 @@ Run in this order:
 <details>
 <summary> 🐳 Docker </summary>
 <details>
-<summary> 🐧 Linux Docker </summary>
+<summary> 🐧  Docker </summary>
 1. `cd ~`
+  
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 3. `docker run --gpus all -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/snd:/dev/snd --device /dev/snd -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest`
 </details>
