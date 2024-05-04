@@ -1,12 +1,3 @@
-import os
-import torch
-
-#This will tell you what device its running on
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("Running on Device: ", str(device) )
-
-
-
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
 
@@ -390,24 +381,18 @@ def convert_with_calibre(file_path, output_format="txt"):
     subprocess.run(['ebook-convert', file_path, output_path])
     return output_path
 
-def process_file():
-    global epub_file_path
-    global ebook_file_path
-    global input_file_is_txt
-    file_path = filedialog.askopenfilename(
-        title='Select File',
-        filetypes=[('Supported Files', 
-                    ('*.cbz', '*.cbr', '*.cbc', '*.chm', '*.epub', '*.fb2', '*.html', '*.lit', '*.lrf', 
-                     '*.mobi', '*.odt', '*.pdf', '*.prc', '*.pdb', '*.pml', '*.rb', '*.rtf', '*.snb', 
-                     '*.tcr', '*.txt'))]
-    )
+import os
+import subprocess
+import sys
+
+def process_file_headless():
+    # Ask for the file path via command line
+    file_path = input("Please enter the full path to your eBook file: ")
     ebook_file_path = file_path
-    if ".epub" in file_path.lower():
-        epub_file_path = file_path
-    if ".txt" in file_path.lower():
-        input_file_is_txt = True
-    
-    if not file_path:
+    input_file_is_txt = file_path.lower().endswith('.txt')
+
+    if not os.path.exists(file_path):
+        print("File not found. Please check the path and try again.")
         return
 
     if file_path.lower().endswith(('.cbz', '.cbr', '.cbc', '.chm', '.epub', '.fb2', '.html', '.lit', '.lrf', 
@@ -421,7 +406,7 @@ def process_file():
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
     elif not file_path.lower().endswith('.txt'):
-        messagebox.showerror("Error", "Selected file format is not supported or Calibre is not installed.")
+        print("Selected file format is not supported or Calibre is not installed.")
         return
 
     # Now process the TXT file with BookNLP
@@ -433,51 +418,25 @@ def process_file():
         "model": "big"
     }
 
-
-
-
-    #this will turn stuff like 1,000 and 18,000 into 1000 and 18000 so booknlp doesnt mess them up with tokenization
+    # Process large numbers in text file to prevent tokenization errors
     process_large_numbers_in_txt(file_path)
     booknlp = BookNLP("en", model_params)
-    
 
     if calibre_installed():
-        global filepath
         create_chapter_labeled_book(file_path)
-        #booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
-        #only delete the txt file if the input file isnt a txt file else then youll be deleting the original input file
-        if input_file_is_txt != True:
+        booknlp.process('Working_files/Book/Chapter_Book.txt', output_directory, book_id)
+        # Clean up temporary files
+        if not input_file_is_txt:
             os.remove(file_path)
-            print(f"deleted file: {file_path} because its not needed anymore after the ebook convertsion to txt")
-    #else:
-        #booknlp.process(file_path, output_directory, book_id)
-        #os.remove(file_path)
-        #print(f"deleted file: {file_path}")
-    global chapters
-    if epub_file_path == "":
-        chapters = convert_epub_and_extract_chapters(epub_file_path)
+            print(f"Deleted file: {file_path} because it's not needed anymore after the ebook conversion to txt")
+    else:
+        booknlp.process(file_path, output_directory, book_id)
+
     print("Success, File processed successfully!")
-    
-    # Close the GUI
-    root.destroy()
 
-root = tk.Tk()
-root.title("BookNLP Processor")
-
-frame = tk.Frame(root, padx=20, pady=20)
-frame.pack(padx=10, pady=10)
-
-process_button = tk.Button(frame, text="Process File", command=process_file)
-process_button.pack()
-
-root.mainloop()
-
-
-
-
-
-
-
+# To run the script from the command line
+if __name__ == "__main__":
+    process_file_headless()
 
 
 
@@ -934,17 +893,6 @@ def check_and_wipe_folder(directory_path):
 
 # Usage
 check_and_wipe_folder("Working_files/generated_audio_clips/")
-
-
-
-
-
-
-
-
-
-
-
 
 
 
