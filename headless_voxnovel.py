@@ -1364,16 +1364,6 @@ checkbox_frame = ttk.Frame(root)
 checkbox_frame.pack(fill='x', pady=10)
 
 
-# Checkbox for "Make all audio generate with Narrator voice"
-single_voice_checkbox_var = tk.BooleanVar(value=False)
-single_voice_checkbox = ttk.Checkbutton(
-    checkbox_frame,
-    text="Make all audio generate with Narrator voice",
-    variable=single_voice_checkbox_var,
-    onvalue=True,
-    offvalue=False
-)
-single_voice_checkbox.pack(side=tk.LEFT, padx=5)
 
 
 
@@ -1704,6 +1694,12 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
 
 # Function to generate audio for the text
 def generate_audio():
+    #This will ask the user in the terminal if they want to generate all of the audio with only the narrerator's voice
+    use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
+    while use_narrator_voice not in ['yes', 'no']:
+        print("Invalid input. Please type 'yes' or 'no'.")
+        use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
+    use_narrator_voice = use_narrator_voice == 'yes'
     # Get device
     start_timez = time.time()
     global multi_voice_model_voice_list1
@@ -1762,11 +1758,12 @@ def generate_audio():
             
         #This is the code for grabbing the current voice actor    
         #This will make it so that if the button for single voice is checked in the gui then the voice actor is always the narrerators:
-        if single_voice_checkbox_var.get():
-            print(f"single voice actor checkbox is activated setting to voice actor to Narrator...")
+        if use_narrator_voice:
+            print(f"All audio is being generated with the Narrator voice.")
             voice_actor = speaker_voice_map.get("Narrator")
         else:
             voice_actor = speaker_voice_map[speaker]
+
 
 
         #voice_actor = speaker_voice_map[speaker]
