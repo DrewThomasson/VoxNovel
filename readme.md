@@ -536,6 +536,7 @@ This means all you do is select the book and all the voices will be auto assigne
 - [x] Supports STYLETTS2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 - [x] Includes 26 default voices for cloning
 - [x] Low vram option(Details in readme)
+- [x] Gui Docker image (Graphical interface-no sound in gui yet) 
 
 ## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
@@ -543,6 +544,9 @@ This means all you do is select the book and all the voices will be auto assigne
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
 - [ ] Incorporating local model to generate sound effects when a book discribes a location or sound effect
+- [ ] Include a headless version of VoxNovel
+- [ ] Include a headless docker image
+- [ ] Include a Google Colab using the headless version
 
 ## 🙏 Special thanks to:
 -@sidharthrajaram
