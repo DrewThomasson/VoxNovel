@@ -119,6 +119,10 @@ Run in this order:
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 3. `docker run --gpus all -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/snd:/dev/snd --device /dev/snd -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest`
 </details>
+Here's the formatted text, unchanged in wording:
+
+Certainly! Here is the full guide with the commands in an easy-to-copy format, without any changes to your original wording:
+
 <details>
 <summary> 🍏 Mac Docker </summary>
 
@@ -145,11 +149,14 @@ Open a terminal and run the following command to allow connections from your loc
 #### Start the Docker Container
 
 Run the following command to start your Docker container. This command configures the GUI to display on your host and mounts the necessary directories:
-
-    docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 \
-               -v /tmp/.X11-unix:/tmp/.X11-unix \
-               -v "/Users/$(whoami)/VoxNovel:/VoxNovel" \
-               athomasson2/voxnovel:latest
+```
+cd ~
+git clone https://github.com/DrewThomasson/VoxNovel.git
+docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -v "/Users/$(whoami)/VoxNovel:/VoxNovel" \
+           athomasson2/voxnovel:latest
+```
 
 ### Notes
 
