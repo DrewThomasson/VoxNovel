@@ -1278,13 +1278,8 @@ def update_tts_model(event):
     selected_tts_model = tts_model_combobox.get()
     print(f"Selected TTS model: {selected_tts_model}")
 
-# Frame for TTS Model Selection Dropdown
-tts_model_selection_frame = ttk.LabelFrame(root, text="Select TTS Model")
-tts_model_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 
-# Create a dropdown for TTS model selection
-tts_model_var = tk.StringVar()
-tts_model_combobox = ttk.Combobox(tts_model_selection_frame, textvariable=tts_model_var, state="readonly")
+
 multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
 multilingual_tts_models.append('StyleTTS2')
 
@@ -1295,10 +1290,6 @@ models_to_remove = [multi_voice_model1, multi_voice_model2, multi_voice_model3]
 multilingual_tts_models = [model for model in multilingual_tts_models if model not in models_to_remove]
 
 
-tts_model_combobox['values'] = multilingual_tts_models
-tts_model_combobox.set(selected_tts_model)  # Set default value
-tts_model_combobox.bind("<<ComboboxSelected>>", update_tts_model)
-tts_model_combobox.pack(side="top", fill="x", expand="yes")
 
 # Declare the button as global to access it in other functions
 global select_voices_button
@@ -1351,12 +1342,10 @@ def update_voice_comboboxes():
     # Extend the model list with filtered models
     multilingual_tts_models.extend(filtered_tts_models)
 
-    # Update the combobox values
-    tts_model_combobox['values'] = multilingual_tts_models
 
 
     # Set default value if needed
-    tts_model_combobox.set(selected_tts_model)
+    #tts_model_combobox.set(selected_tts_model)
 
 
 # Create a frame for the checkboxes
@@ -1692,8 +1681,61 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
     elapsed_time = end_time - start_time
     print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
+"""
+def select_tts_model():
+    models = TTS().list_models()  # Assuming this returns a list of available models
+    current_model = 'default_model'  # Initialize with the default model
+    while True:
+        response = input(f"The TTS model currently selected is {current_model}. Would you like to keep it? (yes/no): ").lower()
+        if response == 'yes':
+            break
+        elif response == 'no':
+            print("Available models:")
+            for model in models:
+                print(model)
+            while True:
+                selected_model = input("Please type the name of one of the above models: ")
+                if selected_model in models:
+                    current_model = selected_model
+                    break
+                print("Invalid model. Please select a model from the list.")
+        else:
+            print("Please answer 'yes' or 'no'.")
+    return current_model
+"""
+
+def select_tts_model():
+    
+    models = TTS().list_models()  # Fetches all available TTS models
+    additional_models = ["StyleTTS2"]  # Manually add any special or last-minute models here
+    all_models = models + additional_models  # Combine lists
+    current_model = all_models[0]  # Default to the first model in the combined list
+
+    while True:
+        print(f"The TTS model currently selected is {current_model}.")
+        response = input("Would you like to keep this model? (yes/no): ").strip().lower()
+        
+        if response == 'yes':
+            return current_model
+        elif response == 'no':
+            print("Available models:")
+            for model in all_models:
+                print(model)
+            
+            while True:
+                selected_model = input("Please type the name of one of the above models: ").strip()
+                if selected_model in all_models:
+                    current_model = selected_model
+                    break
+                else:
+                    print("Invalid model. Please select a model from the list.")
+        else:
+            print("Please answer 'yes' or 'no'.")
+
+
 # Function to generate audio for the text
 def generate_audio():
+    selected_tts_model = select_tts_model()
     #This will ask the user in the terminal if they want to generate all of the audio with only the narrerator's voice
     use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
     while use_narrator_voice not in ['yes', 'no']:
