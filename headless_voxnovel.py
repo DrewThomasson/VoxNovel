@@ -1669,6 +1669,45 @@ def ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice():
 
 
 
+#fucntion that will use the terminal to change the default language
+def select_language_terminal():
+    # Default language setting
+    default_language = "English"
+    language = default_language
+
+    # Ask user to change the language
+    change_lang = input(f"Do you want to change the language from {default_language}? (yes/no): ").strip().lower()
+    if change_lang == "yes":
+        # List available languages
+        languages = ["English", "Spanish", "French", "German", "Chinese", "Japanese"]  # Extend as needed
+        print("Available languages:")
+        for i, lang in enumerate(languages):
+            print(f"{i + 1}. {lang}")
+
+        # User selects the language
+        while True:
+            try:
+                choice = int(input("Select a language by number: "))
+                language = languages[choice - 1]
+                break
+            except (IndexError, ValueError):
+                print("Invalid selection. Please try again.")
+
+        # Confirm the selection
+        confirm = input(f"Confirm changing language to {language}? (yes/no): ").strip().lower()
+        if confirm == "yes":
+            print(f"Language set to {language}.")
+        else:
+            print("Language change canceled. Using default English.")
+            language = default_language
+    else:
+        print("No language change requested. Using default English.")
+
+    return language
+
+# Usage example
+selected_language = select_language_terminal()
+print(f"The selected language for TTS is: {selected_language}")
 
 
 
@@ -1687,6 +1726,8 @@ def generate_audio():
         use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
     use_narrator_voice = use_narrator_voice == 'yes'
 
+    global current_language
+    current_language = select_language_terminal()
     # Get device
     start_timez = time.time()
     global multi_voice_model_voice_list1
@@ -2079,24 +2120,24 @@ def update_chapter_keyword(*args):
 chapter_delimiter_var.trace_add("write", update_chapter_keyword)
 
 
-# Frame for Language Selection Dropdown
-language_selection_frame = ttk.LabelFrame(root, text="Select TTS Language")
-language_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
+## Frame for Language Selection Dropdown
+#language_selection_frame = ttk.LabelFrame(root, text="Select TTS Language")
+#language_selection_frame.pack(fill="x", expand="yes", padx=10, pady=10)
 
-# Create a dropdown for language selection
-language_var = tk.StringVar()
-language_combobox = ttk.Combobox(language_selection_frame, textvariable=language_var, state="readonly")
-language_combobox['values'] = list(languages.keys())  # Use the display names for the user
-language_combobox.set('English')  # Set default value
+## Create a dropdown for language selection
+#language_var = tk.StringVar()
+#language_combobox = ttk.Combobox(language_selection_frame, textvariable=language_var, state="readonly")
+#language_combobox['values'] = list(languages.keys())  # Use the display names for the user
+#language_combobox.set('English')  # Set default value
 
-def on_language_selected(event):
-    global current_language
-    # Update the current_language variable based on selection
-    current_language = languages[language_combobox.get()]
-    print(f"current language updated to: {current_language}")
+#def on_language_selected(event):
+#    global current_language
+#    # Update the current_language variable based on selection
+#    current_language = languages[language_combobox.get()]
+#    print(f"current language updated to: {current_language}")
 
-language_combobox.bind("<<ComboboxSelected>>", on_language_selected)
-language_combobox.pack(side="top", fill="x", expand="yes")
+#language_combobox.bind("<<ComboboxSelected>>", on_language_selected)
+#language_combobox.pack(side="top", fill="x", expand="yes")
 
 # Progress Bar
 progress_var = tk.DoubleVar()
@@ -2205,109 +2246,6 @@ def combine_audio_files(silence_duration_ms):
     print("Combining audio files complete!")
 
 combine_audio_files(SILENCE_DURATION_MS)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#this will convert all of the wav chapter files into a single audiobook file located at output audiobook
-
-"""
-import os
-import subprocess
-from pydub import AudioSegment
-
-def clear_audiobook_temp_files():
-    files = glob.glob('/tmp/*.jpg')
-    for f in files:
-        os.remove(f)
-
-def extract_cover_image_calibre(ebook_file):
-    output_image = os.path.join('/tmp', os.path.basename(ebook_file) + '.jpg')
-    try:
-        subprocess.run(['ebook-meta', ebook_file, '--get-cover', output_image], check=True)
-        if os.path.exists(output_image):
-            return output_image
-        else:
-            return None
-    except Exception as e:
-        print(f"Error extracting cover image: {e}")
-        return None
-
-def generate_chapter_metadata(wav_files, metadata_filename):
-    with open(metadata_filename, 'w') as file:
-        file.write(";FFMETADATA1\n")
-        start_time = 0
-        for index, wav_file in enumerate(wav_files):
-            duration = len(AudioSegment.from_wav(wav_file))
-            end_time = start_time + duration
-            file.write(f"[CHAPTER]\nTIMEBASE=1/1000\nSTART={start_time}\nEND={end_time}\ntitle=Chapter {index+1:02d}\n")
-            start_time = end_time
-
-def combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename):
-    print("Combining WAV files into an M4B audiobook using FFmpeg...")
-    with open('file_list.txt', 'w') as file:
-        for wav_file in wav_files:
-            file.write(f"file '{wav_file}'\n")
-
-    os.system(f"ffmpeg -f concat -safe 0 -i file_list.txt -c copy combined.wav")
-
-    print("Converting to M4B with AAC codec and cover art...")
-    os.system(f"ffmpeg -i combined.wav -i {cover_image} -i {metadata_filename} -map_metadata 2 -map 0 -map 1 -c:a aac -b:a 192k -c:v copy -disposition:v:0 attached_pic {m4b_filename}")
-    print(f"M4B audiobook created: {m4b_filename}")
-
-    # Cleanup
-    os.remove('file_list.txt')
-    os.remove('combined.wav')
-    os.remove(metadata_filename)
-    os.remove(cover_image)  # Delete the cover image file
-
-def convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name):
-    clear_audiobook_temp_files()  # Clear temporary files
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        print(f"Created output directory: {output_dir}")
-
-    cover_image = extract_cover_image_calibre(ebook_file)
-    if not cover_image:
-        print("Cover image extraction failed.")
-        return
-
-    wav_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.wav')]
-    m4b_filename = os.path.join(output_dir, f'{audiobook_name}.m4b')
-    metadata_filename = 'chapter_metadata.txt'
-
-    generate_chapter_metadata(wav_files, metadata_filename)
-    combine_wav_to_m4b_ffmpeg(wav_files, m4b_filename, cover_image, metadata_filename)
-    clear_audiobook_temp_files()  # Clear temporary files again
-
-# Example usage
-input_dir = "Final_combined_output_audio"  # Update this path to your WAV files folder
-ebook_file = ebook_file_path      # Update this path to your eBook file
-output_dir = 'output_audiobooks' 
-audiobook_name = os.path.splitext(os.path.basename(ebook_file))[0]                    # Update this path to your desired output directory
-
-convert_all_wav_to_m4b(input_dir, ebook_file, output_dir, audiobook_name)
-
-
-
-
-"""
-
-
-
-
-
 
 
 
