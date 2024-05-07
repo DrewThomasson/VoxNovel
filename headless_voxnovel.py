@@ -1361,140 +1361,6 @@ checkbox_frame.pack(fill='x', pady=10)
 update_voice_comboboxes()
 
 
-# Function to clone a new voice
-def clone_voice():
-    # Prompt the user to enter the name of the new voice actor
-    voice_actor_name = simpledialog.askstring("Input", "Enter the name of the voice actor:", parent=root)
-    
-    # If a name was entered, proceed to ask for gender
-    if voice_actor_name:
-        # Create a small popup window for gender selection
-        gender_window = tk.Toplevel(root)
-        gender_window.title("Select Gender")
-        
-        # Dropdown for gender selection
-        gender_var = tk.StringVar(gender_window)
-        gender_options = ['M', 'F', '?']
-        gender_dropdown = ttk.Combobox(gender_window, textvariable=gender_var, values=gender_options, state='readonly')
-        gender_dropdown.pack()
-
-
-        # Function to be called when 'OK' button is pressed
-        def on_gender_select():
-            voice_actor_gender = gender_var.get()
-            gender_window.destroy()  # Close the popup window
-            
-            # Now proceed to file selection
-            file_path = filedialog.askopenfilename(
-                title="Select Voice Sample File",
-                filetypes=[("Audio Files", "*.mp3 *.wav *.mp4")],
-                parent=root
-            )
-            
-            # Check if the file is selected and is of the correct format
-            if file_path and (file_path.lower().endswith('.mp3') or file_path.lower().endswith('.wav') or file_path.lower().endswith('.mp4')):
-                # Create the directory path for the new voice actor
-                new_voice_path = f"tortoise/voices/{voice_actor_name}.{voice_actor_gender}"
-                
-                # Check if the directory already exists
-                if not os.path.exists(new_voice_path):
-                    # Create the directory
-                    os.makedirs(new_voice_path)
-                    # Copy the selected file to the new directory
-                    shutil.copy(file_path, new_voice_path)
-                    messagebox.showinfo("Success", f"New voice actor folder created with sample file: {new_voice_path}")
-                    update_voice_comboboxes()
-                else:
-                    messagebox.showerror("Error", "Voice actor folder already exists.")
-            else:
-                messagebox.showerror("Error", "No file selected or selected file is not an MP3, WAV, or MP4.")
-
-        # OK button for gender selection
-        ok_button = ttk.Button(gender_window, text="OK", command=on_gender_select)
-        ok_button.pack()
-
-        # Set the focus on the dropdown and wait for the user to make a selection
-        gender_dropdown.focus_set()
-        root.wait_window(gender_window)
-    else:
-        messagebox.showerror("Error", "No name entered for the voice actor.")
-
-
-
-
-#this will add a button that will let you give a voice actor a specific fine tuned model for xtts which you already fine tuned of course
-import os
-import shutil
-import tkinter as tk
-from tkinter import filedialog, Listbox, messagebox
-
-def list_folders(directory):
-    """List all folders in the given directory."""
-    return [folder for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
-
-def copy_files_to_model(source_folder, model_path):
-    """Copy files from the selected folder to the model folder."""
-    for file in os.listdir(source_folder):
-        source_file = os.path.join(source_folder, file)
-        destination_file = os.path.join(model_path, file)
-        shutil.copy2(source_file, destination_file)  # copy2 to preserve metadata
-
-def start_process():
-    base_directory = "tortoise/voices/"
-    folders = list_folders(base_directory)
-
-    def on_select(evt):
-        selected_folder = folder_listbox.get(folder_listbox.curselection())
-
-        # Create "model" folder if it doesn't exist
-        model_path = os.path.join(base_directory, selected_folder, "model")
-        if not os.path.exists(model_path):
-            os.makedirs(model_path)
-
-        # Select folder to copy files from
-        source_folder = filedialog.askdirectory(title="Select folder containing fine tuned xtts model files to copy from:")
-        if source_folder:
-            copy_files_to_model(source_folder, model_path)
-            messagebox.showinfo("Success", f"Files copied successfully to {model_path}")
-        selection_window.destroy()
-
-    # Create a new window for folder selection
-    selection_window = tk.Toplevel(root)
-    selection_window.title("Select a voice actor to add fine tuned model to:")
-
-    folder_listbox = Listbox(selection_window)
-    folder_listbox.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
-
-    for folder in folders:
-        folder_listbox.insert(tk.END, folder)
-
-    folder_listbox.bind('<<ListboxSelect>>', on_select)
-
-
-# Create a frame for the new buttons
-new_buttons_frame = ttk.Frame(root)
-new_buttons_frame.pack(pady=10)
-
-# Clone new voice button
-clone_voice_button = ttk.Button(
-    new_buttons_frame,
-    text="Clone new voice",
-    command=clone_voice  # The function to execute when the button is clicked
-)
-clone_voice_button.pack(side=tk.LEFT, padx=5)
-
-# Add Fine Tuned Xtts model to voice actor button
-add_fine_tuned_xtts_button = ttk.Button(
-    new_buttons_frame,
-    text="Add Fine Tuned Xtts model to voice actor",
-    command=start_process  # The function to execute when the button is clicked
-)
-add_fine_tuned_xtts_button.pack(side=tk.LEFT, padx=5)
-
-
-
-
-
 
 
 def create_folder_if_not_exists(folder_path):
@@ -1681,29 +1547,6 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
     elapsed_time = end_time - start_time
     print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
-"""
-def select_tts_model():
-    models = TTS().list_models()  # Assuming this returns a list of available models
-    current_model = 'default_model'  # Initialize with the default model
-    while True:
-        response = input(f"The TTS model currently selected is {current_model}. Would you like to keep it? (yes/no): ").lower()
-        if response == 'yes':
-            break
-        elif response == 'no':
-            print("Available models:")
-            for model in models:
-                print(model)
-            while True:
-                selected_model = input("Please type the name of one of the above models: ")
-                if selected_model in models:
-                    current_model = selected_model
-                    break
-                print("Invalid model. Please select a model from the list.")
-        else:
-            print("Please answer 'yes' or 'no'.")
-    return current_model
-"""
-
 def select_tts_model():
     
     models = TTS().list_models()  # Fetches all available TTS models
@@ -1733,8 +1576,115 @@ def select_tts_model():
             print("Please answer 'yes' or 'no'.")
 
 
+
+
+
+#this code will have the user add a fine tuned xtts modela and also be able to clone a voice in the terminal without a gui
+import os
+import shutil
+from tkinter import filedialog
+
+def clone_new_voice():
+    while True:
+        confirm = input("Do you want to clone a new voice? (yes/no): ").lower()
+        if confirm == 'yes':
+            voice_actor_name = input("Enter the name of the new voice actor: ")
+            voice_actor_gender = input("Enter the gender of the new voice actor (M/F/?): ")
+            new_voice_path = f"tortoise/voices/{voice_actor_name}.{voice_actor_gender}"
+
+            if not os.path.exists(new_voice_path):
+                os.makedirs(new_voice_path)
+                print(f"New directory created at: {new_voice_path}")
+                print("Please enter the path to the voice sample file to copy:")
+                sample_file = input("Enter file path: ")
+                if os.path.exists(sample_file):
+                    shutil.copy(sample_file, new_voice_path)
+                    print("Sample file copied successfully.")
+                else:
+                    print("The file does not exist. Please check the path and try again.")
+            else:
+                print("Voice actor folder already exists.")
+
+            repeat = input("Do you want to clone another new voice? (yes/no): ").lower()
+            if repeat != 'yes':
+                break
+        elif confirm == 'no':
+            break
+        else:
+            print("Please answer 'yes' or 'no'.")
+
+
+def add_fine_tuned_model():
+    while True:
+        confirm = input("Do you want to add a fine-tuned XTTS model to a voice actor? (yes/no): ").lower()
+        if confirm == 'yes':
+            base_directory = "tortoise/voices/"
+            folders = [folder for folder in os.listdir(base_directory) if os.path.isdir(os.path.join(base_directory, folder))]
+
+            print("Select a voice actor to add a fine-tuned model to:")
+            for index, folder in enumerate(folders):
+                print(f"{index}: {folder}")
+
+            selected_index = int(input("Enter the number corresponding to the voice actor: "))
+            selected_folder = folders[selected_index]
+            model_path = os.path.join(base_directory, selected_folder, "model")
+            if not os.path.exists(model_path):
+                os.makedirs(model_path)
+
+            print("Please enter the path to the folder containing fine-tuned XTTS model files to copy from:")
+            source_folder = input("Enter folder path: ")
+            if os.path.isdir(source_folder):
+                for file in os.listdir(source_folder):
+                    source_file = os.path.join(source_folder, file)
+                    destination_file = os.path.join(model_path, file)
+                    shutil.copy2(source_file, destination_file)
+                print(f"Files copied successfully to {model_path}")
+            else:
+                print("The specified directory does not exist. Please check the path and try again.")
+
+            repeat = input("Do you want to add another fine-tuned model? (yes/no): ").lower()
+            if repeat != 'yes':
+                break
+        elif confirm == 'no':
+            break
+        else:
+            print("Please answer 'yes' or 'no'.")
+
+
+def ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice():
+    while True:
+        print("\n1. Clone a new voice")
+        print("2. Add a fine-tuned XTTS model to a voice actor")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            clone_new_voice()
+        elif choice == '2':
+            add_fine_tuned_model()
+        elif choice == '3':
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Function to generate audio for the text
 def generate_audio():
+    ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice()
     selected_tts_model = select_tts_model()
     #This will ask the user in the terminal if they want to generate all of the audio with only the narrerator's voice
     use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
