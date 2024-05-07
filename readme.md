@@ -113,6 +113,27 @@ Run in this order:
 <details>
 <summary> 🐳 Docker (Sound not working in gui yet) </summary>
 <details>
+<summary>🐳 Headless Docker</summary>
+<details>
+<summary>Headless Docker 🐧 Linux/Intel 🍏Mac</summary>
+
+1. `cd ~`
+  
+2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+3. `sudo docker run --gpus all -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+</details>
+<details>
+<summary>Headless Docker 🖥️ Windows</summary>
+
+1. `cd %USERPROFILE%`
+
+2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+
+3. `docker run --gpus all -v "%USERPROFILE%/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+</details>
+</details>
+
+<details>
 <summary> 🐧  Linux Docker </summary>
 1. `cd ~`
   
@@ -415,6 +436,9 @@ pip install mecab mecab-python3 unidic
 <details>
 <summary> Running with Low VRAM (4 GB) </summary>
 
+## 🚀 Or to run headless
+`python headless_voxnovel`
+
 ### Modifications
 - Turns out once you set the device it stays like that for the full program.
 - So, I've split the program into two Python programs: one CPU and one GPU. I've tested this on my (4GB VRAM GPU) and this solution works. at least on my end I really hope it works on your end. 🙏
@@ -536,7 +560,9 @@ This means all you do is select the book and all the voices will be auto assigne
 - [x] Supports STYLETTS2 as a model you can select from for voice cloning for WICKED FAST speed (even on cpu)
 - [x] Includes 26 default voices for cloning
 - [x] Low vram option(Details in readme)
-- [x] Gui Docker image (Graphical interface-no sound in gui yet) 
+- [x] Gui Docker image (Graphical interface-no sound in gui yet)
+- [x] Headless version of docker image
+- [x] Headless version of VoxNovel 
 
 ## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
@@ -544,8 +570,6 @@ This means all you do is select the book and all the voices will be auto assigne
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
 - [ ] Incorporating local model to generate sound effects when a book discribes a location or sound effect
-- [ ] Include a headless version of VoxNovel
-- [ ] Include a headless docker image
 - [ ] Include a Google Colab using the headless version
 
 ## 🙏 Special thanks to:
