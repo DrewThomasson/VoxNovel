@@ -1686,7 +1686,6 @@ def generate_audio():
         print("Invalid input. Please type 'yes' or 'no'.")
         use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
     use_narrator_voice = use_narrator_voice == 'yes'
-    print(f"The set silence duration is: {SILENCE_DURATION_MS} ms.")
 
     # Get device
     start_timez = time.time()
@@ -2069,36 +2068,6 @@ for speaker in data['Speaker'].unique():
 
     language_combobox.bind("<<ComboboxSelected>>", partial(on_language_selected, speaker=speaker))
     character_languages[speaker] = 'en'
-
-
-def get_silence_duration(default_duration=750):
-    global SILENCE_DURATION_MS
-    """
-    Prompt the user to confirm or set a new silence duration.
-
-    Args:
-    default_duration (int): The default duration in milliseconds.
-
-    Returns:
-    int: The silence duration in milliseconds as specified by the user.
-    """
-    # Ask the user if they want to keep the default silence duration
-    user_input = input(f"Do you want to keep the default silence duration of {default_duration} ms? (yes/no): ").strip().lower()
-
-    if user_input == 'yes':
-        return default_duration
-    else:
-        while True:
-            try:
-                # Prompt for a new silence duration
-                new_duration = int(input("Enter a new silence duration in milliseconds: "))
-                return new_duration  # Return the new duration if valid
-            except ValueError:
-                print("Invalid input. Please enter a valid integer.")
-
-# Example of how to use the function
-#silence_duration_ms = get_silence_duration()
-#print(f"The set silence duration is: {silence_duration_ms} ms.")
 
 
 
