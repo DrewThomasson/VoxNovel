@@ -782,11 +782,13 @@ def copy_if_single_line(source_file, destination_file):
         with open(destination_file, 'w') as dest:
             dest.write(content)
 
-        # Popup message
-        root = tk.Tk()
-        root.withdraw()  # Hide the main window
-        messagebox.showinfo("Notification", "The 'book.csv' file was found to be empty, so all lines in the book will be said by the narrator.")
-        root.destroy()
+        ## Popup message
+        #root = tk.Tk()
+        #root.withdraw()  # Hide the main window
+        #messagebox.showinfo("Notification", "The 'book.csv' file was found to be empty, so all lines in the book will be said by the narrator.")
+        #root.destroy()
+        print(f"Notification:")
+        print(f"The 'book.csv' file was found to be empty, so all lines in the book will be said by the narrator.")
 
         return f"File '{destination_file}' had only one line or was empty and has been filled with the contents of '{source_file}'."
     else:
@@ -869,15 +871,17 @@ def check_and_wipe_folder(directory_path):
     wav_files = [f for f in os.listdir(directory_path) if f.endswith('.wav')]
 
     if wav_files:  # If there are .wav files
-        # Initialize tkinter
-        root = tk.Tk()
-        root.withdraw()  # Hide the main window
+        ## Initialize tkinter
+        #root = tk.Tk()
+        #root.withdraw()  # Hide the main window
 
-        # Ask the user if they want to delete the files
-        response = messagebox.askyesno("Confirm Deletion", "Audio clips from a previous session have been found. Do you want to wipe them?")
-        root.destroy()  # Destroy the tkinter instance
+        ## Ask the user if they want to delete the files
+        #response = messagebox.askyesno("Confirm Deletion", "Audio clips from a previous session have been found. Do you want to wipe them?")
+        #root.destroy()  # Destroy the tkinter instance
+        response = input("Audio clips from a previous session have been found. Do you want to wipe them? (yes/no): ").strip().lower()
 
-        if response:  # If the user clicks 'Yes'
+
+        if response == 'yes':  # If the user types 'yes'
             # Iterate through files and delete them
             for filename in wav_files:
                 file_path = os.path.join(directory_path, filename)
@@ -1159,14 +1163,47 @@ def select_voices_fast():
 # Pre-select the voices before starting the GUI
 select_voices()
 
-# Main application window
-root = tk.Tk()
-root.title("coqui TTS GUI")
-root.geometry("1200x800")
+## Main application window
+#root = tk.Tk()
+#root.title("coqui TTS GUI")
+#root.geometry("1200x800")
+#if calibre_installed():
+#    chapter_delimiter_var = tk.StringVar(value="NEWCHAPTERABC")
+#else:
+#    chapter_delimiter_var = tk.StringVar(value="CHAPTER")
+
+# Assume calibre_installed is a function that returns True if Calibre is installed, otherwise False
+
+class Delimiter:
+    def __init__(self, value):
+        self._value = value
+        self._callbacks = []
+
+    def get(self):
+        return self._value
+
+    def set(self, new_value):
+        self._value = new_value
+        self._run_callbacks()
+
+    def _run_callbacks(self):
+        for callback in self._callbacks:
+            callback()
+
+    def trace_add(self, mode, callback):
+        if mode == "write":
+            self._callbacks.append(callback)
+
+def update_chapter_keyword():
+    print("Chapter delimiter updated to:", chapter_delimiter_var.get())
+
 if calibre_installed():
-    chapter_delimiter_var = tk.StringVar(value="NEWCHAPTERABC")
+    chapter_delimiter_var = Delimiter("NEWCHAPTERABC")
 else:
-    chapter_delimiter_var = tk.StringVar(value="CHAPTER")
+    chapter_delimiter_var = Delimiter("CHAPTER")
+
+
+
 
 # Initialize the mixer module
 try:
@@ -1378,9 +1415,9 @@ def update_voice_comboboxes():
     #tts_model_combobox.set(selected_tts_model)
 
 
-# Create a frame for the checkboxes
-checkbox_frame = ttk.Frame(root)
-checkbox_frame.pack(fill='x', pady=10)
+## Create a frame for the checkboxes
+#checkbox_frame = ttk.Frame(root)
+#checkbox_frame.pack(fill='x', pady=10)
 
 
 
@@ -1994,7 +2031,7 @@ def generate_audio():
     durationz = end_timez - start_timez
     print("GENERATION TIME:" + str(durationz))
 
-    root.destroy()
+    #root.destroy()
 
 
 
@@ -2133,17 +2170,34 @@ chapter_delimiter_var.trace_add("write", update_chapter_keyword)
 
 
 
-# Create a frame to contain the buttons
-buttons_frame = ttk.Frame(root)
-buttons_frame.pack(pady=10)
+## Create a frame to contain the buttons
+#buttons_frame = ttk.Frame(root)
+#buttons_frame.pack(pady=10)
 
 
 
-# Generate Audio Button
-generate_button = ttk.Button(buttons_frame, text="Generate Audio", command=lambda: threading.Thread(target=generate_audio).start())
-generate_button.pack(side=tk.LEFT, padx=5)
+## Generate Audio Button
+#generate_button = ttk.Button(buttons_frame, text="Generate Audio", command=lambda: threading.Thread(target=generate_audio).start())
+#generate_button.pack(side=tk.LEFT, padx=5)
 
-root.mainloop()
+#root.mainloop()
+
+
+
+
+
+generate_audio()
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2226,6 +2280,19 @@ def combine_audio_files(silence_duration_ms):
     print("Combining audio files complete!")
 
 combine_audio_files(SILENCE_DURATION_MS)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
