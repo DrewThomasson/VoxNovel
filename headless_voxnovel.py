@@ -1132,12 +1132,6 @@ if calibre_installed():
 else:
     chapter_delimiter_var = tk.StringVar(value="CHAPTER")
 
-def disable_chapter_delimiter_entry():
-    chapter_delimiter_entry.config(state='disabled')
-
-def enable_chapter_delimiter_entry():
-    chapter_delimiter_entry.config(state='normal')
-
 # Initialize the mixer module
 try:
     pygame.mixer.init()
@@ -1692,6 +1686,8 @@ def generate_audio():
         print("Invalid input. Please type 'yes' or 'no'.")
         use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
     use_narrator_voice = use_narrator_voice == 'yes'
+    print(f"The set silence duration is: {SILENCE_DURATION_MS} ms.")
+
     # Get device
     start_timez = time.time()
     global multi_voice_model_voice_list1
@@ -1702,8 +1698,6 @@ def generate_audio():
     global current_model
     global STTS
 
-    #this will make it so that I can't modify the chapter delminator after I click generate
-    disable_chapter_delimiter_entry()
     
     ensure_temp_folder()
 
@@ -2077,37 +2071,36 @@ for speaker in data['Speaker'].unique():
     character_languages[speaker] = 'en'
 
 
-# Create a frame for Chapter Delimiter and Silence Duration
-delimiter_silence_frame = ttk.Frame(root)
-delimiter_silence_frame.pack(fill='x', pady=10)
+def get_silence_duration(default_duration=750):
+    global SILENCE_DURATION_MS
+    """
+    Prompt the user to confirm or set a new silence duration.
 
-# Chapter Delimiter
-chapter_delimiter_label = ttk.Label(delimiter_silence_frame, text="Chapter Delimiter:(Press enter in field to submit change)")
-chapter_delimiter_label.pack(side=tk.LEFT, padx=5)
+    Args:
+    default_duration (int): The default duration in milliseconds.
 
-chapter_delimiter_entry = ttk.Entry(delimiter_silence_frame, textvariable=chapter_delimiter_var)
-chapter_delimiter_entry.pack(side=tk.LEFT, padx=5)
+    Returns:
+    int: The silence duration in milliseconds as specified by the user.
+    """
+    # Ask the user if they want to keep the default silence duration
+    user_input = input(f"Do you want to keep the default silence duration of {default_duration} ms? (yes/no): ").strip().lower()
 
-# Silence Duration
-silence_duration_label = ttk.Label(delimiter_silence_frame, text="Silence Duration in ms:")
-silence_duration_label.pack(side=tk.LEFT, padx=5)
+    if user_input == 'yes':
+        return default_duration
+    else:
+        while True:
+            try:
+                # Prompt for a new silence duration
+                new_duration = int(input("Enter a new silence duration in milliseconds: "))
+                return new_duration  # Return the new duration if valid
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
 
-silence_duration_var = tk.StringVar(value="750")
-silence_duration_var.trace("w", on_silence_duration_change)
-validate_cmd = root.register(validate_integer)
-silence_duration_entry = tk.Entry(delimiter_silence_frame, textvariable=silence_duration_var, validate='key', validatecommand=(validate_cmd, '%P'))
-silence_duration_entry.pack(side=tk.LEFT, padx=5)
+# Example of how to use the function
+#silence_duration_ms = get_silence_duration()
+#print(f"The set silence duration is: {silence_duration_ms} ms.")
 
 
-
-def on_enter_pressed(event):
-    # Path to your CSV file
-    csv_file = "Working_files/Book/book.csv"  # Replace with the actual path to your CSV file
-    chapter_delimiter = chapter_delimiter_var.get()
-    generate_file_ids(csv_file, chapter_delimiter)
-
-# Bind the Enter key to the on_enter_pressed function for chapter_delimiter_entry
-chapter_delimiter_entry.bind('<Return>', on_enter_pressed)
 
 def update_chapter_keyword(*args):
     global CHAPTER_KEYWORD
