@@ -1748,7 +1748,7 @@ def select_language_terminal():
 
 
 
-
+from tqdm import tqdm
 
 
 # Function to generate audio for the text
@@ -1798,12 +1798,12 @@ def generate_audio():
 
     add_voice_actors_to_csv()
     add_languages_to_csv()
-    for index, row in data.iterrows():
+    for index, row in tqdm(data.iterrows(), total=data.shape[0], desc="Generating AudioBook"):
         #update_progress(index, total_rows)  # Update progress based on the current index and total rows
 
         speaker = row['Speaker']
         text = row['Text']
-        update_progress(index, total_rows, text)  # Update progress based on the current index and total rows and text 
+        #update_progress(index, total_rows, text)  # Update progress based on the current index and total rows and text 
 
         language_code = character_languages.get(speaker, current_language)  # Default to 'en' if not found
         if calibre_installed:
@@ -2118,12 +2118,13 @@ chapter_delimiter_var.trace_add("write", update_chapter_keyword)
 #language_combobox.bind("<<ComboboxSelected>>", on_language_selected)
 #language_combobox.pack(side="top", fill="x", expand="yes")
 
-# Progress Bar
-progress_var = tk.DoubleVar()
-progress_bar = ttk.Progressbar(root, variable=progress_var, maximum=100)
-progress_bar.pack()
-progress_label = ttk.Label(root, text="0% done")
-progress_label.pack()
+#fuck
+## Progress Bar
+#progress_var = tk.DoubleVar()
+#progress_bar = ttk.Progressbar(root, variable=progress_var, maximum=100)
+#progress_bar.pack()
+#progress_label = ttk.Label(root, text="0% done")
+#progress_label.pack()
 
 
 
