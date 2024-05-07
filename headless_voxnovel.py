@@ -1708,14 +1708,14 @@ def ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice():
 #fucntion that will use the terminal to change the default language
 def select_language_terminal():
     # Default language setting
-    default_language = "English"
+    default_language = "en"
     language = default_language
 
     # Ask user to change the language
     change_lang = input(f"Do you want to change the language from {default_language}? (yes/no): ").strip().lower()
     if change_lang == "yes":
         # List available languages
-        languages = ["English", "Spanish", "French", "German", "Chinese", "Japanese"]  # Extend as needed
+        languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'pl', 'tr', 'ru', 'nl', 'cs', 'ar', 'zh-cn', 'hu', 'ko', 'ja', 'hi']  # Extend as needed
         print("Available languages:")
         for i, lang in enumerate(languages):
             print(f"{i + 1}. {lang}")
