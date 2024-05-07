@@ -1084,23 +1084,58 @@ def ensure_temp_folder():
     if not os.path.exists("Working_files/temp"):
         os.mkdir("Working_files/temp")
 
+import random
+import time
+
 def select_voices():
     random.seed(int(time.time()))
     ensure_output_folder()
-    total_rows = len(data)
+    total_rows = len(data)  # Assuming 'data' contains your dataset with a 'Speaker' column
 
+    # Assign initial random voices
+    speaker_voice_map = {speaker: get_random_voice_for_speaker(speaker) for speaker in data['Speaker'].unique()}
 
-    for speaker in data['Speaker'].unique():
-        random_voice = get_random_voice_for_speaker(speaker)
-        speaker_voice_map[speaker] = random_voice
+    # Function to display current voice selections and offer changes
+    def review_and_modify_speaker_voices():
+        while True:
+            # Display current selections
+            print("\nCurrent voice selections:")
+            for index, (speaker, voice) in enumerate(speaker_voice_map.items(), start=1):
+                print(f"{index}. {speaker}: {voice}")
 
-    for speaker, voice in speaker_voice_map.items():
-        print(f"Selected voice for {speaker}: {voice}")
-        # Update the comboboxes if they exist
-        if speaker in voice_comboboxes:
-            random_voice = get_random_voice_for_speaker(speaker)
-            voice_comboboxes[speaker].set(random_voice)
-    print("Voices have been selected randomly.")
+            # Ask if user wants to change any selection
+            change = input("Would you like to change any voice assignments? (yes/no): ").lower()
+            if change != 'yes':
+                break
+
+            # Get user input for which speaker to change
+            try:
+                selection = int(input("Enter the number of the speaker to change the voice for: ")) - 1
+                if selection < 0 or selection >= len(speaker_voice_map):
+                    raise ValueError("Selection out of range.")
+                selected_speaker = list(speaker_voice_map.keys())[selection]
+            except ValueError as e:
+                print(f"Invalid input: {e}")
+                continue
+
+            # Display available voices and allow user to choose
+            print(f"Available voices for {selected_speaker}:")
+            available_voices = [get_random_voice_for_speaker(selected_speaker) for _ in range(5)]  # Assuming you can call this multiple times to get different options
+            for idx, voice in enumerate(available_voices, start=1):
+                print(f"{idx}. {voice}")
+            try:
+                new_voice_selection = int(input("Select the new voice by number: ")) - 1
+                if new_voice_selection < 0 or new_voice_selection >= len(available_voices):
+                    raise ValueError("Selection out of range.")
+                # Update the speaker's voice in the map
+                speaker_voice_map[selected_speaker] = available_voices[new_voice_selection]
+                print(f"Voice for {selected_speaker} changed to {available_voices[new_voice_selection]}")
+            except ValueError as e:
+                print(f"Invalid input: {e}")
+
+    review_and_modify_speaker_voices()
+    print("Final voice assignments have been set.")
+
  
 def select_voices_fast():
     random.seed(int(time.time()))
@@ -2052,63 +2087,6 @@ def create_scrollable_frame(parent, height):
     scrollbar.pack(side="right", fill="y")
 
     return scrollable_frame
-
-
-
-# Set the maximum height for the frame
-max_height = 150  # Maximum height in pixels
-
-# Create a LabelFrame for Character Voices
-voice_selection_frame = ttk.LabelFrame(root, text="Character Voices")
-voice_selection_frame.pack(fill="x", expand=False, padx=10, pady=5)
-
-# Create a Canvas within the LabelFrame
-canvas = tk.Canvas(voice_selection_frame, borderwidth=0)
-canvas.config(height=max_height)  # Set the height of the canvas
-scrollbar = ttk.Scrollbar(voice_selection_frame, orient="vertical", command=canvas.yview)
-scrollable_frame = ttk.Frame(canvas)
-
-# Configure the canvas
-canvas.configure(yscrollcommand=scrollbar.set)
-
-def configure_scroll_region(event):
-    canvas.configure(scrollregion=canvas.bbox("all"))
-
-scrollable_frame.bind('<Configure>', configure_scroll_region)
-
-# Add the scrollable frame to the canvas and configure the scrollbar
-canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-scrollbar.pack(side="right", fill="y")
-canvas.pack(side="left", fill="both", expand=True)
-
-# Now, add comboboxes into the scrollable_frame
-for speaker in data['Speaker'].unique():
-    speaker_label = ttk.Label(scrollable_frame, text=speaker)
-    speaker_label.pack(side="top", fill="x", expand=False)  # Changed to expand=False
-    
-    voice_combobox = ttk.Combobox(scrollable_frame, values=voice_actors, state="readonly")
-    voice_combobox.set(speaker_voice_map[speaker])
-    voice_combobox.pack(side="top", fill="x", expand=False)  # Changed to expand=False
-    voice_combobox.bind("<<ComboboxSelected>>", lambda event, speaker=speaker: update_voice_actor(speaker))
-    
-    voice_comboboxes[speaker] = voice_combobox
-    
-    # Here is a mistake in your code. The language_combobox should be packed into scrollable_frame, not voice_selection_frame.
-    language_var = tk.StringVar()
-    language_combobox = ttk.Combobox(scrollable_frame, textvariable=language_var, state="readonly")
-    language_combobox['values'] = list(languages.keys())
-    language_combobox.set('English')
-    language_combobox.pack(side="top", fill="x", expand=False)  # Changed to expand=False and should be in scrollable_frame
-    
-    # Update character_languages when a language is selected
-    def on_language_selected(event, speaker=speaker, combobox=language_combobox):
-        selected_language_key = combobox.get()
-        selected_language = languages[selected_language_key]
-        character_languages[speaker] = selected_language
-        print(f"Language for {speaker} changed to {selected_language}")
-
-    language_combobox.bind("<<ComboboxSelected>>", partial(on_language_selected, speaker=speaker))
-    character_languages[speaker] = 'en'
 
 
 
