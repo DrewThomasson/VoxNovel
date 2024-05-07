@@ -1088,6 +1088,7 @@ import random
 import time
 
 def select_voices():
+    global speaker_voice_map
     random.seed(int(time.time()))
     ensure_output_folder()
     total_rows = len(data)  # Assuming 'data' contains your dataset with a 'Speaker' column
@@ -1741,8 +1742,8 @@ def select_language_terminal():
     return language
 
 # Usage example
-selected_language = select_language_terminal()
-print(f"The selected language for TTS is: {selected_language}")
+#selected_language = select_language_terminal()
+#print(f"The selected language for TTS is: {selected_language}")
 
 
 
