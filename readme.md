@@ -121,14 +121,25 @@ Run in this order:
   
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 3. `sudo docker run -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:headless_m1_latest`
+
 </details>
 <details>
 <summary>Headless Docker 🐧 Linux/Intel 🍏Mac</summary>
+
+## For Headless Docker on only cpu
 
 1. `cd ~`
   
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 3. `sudo docker run -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+
+## For headless docker with gpu speedup if you have a nvida gpu
+
+1. `cd ~`
+  
+2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+3. `sudo docker run --gpus all -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+
 </details>
 <details>
 <summary>Headless Docker 🖥️ Windows</summary>
