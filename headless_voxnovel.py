@@ -1758,7 +1758,7 @@ def select_language_terminal():
     language = default_language
 
     # Ask user to change the language
-    change_lang = input(f"Do you want to change the language from {default_language}? (yes/no): ").strip().lower()
+    change_lang = input(f"Do you want to change the language(Character accent) from {default_language}? (yes/no): ").strip().lower()
     if change_lang == "yes":
         # List available languages
         languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'pl', 'tr', 'ru', 'nl', 'cs', 'ar', 'zh-cn', 'hu', 'ko', 'ja', 'hi']  # Extend as needed
