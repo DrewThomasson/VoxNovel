@@ -1,3 +1,4 @@
+# @title Default title text
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
 
@@ -387,7 +388,15 @@ import sys
 
 def process_file_headless():
     # Ask for the file path via command line
-    file_path = input("Please enter the full path to your eBook file: ")
+    while True:
+        file_path = input("Enter the file path of the ebook: ")
+    
+        # Check if the file exists
+        if os.path.isfile(file_path):
+            # File exists, break out of the loop
+            break
+        else:
+            print("File not found. Please try again.")
     ebook_file_path = file_path
     input_file_is_txt = file_path.lower().endswith('.txt')
 
