@@ -68,9 +68,9 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 
 ## 🤖 Headless VoxNovel Google Colab
 
-Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?authuser=1).
+Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?usp=sharing).
 
-## GUI
+## GUI 
 
 <img width="200" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
 <details>
@@ -116,7 +116,7 @@ Run in this order:
 <details>
 <summary> 🤖 Headless VoxNovel Google Colab</summary>
 
-Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?authuser=1).
+Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?usp=sharing).
 
 </details>
 <details>
