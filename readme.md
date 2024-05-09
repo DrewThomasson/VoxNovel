@@ -66,6 +66,10 @@ https://github.com/DrewThomasson/bark/assets/126999465/5da79b9d-2974-471e-a564-3
 You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
 https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 
+## 🤖 Headless VoxNovel Google Colab
+
+Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?authuser=1).
+
 ## GUI
 
 <img width="200" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
@@ -109,7 +113,12 @@ https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
 ## 📦 SetUp Install
 
 Run in this order:
+<details>
+<summary> 🤖 Headless VoxNovel Google Colab</summary>
 
+Explore and run the interactive version of the Headless VoxNovel project directly on Google Colab! Get started [here](https://colab.research.google.com/drive/15pp2hFBo2fD3legDQfWY5DMt-aI-HKKF?authuser=1).
+
+</details>
 <details>
 <summary> 🐳 Docker (Sound not working in gui yet) </summary>
 <details>
@@ -583,7 +592,8 @@ This means all you do is select the book and all the voices will be auto assigne
 - [x] Low vram option(Details in readme)
 - [x] Gui Docker image (Graphical interface-no sound in gui yet)
 - [x] Headless version of docker image
-- [x] Headless version of VoxNovel 
+- [x] Headless version of VoxNovel
+- [x] A Google Colab using the headless version
 
 ## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
@@ -591,7 +601,6 @@ This means all you do is select the book and all the voices will be auto assigne
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
 - [ ] Incorporating local model to generate sound effects when a book discribes a location or sound effect
-- [ ] Include a Google Colab using the headless version
 
 ## 🙏 Special thanks to:
 -@sidharthrajaram
