@@ -505,7 +505,7 @@ Testing on done with the mini epub file located in the Example_working_files.zip
 </details>
 
 <details>
-<summary> To Run the auto program (Don't use temporarily on hold) </summary>
+<summary> To Run the auto program </summary>
 This means all you do is select the book and all the voices will be auto assigned and generated for you.
 
 `python auto_noGui_run.py`
