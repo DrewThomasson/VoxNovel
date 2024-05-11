@@ -462,13 +462,12 @@ pip install mecab mecab-python3 unidic
 
 
 ## 🚀 To Run the program
-Run in gui mode: `python gui_run.py`
-Run in headless mode `python headless_voxnovel.pu.py`
-<details>
-<summary> Running with Low VRAM (4 GB) </summary>
+`python gui_run.py`
 
 ## 🚀 Or to run headless
 `python headless_voxnovel`
+<details>
+<summary> Running with Low VRAM (4 GB) </summary>
 
 ### Modifications
 - Turns out once you set the device it stays like that for the full program.
