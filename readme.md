@@ -169,9 +169,7 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 3. `sudo docker run --gpus all -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/snd:/dev/snd --device /dev/snd -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest`
 </details>
-Here's the formatted text, unchanged in wording:
 
-Certainly! Here is the full guide with the commands in an easy-to-copy format, without any changes to your original wording:
 
 <details>
 <summary> 🍏 Mac Docker </summary>
