@@ -157,7 +157,9 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
 
-3. `docker run -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless` 
+3. `docker run -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+
+4. If you want gpu speedup processing use `docker run --gpus all -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
 </details>
 </details>
 <details>
