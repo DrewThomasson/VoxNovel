@@ -153,13 +153,37 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 <details>
 <summary>Headless Docker 🖥️ Windows</summary>
 
-1. `cd %USERPROFILE%`
+### Installation and Setup on Windows (PowerShell)
 
-2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
+Follow these steps to set up the VoxNovel project on a Windows system using PowerShell:
 
-3. `docker run -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+1. Navigate to your user profile directory:
+   ```powershell
+   cd $env:USERPROFILE
+   ```
 
-4. If you want gpu speedup processing use `docker run --gpus all -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless`
+2. Clone the VoxNovel repository from GitHub:
+   ```powershell
+   git clone https://github.com/DrewThomasson/VoxNovel.git
+   ```
+
+### Running VoxNovel in Docker
+
+#### For Headless Operation on CPU
+
+To run the VoxNovel application in a Docker container on your CPU:
+
+```powershell
+docker run -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless
+```
+
+#### For Headless Operation with NVIDIA GPU Speedup
+
+If you have an NVIDIA GPU and want to accelerate processing, use the following command:
+
+```powershell
+docker run --gpus all -v "${env:USERPROFILE}/VoxNovel/:/VoxNovel/" -it athomasson2/voxnovel:latest_headless
+```
 </details>
 </details>
 <details>
