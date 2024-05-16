@@ -396,6 +396,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
  
 2. After you set the username and passsudo apt install nvidia-cuda-toolkitword, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
 3. run this command in the Ubuntu wsl for a single command install `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
+4. make sure before you run VoxNovel your in the VoxNovel conda env`conda activate VoxNovel`
 5. Congrates! VoxNovel should run in WSL now!
 </details>
 <details>
