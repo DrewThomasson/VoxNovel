@@ -1,9 +1,9 @@
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
-
+from TTS.api import TTS
 def process_large_numbers_in_txt(file_path):
     # Read the contents of the file
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="utf8") as file:
         content = file.read()
 
     # Regular expression to match numbers with commas
@@ -13,7 +13,7 @@ def process_large_numbers_in_txt(file_path):
     modified_content = re.sub(pattern, lambda m: m.group().replace(',', ''), content)
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding="utf8") as file:
         file.write(modified_content)
 
 # Usage example
@@ -273,9 +273,9 @@ def create_chapter_labeled_book(ebook_file_path):
         files = [f for f in os.listdir(input_folder) if f.endswith('.txt')]
         sorted_files = sorted(files, key=sort_key)
 
-        with open(output_file, 'w') as outfile:
+        with open(output_file, 'w', encoding='utf-8') as outfile:
             for i, filename in enumerate(sorted_files):
-                with open(os.path.join(input_folder, filename), 'r') as infile:
+                with open(os.path.join(input_folder, filename), 'r',encoding='utf-8') as infile:
                     outfile.write(infile.read())
                     # Add the marker unless it's the last file
                     if i < len(sorted_files) - 1:
@@ -322,6 +322,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from epub2txt import epub2txt
 from booknlp.booknlp import BookNLP
+#from booknlp import BookNLP
 import nltk
 import re
 nltk.download('averaged_perceptron_tagger')
@@ -793,7 +794,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 def is_single_line_file(filename):
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8') as file:
         return len(file.readlines()) <= 1
 
 def copy_if_single_line(source_file, destination_file):
