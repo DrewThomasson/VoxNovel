@@ -412,19 +412,74 @@ pip install mecab mecab-python3 unidic
 <details>
 <summary> Windows 11 </summary>
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
+
 <details>
 <summary> Easy Windows 11 install </summary>
 
+1. In your PowerShell, paste:
+   ```sh
+   wsl --install
+   ```
+   to install WSL. (You might be prompted by your system to enable virtualization in your BIOS if it's available, as it is needed to run WSL on Windows.)
 
-  
-1. In your PowerShell, paste `wsl --install` to install WSL.
+2. After setting your username and password, open WSL and paste this command for a single command install:
+   ```sh
+   yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash
+   ```
 
- 
-2. After you set the username and passsudo apt install nvidia-cuda-toolkitword, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
-3. run this command in the Ubuntu wsl for a single command install `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
-4. make sure before you run VoxNovel your in the VoxNovel conda env`conda activate VoxNovel`
-5. Congrates! VoxNovel should run in WSL now!
+3. **(Optional only for Nvida graphics cards Do not run this command if you don't have a Nvidia graphics card)** Install the NVIDIA CUDA toolkit (required for Nvidia GPU acceleration):
+   ```sh
+   sudo apt install nvidia-cuda-toolkit
+   ```
+
+4. Make sure you are in the VoxNovel conda environment:
+   ```sh
+   conda activate VoxNovel
+   ```
+
+5. Navigate to the VoxNovel folder (if not already there):
+   ```sh
+   cd VoxNovel
+   ```
+
+6. Congrats! VoxNovel should run in WSL now!
+
+## 🚀 To Run the program
+   ```sh
+   python gui_run.py
+   ```
+
+## 🚀 Or to run headless
+   ```sh
+   python headless_voxnovel
+   ```
+
+### Troubleshooting WSL
+
+If you have trouble with the WSL environment:
+
+1. List all WSL environments:
+   ```sh
+   wsl --list --verbose
+   ```
+
+2. Remove a specific WSL environment (e.g., Ubuntu):
+   ```sh
+   wsl --unregister <distro_name>
+   ```
+
+3. Reinstall WSL:
+   ```sh
+   wsl --install
+   ```
+
+To launch WSL anytime you need to run this program, you can use the search bar in Windows to find and launch "WSL" or run:
+   ```sh
+   wsl
+   ```
+
 </details>
+
 <details>
 <summary> InDepth Windows 11 install </summary>
 1. In your PowerShell, paste `wsl --install` to install WSL.
