@@ -63,8 +63,10 @@ https://github.com/DrewThomasson/VoxNovel-OLD-/assets/126999465/f4e57afe-53df-48
 https://github.com/DrewThomasson/bark/assets/126999465/5da79b9d-2974-471e-a564-31a180ba2833
 </details>
 
-You can fine tune your own Xtts models with around 6+ minutes of audio for free with this colab
-https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-
+You can fine-tune your own Xtts models with around 6+ minutes of audio for free with this colab ~~[https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-](https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-)~~
+
+Edit: that colab doesn't work anymore: use my version that provides a fix: [https://colab.research.google.com/drive/1sqQqzupo2pdjgggkrbM60sU6sBFYo3su?usp=sharing](https://colab.research.google.com/drive/1sqQqzupo2pdjgggkrbM60sU6sBFYo3su?usp=sharing)
+
 
 ## 🤖 Headless VoxNovel Google Colab
 
