@@ -60,4 +60,4 @@ if missing_files:
     print("Downloading and extracting required files...")
     download_and_extract()
 else:
-    print("All required files are present. No action needed.")
+    print("All required booknlp files are present. No action needed.")
