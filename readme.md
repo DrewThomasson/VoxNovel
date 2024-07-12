@@ -453,7 +453,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 
 ## 🚀 Or to run headless
    ```sh
-   python headless_voxnovel
+   python headless_voxnovel.py
    ```
 
 ### Troubleshooting WSL
