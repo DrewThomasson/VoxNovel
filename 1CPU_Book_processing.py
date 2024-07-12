@@ -1,3 +1,8 @@
+
+#This will download the booknlp files using my huggingface backup     
+import download_missing_booknlp_models 
+
+
 import os
 import torch
 
