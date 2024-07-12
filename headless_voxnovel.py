@@ -1,3 +1,8 @@
+
+#This will download the booknlp files using my huggingface backup     
+import download_missing_booknlp_models 
+
+
 # @title Default title text
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
