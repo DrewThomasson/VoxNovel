@@ -1,9 +1,13 @@
+# @title Default title text
+
+
 
 #This will download the booknlp files using my huggingface backup     
 import download_missing_booknlp_models 
 
 
-# @title Default title text
+
+
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
 
@@ -1139,7 +1143,13 @@ def select_voices():
 
             # Display available voices and allow user to choose
             print(f"Available voices for {selected_speaker}:")
-            available_voices = [get_random_voice_for_speaker(selected_speaker) for _ in range(5)]  # Assuming you can call this multiple times to get different options
+            if selected_speaker.endswith(".M") and male_voice_actors:
+                available_voices = male_voice_actors
+            elif selected_speaker.endswith(".F") and female_voice_actors:
+                available_voices = female_voice_actors
+            else:
+                available_voices = voice_actors
+
             for idx, voice in enumerate(available_voices, start=1):
                 print(f"{idx}. {voice}")
             try:
