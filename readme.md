@@ -131,7 +131,7 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 1. `cd ~`
   
 2. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-3. `sudo docker run -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:headless_m1_latest`
+3. `sudo docker run -v "$HOME/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:headless_m1_v2`
 
 </details>
 <details>
