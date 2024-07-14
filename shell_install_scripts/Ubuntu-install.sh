@@ -52,7 +52,7 @@ if [ "$(uname)" == "Linux" ]; then
     # Install necessary Python packages
     pip install styletts2 
     pip install tts==0.21.3
-    pip install booknlp
+    pip install booknlp==1.0.7.1
     pip install bs4
     pip install -r Ubuntu_requirements.txt
 
