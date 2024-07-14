@@ -243,30 +243,45 @@ docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):
 </details>
 
 <details>
-<summary> 🪟 Windows Docker </summary>
-1. `choco install vcxsrv`
-- First install VcXsrv and configur it to allow connections
-<details>
-<summary> how to setup VcXsrv </summary>
-After installing VcXsrv, it typically launches automatically. You can confirm it's running by checking for its icon in the system tray, usually located near the clock in the taskbar. It may also start automatically when you log in to your system.
-
-To ensure it's configured to allow connections from Docker containers, follow these steps:
-
-1. Right-click on the VcXsrv icon in the system tray.
-2. Select "XLaunch" to open the configuration wizard.
-3. In the configuration wizard, select "Multiple windows" and proceed to the next step.
-4. Choose your preferred settings for display number and screen.
-5. In the "Extra settings" window, make sure to check the box labeled "Disable access control" to allow connections from Docker containers.
-6. Complete the configuration by clicking "Finish" and then "Save configuration" when prompted.
-
-With these settings, VcXsrv should be running and configured to allow connections from Docker containers. You can now proceed with running your Docker commands requiring GUI support.
+  <summary>🪟 Windows Docker</summary>
+  
+  1. Install VcXsrv:
+     ```sh
+     choco install vcxsrv
+     ```
+     - First install VcXsrv and configure it to allow connections.
+     
+     <details>
+       <summary>How to setup VcXsrv</summary>
+       
+       After installing VcXsrv, it typically launches automatically. You can confirm it's running by checking for its icon in the system tray, usually located near the clock in the taskbar. It may also start automatically when you log in to your system.
+       
+       To ensure it's configured to allow connections from Docker containers, follow these steps:
+       
+       1. Right-click on the VcXsrv icon in the system tray.
+       2. Select "XLaunch" to open the configuration wizard.
+       3. In the configuration wizard, select "Multiple windows" and proceed to the next step.
+       4. Choose your preferred settings for display number and screen.
+       5. In the "Extra settings" window, make sure to check the box labeled "Disable access control" to allow connections from Docker containers.
+       6. Complete the configuration by clicking "Finish" and then "Save configuration" when prompted.
+       
+       With these settings, VcXsrv should be running and configured to allow connections from Docker containers. You can now proceed with running your Docker commands requiring GUI support.
+     </details>
+     
+  2. Change to your home directory:
+     ```sh
+     cd $HOME
+     ```
+  3. Clone the repository:
+     ```sh
+     git clone https://github.com/DrewThomasson/VoxNovel.git
+     ```
+  4. Run the Docker container:
+     ```sh
+     docker run -e DISPLAY=host.docker.internal:0 -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest
+     ```
 </details>
-2. `cd $HOME`
-3. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-4. `docker run -e DISPLAY=host.docker.internal:0 -v "/Users/$(whoami)/VoxNovel:/VoxNovel/" -it athomasson2/voxnovel:latest
 
-`
-</details>
 </details>
 </details>
 <details>
