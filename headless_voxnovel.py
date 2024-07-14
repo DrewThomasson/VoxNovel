@@ -12,7 +12,7 @@ import download_missing_booknlp_models
 #It will also tell if a voice actor has a fine tuned xtts model or not
 def list_available_voice_actors():
     print("\nList of current voices available:")
-    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
+    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example" and va != ".DS_Store"]
     for idx, voice in enumerate(voice_actors, 1):
         voice_path = os.path.join(voice_actors_folder, voice)
         model_path = os.path.join(voice_path, "model")
@@ -982,9 +982,9 @@ data = pd.read_csv(csv_file)
 #voice actors folder
 voice_actors_folder ="tortoise/voices/"
 # Get the list of voice actors
-voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
-male_voice_actors = [va for va in voice_actors if va.endswith(".M")]
-female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
+voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example" and va != ".DS_Store"]
+male_voice_actors = [va for va in voice_actors if va.endswith(".M") and va != ".DS_Store"]
+female_voice_actors = [va for va in voice_actors if va.endswith(".F") and va != ".DS_Store"]
 SILENCE_DURATION_MS = 750
 # Dictionary to hold each character's selected language
 character_languages = {}
@@ -1167,7 +1167,13 @@ def select_voices():
 
             # Display available voices and allow user to choose
             print(f"Available voices for {selected_speaker}:")
-            available_voices = [get_random_voice_for_speaker(selected_speaker) for _ in range(5)]  # Assuming you can call this multiple times to get different options
+            if selected_speaker.endswith(".M") and male_voice_actors:
+                available_voices = male_voice_actors
+            elif selected_speaker.endswith(".F") and female_voice_actors:
+                available_voices = female_voice_actors
+            else:
+                available_voices = voice_actors
+
             for idx, voice in enumerate(available_voices, start=1):
                 print(f"{idx}. {voice}")
             try:
@@ -1412,9 +1418,9 @@ def update_voice_comboboxes():
     global female_voice_actors
     global male_voice_actors
     #updating the values of the avalible voice actors too
-    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
-    male_voice_actors = [va for va in voice_actors if va.endswith(".M")]
-    female_voice_actors = [va for va in voice_actors if va.endswith(".F")]
+    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example" and va != ".DS_Store"]
+    male_voice_actors = [va for va in voice_actors if va.endswith(".M") and va != ".DS_Store"]
+    female_voice_actors = [va for va in voice_actors if va.endswith(".F") and va != ".DS_Store"]
 
     # your code snippet to include single voice models
     filtered_tts_models = [model for model in tts_models if "multi-dataset" not in model]
