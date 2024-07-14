@@ -37,7 +37,7 @@ RUN pip install --upgrade pip
 RUN pip install bs4
 RUN pip install styletts2
 RUN pip install --no-cache-dir tts==0.21.3
-RUN pip install booknlp
+RUN pip install booknlp==1.0.7.1
 # RUN pip install -r Ubuntu_requirements.txt --ignore me
 RUN pip install ebooklib
 RUN pip install epub2txt
