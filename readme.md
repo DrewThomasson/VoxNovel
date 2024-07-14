@@ -287,7 +287,7 @@ With these settings, VcXsrv should be running and configured to allow connection
 7. `pip install bs4`
 8. `pip install styletts2`
 9. `pip install tts==0.21.3`
-10. `pip install booknlp`
+10. `pip install booknlp==1.0.7.1`
 11. `pip install -r Ubuntu_requirements.txt`
 12. `python -m spacy download en_core_web_sm`
 
@@ -330,7 +330,7 @@ you might have to reset the keys if something goes wrong with that: Resetting al
 Remove or reset all the keys installed in your system by removing the /etc/pacman.d/gnupg directory (as root) and by rerunning pacman-key --init followed by pacman-key --populate to re-add the default keys. 
 15. `pip install styletts2`
 16. `pip install tts==0.21.3`
-17. `pip install booknlp`
+17. `pip install booknlp==1.0.7.1`
 18. `pip install -r SteamDeck_requirements.txt`
 19. `pip3 install spacy`
 20. `python3 -m spacy download en_core_web_sm`
@@ -357,7 +357,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 6. `cd VoxNovel`
 7. `pip install styletts2`
 8. `pip install tts==0.21.3`
-9. `pip install booknlp`
+9. `pip install booknlp==1.0.7.1`
 9.`pip install -r MAC-requirements.txt`
 10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
@@ -389,7 +389,7 @@ pip install mecab mecab-python3 unidic
 7. `pip install tensorflow-macos` (Also optional `pip install tensorflow-metal` But so far I haven't gotten gpu speedup yet
 8. `pip install styletts2`
 9. `pip install tts==0.21.3`
-10. `pip install --no-dependencies booknlp`
+10. `pip install --no-dependencies booknlp==1.0.7.1`
 11. `pip install transformers==4.30.0`
 12. `pip install tensorflow`
 13. `pip install -r MAC-requirements.txt`
@@ -515,7 +515,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `cd VoxNovel`
    `pip install styletts2`
    `pip install tts==0.21.3`
-   `pip install booknlp`
+   `pip install booknlp==1.0.7.1`
    `pip install -r Ubuntu_requirements.txt`
    `pip install spacy`
    `python -m spacy download en_core_web_sm`
