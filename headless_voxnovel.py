@@ -8,6 +8,30 @@ import download_missing_booknlp_models
 
 
 
+#This will print out all of the avalible voice actors in a numbered list 
+#It will also tell if a voice actor has a fine tuned xtts model or not
+def list_available_voice_actors():
+    print("\nList of current voices available:")
+    voice_actors = [va for va in os.listdir(voice_actors_folder) if va != "cond_latent_example"]
+    for idx, voice in enumerate(voice_actors, 1):
+        voice_path = os.path.join(voice_actors_folder, voice)
+        model_path = os.path.join(voice_path, "model")
+        
+        status = ""
+        if os.path.exists(model_path) and os.path.isdir(model_path):
+            required_files = ["config.json", "model.pth", "vocab.json_"]
+            existing_files = os.listdir(model_path)
+            
+            if all(file in existing_files for file in required_files):
+                status = " (Fine-tuned XTTS model available)"
+            else:
+                missing_files = [file for file in required_files if file not in existing_files]
+                status = f" (Incomplete XTTS model: missing {', '.join(missing_files)})"
+        
+        print(f"{idx}. {voice}{status}")
+    print()  # Add an extra newline for better readability
+
+
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
 
@@ -1143,13 +1167,7 @@ def select_voices():
 
             # Display available voices and allow user to choose
             print(f"Available voices for {selected_speaker}:")
-            if selected_speaker.endswith(".M") and male_voice_actors:
-                available_voices = male_voice_actors
-            elif selected_speaker.endswith(".F") and female_voice_actors:
-                available_voices = female_voice_actors
-            else:
-                available_voices = voice_actors
-
+            available_voices = [get_random_voice_for_speaker(selected_speaker) for _ in range(5)]  # Assuming you can call this multiple times to get different options
             for idx, voice in enumerate(available_voices, start=1):
                 print(f"{idx}. {voice}")
             try:
@@ -1185,7 +1203,7 @@ def select_voices_fast():
  
  
 # Pre-select the voices before starting the GUI
-select_voices()
+#select_voices()
 
 ## Main application window
 #root = tk.Tk()
@@ -1746,15 +1764,17 @@ def ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice():
     while True:
         print("\n1. Clone a new voice")
         print("2. Add a fine-tuned XTTS model to a voice actor")
-        print("3. Exit")
-        choice = input("Enter your choice: ")
+        print("3. Skip/Proceed to voice selection")
+        choice = input("Enter your choice #: ")
 
         if choice == '1':
             clone_new_voice()
+            list_available_voice_actors()  # Update the list after cloning
         elif choice == '2':
             add_fine_tuned_model()
+            list_available_voice_actors()  # Update the list after adding a model
         elif choice == '3':
-            print("Exiting the program.")
+            print("Exiting the voice management menu.")
             break
         else:
             print("Invalid choice. Please try again.")
@@ -1814,7 +1834,10 @@ from tqdm import tqdm
 
 # Function to generate audio for the text
 def generate_audio():
+
+    list_available_voice_actors()
     ask_if_user_wants_to_add_fine_tuned_xtts_model_or_clone_a_voice()
+    select_voices()
     selected_tts_model = select_tts_model()
     #This will ask the user in the terminal if they want to generate all of the audio with only the narrerator's voice
     use_narrator_voice = input("Do you want to generate all audio with the Narrator voice? (yes/no): ").strip().lower()
