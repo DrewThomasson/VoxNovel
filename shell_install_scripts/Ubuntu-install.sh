@@ -55,6 +55,10 @@ if [ "$(uname)" == "Linux" ]; then
     pip install booknlp==1.0.7.1
     pip install bs4
     pip install -r Ubuntu_requirements.txt
+    pip install ebooklib==0.18
+    pip install epub2txt==0.1.6
+    pip install pygame==2.6.0
+    pip install moviepy==1.0.3
 
     # Download the spaCy language model
     pip install spacy
