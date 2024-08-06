@@ -449,17 +449,18 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
    sudo apt install nvidia-cuda-toolkit
    ```
 
-4. Make sure you are in the VoxNovel conda environment:
-   ```sh
+4. Make sure you are in the VoxNovel conda environment:((If 'conda: command not found
+' IE- conda is not seen as a command then try closing out of the current powershell window and relaunching the wsl env with   [ wsl -d Ubuntu   ]
+     ```sh
    conda activate VoxNovel
    ```
 
-5. Navigate to the VoxNovel folder (if not already there):
+6. Navigate to the VoxNovel folder (if not already there):
    ```sh
    cd VoxNovel
    ```
 
-6. Congrats! VoxNovel should run in WSL now!
+7. Congrats! VoxNovel should run in WSL now!
 
 ## 🚀 To Run the program
    ```sh
