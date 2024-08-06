@@ -498,7 +498,7 @@ To launch WSL anytime you need to run this program, you can use the search bar i
 </details>
 
 <details>
-<summary> InDepth Windows 11 install (DEPRECATED-DO NOT USE, for development purposes only)</summary>
+<summary> InDepth Windows 11 install (DEPRECATED-DO NOT USE, for development purposes only, using will likely break your install)</summary>
 1. In your PowerShell, paste `wsl --install` to install WSL.
 
 2. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
