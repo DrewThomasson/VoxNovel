@@ -455,12 +455,12 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
    conda activate VoxNovel
    ```
 
-6. Navigate to the VoxNovel folder (if not already there):
+5. Navigate to the VoxNovel folder (if not already there):
    ```sh
    cd VoxNovel
    ```
 
-7. Congrats! VoxNovel should run in WSL now!
+6. Congrats! VoxNovel should run in WSL now!
 
 ## 🚀 To Run the program
    ```sh
