@@ -449,7 +449,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
    sudo apt install nvidia-cuda-toolkit
    ```
 
-4. Make sure you are in the VoxNovel conda environment:((If 'conda: command not found
+4. Make sure you are in the VoxNovel conda environment:(If 'conda: command not found
 ' IE- conda is not seen as a command then try closing out of the current powershell window and relaunching the wsl env with   [ wsl -d Ubuntu   ]
      ```sh
    conda activate VoxNovel
@@ -457,7 +457,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 
 5. Navigate to the VoxNovel folder (if not already there):
    ```sh
-   cd VoxNovel
+   cd ~ && cd VoxNovel
    ```
 
 6. Congrats! VoxNovel should run in WSL now!
@@ -499,7 +499,7 @@ To launch WSL anytime you need to run this program, you can use the search bar i
 </details>
 
 <details>
-<summary> InDepth Windows 11 install (DEPRECATED-DO NOT USE, for development purposes only, using will likely break your install)</summary>
+<summary> 🚫InDepth Windows 11 install 🚫(DEPRECATED-DO NOT USE, for development purposes only, using will likely break your install)🚫</summary>
 1. In your PowerShell, paste `wsl --install` to install WSL.
 
 2. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
