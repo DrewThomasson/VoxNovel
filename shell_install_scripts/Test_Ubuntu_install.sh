@@ -13,6 +13,7 @@ if [ "$(uname)" == "Linux" ]; then
     sudo apt-get install -y ffmpeg
     sudo apt-get install -y curl
     sudo apt-get install -y zip
+    sudo apt-get install -y unzip
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
@@ -87,9 +88,27 @@ if [ "$(uname)" == "Linux" ]; then
 
     # Step to automatically copy the nltk folder
     # Assume nltk.zip is placed in the home directory or a specified location
-    unzip ~/nltk.zip -d /home/$USER/miniconda/envs/VoxNovel/lib/python3.10/site-packages/
+    USERNAME=$(whoami)
+    FILESYSTEM_PATH="/home/$USERNAME/miniconda/envs/VoxNovel/lib/python3.10/site-packages/nltk"
+    # Check if the path exists
+    if [ -d "$FILESYSTEM_PATH" ]; then
+        echo "Navigating to $FILESYSTEM_PATH"
     
-    echo "NLTK files copied successfully."
+        # Download the NLTK zip file
+        wget https://github.com/user-attachments/files/16650539/nltk.zip -O /tmp/nltk.zip
+        sudo apt-get update
+        sudo apt-get install unzip -y
+    
+        # Unzip the file to a temporary directory
+        unzip /tmp/nltk.zip -d /tmp/new_nltk
+    
+        # Replace the existing NLTK folder with the new one
+        cp -r /tmp/new_nltk/nltk/* "$FILESYSTEM_PATH"
+    
+        # Clean up the temporary files
+        rm -rf /tmp/nltk.zip /tmp/new_nltk
+    
+        echo "NLTK files have been successfully replaced."
 
 else
     echo "This script is intended to be run on Linux."
