@@ -14,6 +14,7 @@ if [ "$(uname)" == "Linux" ]; then
     sudo apt-get install -y curl
     sudo apt-get install -y zip
     sudo apt-get install -y unzip
+    sudo apt-get install -y nano
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
@@ -67,24 +68,6 @@ if [ "$(uname)" == "Linux" ]; then
     pip install spacy
     python -m spacy download en_core_web_sm
 
-    # Create a Desktop Entry for the VoxNovel app
-    echo "[Desktop Entry]
-    Version=1.0
-    Type=Application
-    Name=VoxNovel
-    Exec=$HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
-    Icon=$HOME/VoxNovel/readme_files/logo.jpeg
-    Terminal=true
-    " > $HOME/Desktop/VoxNovel.desktop
-    cp $HOME/Desktop/VoxNovel.desktop ~/.local/share/applications
-    
-    # Make both Desktop Entries executable
-    chmod +x $HOME/Desktop/VoxNovel.desktop
-    chmod +x ~/.local/share/applications/VoxNovel.desktop
-    # Make the Ubuntu voxnovel run script executable
-    chmod +x $HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
-    # Update the application database
-    sudo update-desktop-database
 
     # Step to automatically copy the nltk folder
     # Assume nltk.zip is placed in the home directory or a specified location
@@ -109,6 +92,28 @@ if [ "$(uname)" == "Linux" ]; then
     
     echo "NLTK files have been successfully replaced."
 
+
+
+    # Create a Desktop Entry for the VoxNovel app
+    echo "[Desktop Entry]
+    Version=1.0
+    Type=Application
+    Name=VoxNovel
+    Exec=$HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
+    Icon=$HOME/VoxNovel/readme_files/logo.jpeg
+    Terminal=true
+    " > $HOME/Desktop/VoxNovel.desktop
+    cp $HOME/Desktop/VoxNovel.desktop ~/.local/share/applications
+    
+    # Make both Desktop Entries executable
+    chmod +x $HOME/Desktop/VoxNovel.desktop
+    chmod +x ~/.local/share/applications/VoxNovel.desktop
+    # Make the Ubuntu voxnovel run script executable
+    chmod +x $HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
+    # Update the application database
+    sudo update-desktop-database
+
+    
 else
     echo "This script is intended to be run on Linux."
 fi
