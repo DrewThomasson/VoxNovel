@@ -91,24 +91,23 @@ if [ "$(uname)" == "Linux" ]; then
     USERNAME=$(whoami)
     FILESYSTEM_PATH="/home/$USERNAME/miniconda/envs/VoxNovel/lib/python3.10/site-packages/nltk"
     # Check if the path exists
-    if [ -d "$FILESYSTEM_PATH" ]; then
-        echo "Navigating to $FILESYSTEM_PATH"
+    echo "Navigating to $FILESYSTEM_PATH"
     
-        # Download the NLTK zip file
-        wget https://github.com/user-attachments/files/16650539/nltk.zip -O /tmp/nltk.zip
-        sudo apt-get update
-        sudo apt-get install unzip -y
+    # Download the NLTK zip file
+    wget https://github.com/user-attachments/files/16650539/nltk.zip -O /tmp/nltk.zip
+    sudo apt-get update
+    sudo apt-get install unzip -y
     
-        # Unzip the file to a temporary directory
-        unzip /tmp/nltk.zip -d /tmp/new_nltk
+    # Unzip the file to a temporary directory
+    unzip /tmp/nltk.zip -d /tmp/new_nltk
     
-        # Replace the existing NLTK folder with the new one
-        cp -r /tmp/new_nltk/nltk/* "$FILESYSTEM_PATH"
+    # Replace the existing NLTK folder with the new one
+    cp -r /tmp/new_nltk/nltk/* "$FILESYSTEM_PATH"
     
-        # Clean up the temporary files
-        rm -rf /tmp/nltk.zip /tmp/new_nltk
+    # Clean up the temporary files
+    rm -rf /tmp/nltk.zip /tmp/new_nltk
     
-        echo "NLTK files have been successfully replaced."
+    echo "NLTK files have been successfully replaced."
 
 else
     echo "This script is intended to be run on Linux."
