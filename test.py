@@ -1,3 +1,9 @@
+
+#This will download the booknlp files using my huggingface backup     
+import download_missing_booknlp_models 
+
+
+
 #this is code that will be used to turn numbers like 1,000 and in a txt file into 1000 go then booknlp doesnt make it weird and then when the numbers are generated it comes out fine
 import re
 
@@ -105,6 +111,7 @@ from bs4 import BeautifulSoup
 import re
 import csv
 import nltk
+import shutil
 
 # Only run the main script if Value is True
 def create_chapter_labeled_book(ebook_file_path):
@@ -128,6 +135,10 @@ def create_chapter_labeled_book(ebook_file_path):
     def save_chapters_as_text(epub_path):
         # Create the directory if it doesn't exist
         directory = "Working_files/temp_ebook"
+        #Clean up the text chapter folders by wiping it before creating chapters for selected ebook.
+        #Lazily done by just deleting the directly and everything in it.
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
         ensure_directory(directory)
 
         # Open the EPUB file
@@ -319,14 +330,12 @@ from epub2txt import epub2txt
 from booknlp.booknlp import BookNLP
 import nltk
 import re
-import torch
 nltk.download('averaged_perceptron_tagger')
 
 epub_file_path = ""
 chapters = []
 ebook_file_path = ""
 input_file_is_txt = False
-global_Low_vram_checkbox_var = False
 def convert_epub_and_extract_chapters(epub_path):
     # Regular expression to match the chapter lines in the output
     chapter_pattern = re.compile(r'Detected chapter: \* (.*)')
@@ -379,12 +388,6 @@ def convert_with_calibre(file_path, output_format="txt"):
     return output_path
 
 def process_file():
-    if Low_vram_checkbox_var.get():
-        os.environ['CUDA_VISIBLE_DEVICES'] = ''
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("Low Vram mode turned turned on turning gpu off temporarily for book processing")
-        print("Running book processing on detected device: " + str(device))
-
     global epub_file_path
     global ebook_file_path
     global input_file_is_txt
@@ -451,13 +454,6 @@ def process_file():
     if epub_file_path == "":
         chapters = convert_epub_and_extract_chapters(epub_file_path)
     print("Success, File processed successfully!")
-
-    if Low_vram_checkbox_var.get():
-        del os.environ['CUDA_VISIBLE_DEVICES']
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("Low Vram mode turned: " + Low_vram_checkbox_var.get())
-        print("Book processing complete turning GPU access back on for pytorch")
-        print("Audio generation will be run on detected device: " + str(device))
     
     # Close the GUI
     root.destroy()
@@ -465,29 +461,11 @@ def process_file():
 root = tk.Tk()
 root.title("BookNLP Processor")
 
-def toggle_low_vram_mode():
-    global global_Low_vram_checkbox_var
-    global_Low_vram_checkbox_var = Low_vram_checkbox_var.get()
-    print("Low Vram mode:", Low_vram_checkbox_var.get())
-    print("Low Vram mode:", global_Low_vram_checkbox_var)
-
-
-
-
 frame = tk.Frame(root, padx=20, pady=20)
 frame.pack(padx=10, pady=10)
 
 process_button = tk.Button(frame, text="Process File", command=process_file)
 process_button.pack()
-
-# Create a BooleanVar to hold the boolean value
-Low_vram_checkbox_var = tk.BooleanVar()
-
-# Create a Checkbutton widget
-checkbox = tk.Checkbutton(root, text="Low Vram Mode", variable=Low_vram_checkbox_var, onvalue=True, offvalue=False, command=toggle_low_vram_mode)
-
-# Display the Checkbutton
-checkbox.pack()
 
 root.mainloop()
 
@@ -1224,44 +1202,32 @@ def update_voice_actor(speaker):
 
 
 # Function to split long strings into parts
-def split_long_string(text, limit=170):
-    if len(text) <= limit:
-        return [text]
+def split_long_sentence(sentence, max_length=230, max_pauses=8):
+    """
+    Splits a sentence into parts based on length or number of pauses without recursion.
     
-    # Split by commas
-    #parts = text.split(',')
+    :param sentence: The sentence to split.
+    :param max_length: Maximum allowed length of a sentence.
+    :param max_pauses: Maximum allowed number of pauses in a sentence.
+    :return: A list of sentence parts that meet the criteria.
+    """
     parts = []
-    new_parts = []
+    while len(sentence) > max_length or sentence.count(',') + sentence.count(';') + sentence.count('.') > max_pauses:
+        possible_splits = [i for i, char in enumerate(sentence) if char in ',;.' and i < max_length]
+        if possible_splits:
+            # Find the best place to split the sentence, preferring the last possible split to keep parts longer
+            split_at = possible_splits[-1] + 1
+        else:
+            # If no punctuation to split on within max_length, split at max_length
+            split_at = max_length
+        
+        # Split the sentence and add the first part to the list
+        parts.append(sentence[:split_at].strip())
+        sentence = sentence[split_at:].strip()
     
-
-    # List of pause-inducing punctuation marks
-    punctuations = [',', ';', ':', '.']
-
-    num_pauses = sum(text.count(punc) for punc in punctuations)
-
-
-    if num_pauses > 6:
-        pause_positions = [i for i, char in enumerate(text) if char in punctuations]
-        middle_pause_index = pause_positions[len(pause_positions) // 2]
-
-        # Split the sentence at the middle pause
-        part1 = text[:middle_pause_index + 1].strip()
-        part2 = text[middle_pause_index + 1:].strip()
-        parts.extend([part1, part2])  # Add part1 and part2 to parts list
-
-
-
-    for part in parts:
-        while len(part) > limit:
-            # Split at the last space before the limit
-            break_point = part.rfind(' ', 0, limit)
-            if break_point == -1:  # If no space found, split at the limit
-                break_point = limit
-            new_parts.append(part[:break_point].strip())
-            part = part[break_point:].strip()
-        new_parts.append(part)
-    
-    return new_parts
+    # Add the remaining part of the sentence
+    parts.append(sentence)
+    return parts
 
 
 def combine_wav_files(input_directory, output_directory, file_name):
@@ -1795,14 +1761,6 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
     elapsed_time = end_time - start_time
     print(f"Time taken for execution: {elapsed_time:.2f} seconds")
 
-
-# Function to show device info in a popup
-def show_device_info_popup():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    device_info = f"PyTorch is using the {str(device).upper()} device."
-    messagebox.showinfo("Device Information", device_info)
-
-
 # Function to generate audio for the text
 def generate_audio():
     # Get device
@@ -1813,8 +1771,6 @@ def generate_audio():
     
     global current_model
     global STTS
-    global global_Low_vram_checkbox_var
-    print(global_Low_vram_checkbox_var)
 
     #this will make it so that I can't modify the chapter delminator after I click generate
     disable_chapter_delimiter_entry()
@@ -1831,9 +1787,7 @@ def generate_audio():
     #fast_tts = TTS(multi_voice_model1, progress_bar=True).to(device)
     
     
-    # Show the device info popup
-    if global_Low_vram_checkbox_var:
-        show_device_info_popup()
+    
     
     
     random.seed(int(time.time()))
@@ -1879,7 +1833,7 @@ def generate_audio():
         audio_tensors = []
         temp_count =0
         for sentence in sentences:
-            fragments = split_long_string(sentence)
+            fragments = split_long_sentence(sentence)
             for fragment in fragments:
                 # Check if the selected model is multilingual
                 if 'multilingual' in selected_tts_model:
@@ -1965,7 +1919,85 @@ def generate_audio():
                             #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                             
                             #tts = TTS(selected_tts_model, progress_bar=True).to(device)
-                            tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=list_reference_files(voice_actor), language=language_code)
+                            try:
+                            
+                                # Try to generate the audio from the fragment
+                                tts.tts_to_file(text=fragment, file_path=f"Working_files/temp/{temp_count}.wav", speaker_wav=list_reference_files(voice_actor), language=language_code)
+                            except AssertionError as e:
+
+                                error_temp_directory = "Working_files/error_temp"  # Separate directory for handling long fragments
+
+                                os.makedirs(error_temp_directory, exist_ok=True) #check if error foler exists
+
+                                
+                                # Ensure the error temp directory is empty before processing
+                                if os.path.exists(error_temp_directory):
+                                    shutil.rmtree(error_temp_directory)
+                                os.makedirs(error_temp_directory, exist_ok=True)
+                                
+                                # If the fragment is too long, handle the error by splitting the fragment and processing each part
+                                print("Fragment was too long, cutting in half")
+                                fragments_to_process = [(fragment, temp_count)]
+                                temp_count_final = temp_count
+                            
+                                while fragments_to_process:
+                                    current_fragment, current_temp_count = fragments_to_process.pop(0)
+                            
+                                    try:
+                                        # Attempt to generate the audio from the current fragment
+                                        tts.tts_to_file(
+                                            text=current_fragment, 
+                                            file_path=f"{error_temp_directory}/{current_temp_count}.wav",  # Error handling temp directory
+                                            speaker_wav=list_reference_files(voice_actor), 
+                                            language=language_code
+                                        )
+                                        temp_count_final = current_temp_count  # Update final temp count
+                                    except AssertionError as e:
+                                        # If the fragment is still too long, split it and add both halves to the queue
+                                        print(f"Fragment was still too long, further cutting in half. Temp count: {current_temp_count}")
+                                        mid_point = len(current_fragment) // 2
+                                        fragment1 = current_fragment[:mid_point]
+                                        fragment2 = current_fragment[mid_point:]
+                                        
+                                        # Add both fragments back to the queue to be processed
+                                        fragments_to_process.append((fragment1, current_temp_count))
+                                        fragments_to_process.append((fragment2, current_temp_count + 1))
+                                        temp_count_final = current_temp_count + 1
+                            
+                                # Now that all fragments have been processed, combine them using torchaudio
+                                # Get a list of all .wav files in the specified error temp directory
+                                input_file_paths = [os.path.join(error_temp_directory, f) for f in os.listdir(error_temp_directory) if f.endswith(".wav")]
+                            
+                                # Sort the file paths to ensure numerical order
+                                input_file_paths.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+                            
+                                # Create an empty list to store the loaded audio tensors
+                                audio_tensors = []
+                            
+                                # Iterate through the sorted input file paths and load each audio file
+                                for input_file_path in input_file_paths:
+                                    waveform, sample_rate = torchaudio.load(input_file_path)
+                                    audio_tensors.append(waveform)
+                            
+                                # Concatenate the audio tensors along the time axis (dimension 1)
+                                combined_audio = torch.cat(audio_tensors, dim=1)
+                            
+                                # Ensure that the output directory exists, create it if necessary
+                                os.makedirs(output_directory, exist_ok=True)
+                            
+                                # Specify the output file path
+                                output_file_path = os.path.join(output_directory, file_name)
+                            
+                                # Save the combined audio to the output file path
+                                torchaudio.save(output_file_path, combined_audio, sample_rate)
+                            
+                                print(f"Combined audio saved to {output_file_path}")
+                            
+                                # Clean up the error temp directory after processing
+                                shutil.rmtree(error_temp_directory)
+                            
+                            except Exception as e:
+                                print(f"An error occurred: {e}")
                     except ValueError as e:
                         if str(e) == "Model is not multi-lingual but `language` is provided.":
                             print("Caught ValueError: Model is not multi-lingual. Ignoring the language parameter.")
@@ -2427,6 +2459,11 @@ import random
 import pygame
 
 
+# Initialize the main window
+root = tk.Tk()
+root.title("Book Viewer(Beta; close out of this window)")
+
+
 #add_voice_actors_to_csv()
 #add_languages_to_csv()
 
@@ -2447,9 +2484,6 @@ fast_tts = ""
 
 voice_actor_dropdown_active = False
 
-# Initialize the main window
-root = tk.Tk()
-root.title("Book Viewer")
 
 # Define and shuffle colors
 sublime_colors = ['#66D9EF', '#A6E22E', '#F92672', '#FD971F', '#E6DB74', '#AE81FF']
@@ -2721,7 +2755,7 @@ def generate_audio(text, audio_id, language, speaker, voice_actor):
     audio_tensors = []
     temp_count = 0
     for sentence in sentences:
-        fragments = split_long_string(sentence)
+        fragments = split_long_sentence(sentence)
         for fragment in fragments:
             # Check if the selected model is multilingual
             if 'multilingual' in selected_tts_model:
