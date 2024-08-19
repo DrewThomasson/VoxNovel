@@ -1289,7 +1289,7 @@ def update_voice_actor(speaker):
 
 
 # Function to split long strings into parts
-def split_long_sentence(sentence, max_length=230, max_pauses=8):
+def split_long_sentence(sentence, max_length=220, max_pauses=8):
     """
     Splits a sentence into parts based on length or number of pauses without recursion.
     
