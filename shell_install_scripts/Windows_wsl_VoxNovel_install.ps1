@@ -9,7 +9,7 @@ Write-Host "Creating desktop shortcut..."
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($desktopPath)
 $Shortcut.TargetPath = "powershell.exe"
-$Shortcut.Arguments = "-ExecutionPolicy Bypass -NoNewWindow -Command wsl -d Ubuntu -- bash -c 'wget -O - $scriptPath | bash'"
+$Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process powershell -ArgumentList '-Command wsl -d Ubuntu -- bash -c ''wget -O - $scriptPath | bash''' -NoNewWindow -Wait"
 $Shortcut.IconLocation = "powershell.exe,0" # Default PowerShell icon
 $Shortcut.Save()
 
