@@ -29,10 +29,14 @@ Start-Process powershell -ArgumentList "wsl --install Ubuntu" -NoNewWindow -Wait
 
 # Wait for WSL installation to complete (adjust time if needed)
 Write-Host "Waiting for WSL installation to complete. This may take some time..."
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 60
+
+# Ensure WSL is set up and not prompting interactively
+Write-Host "Ensuring WSL is set up and not prompting interactively..."
+wsl --list --verbose
 
 # Run the installation script in the WSL environment
 Write-Host "Running the installation script in WSL..."
-Start-Process powershell -ArgumentList "wsl -d Ubuntu -e bash -c 'yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash'" -NoNewWindow -Wait
+Start-Process powershell -ArgumentList "wsl -d Ubuntu -- bash -c 'yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash'" -NoNewWindow -Wait
 
 Write-Host "Process completed."
