@@ -11,10 +11,8 @@ if [ "$(uname)" == "Linux" ]; then
     sudo apt-get install -y espeak
     sudo apt-get install -y espeak-ng
     sudo apt-get install -y ffmpeg
-    sudo apt-get install -y curl
-    sudo apt-get install -y zip
+    sudo apt-get install -y wget
     sudo apt-get install -y unzip
-    sudo apt-get install -y nano
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
@@ -69,28 +67,39 @@ if [ "$(uname)" == "Linux" ]; then
     python -m spacy download en_core_web_sm
 
 
-    # Step to automatically copy the nltk folder
-    # Assume nltk.zip is placed in the home directory or a specified location
-    USERNAME=$(whoami)
-    FILESYSTEM_PATH="/home/$USERNAME/miniconda/envs/VoxNovel/lib/python3.10/site-packages/nltk"
-    # Check if the path exists
-    echo "Navigating to $FILESYSTEM_PATH"
+    # This will use the backup of the nltk files instead
+    echo "Replacing the nltk folder with the nltk folder backup I Pulled from a docker image, just in case the nltk servers ever mess up."
+
+    # Variables
+    ZIP_URL="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/nltk.zip?raw=true"
+    TARGET_DIR="$HOME/miniconda/envs/VoxNovel/lib/python3.10/site-packages"
+    TEMP_DIR=$(mktemp -d)
     
-    # Download the NLTK zip file
-    wget https://github.com/user-attachments/files/16650539/nltk.zip -O /tmp/nltk.zip
-    sudo apt-get update
-    sudo apt-get install unzip -y
+    # Download the zip file
+    echo "Downloading zip file..."
+    wget -q -O "$TEMP_DIR/nltk.zip" "$ZIP_URL"
     
-    # Unzip the file to a temporary directory
-    unzip /tmp/nltk.zip -d /tmp/new_nltk
+    # Extract the zip file
+    echo "Extracting zip file..."
+    unzip -q "$TEMP_DIR/nltk.zip" -d "$TEMP_DIR"
     
-    # Replace the existing NLTK folder with the new one
-    cp -r /tmp/new_nltk/nltk/* "$FILESYSTEM_PATH"
+    # Replace contents
+    echo "Replacing contents..."
+    rm -rf "$TARGET_DIR/nltk"
+    mv "$TEMP_DIR/nltk" "$TARGET_DIR/nltk"
     
-    # Clean up the temporary files
-    rm -rf /tmp/nltk.zip /tmp/new_nltk
+    # Clean up
+    echo "Cleaning up..."
+    rm -rf "$TEMP_DIR"
     
-    echo "NLTK files have been successfully replaced."
+    echo "NLTK Files Replacement complete."
+
+
+
+
+
+
+
 
 
 
