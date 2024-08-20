@@ -29,7 +29,7 @@ Start-Process powershell -ArgumentList "wsl --install Ubuntu" -NoNewWindow -Wait
 
 # Wait for WSL installation to complete (adjust time if needed)
 Write-Host "Waiting for WSL installation to complete. This may take some time..."
-Start-Sleep -Seconds 60
+Start-Sleep -Seconds 5
 
 # Run the installation script in the WSL environment
 Write-Host "Running the installation script in WSL..."
