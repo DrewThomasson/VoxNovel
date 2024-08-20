@@ -699,6 +699,7 @@ This means all you do is select the book and all the voices will be auto assigne
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
 - [ ] Incorporating local model to generate sound effects when a book discribes a location or sound effect
+- [ ] Adding Save file functionaly
 
 ## 🙏 Special thanks to:
 -@sidharthrajaram
