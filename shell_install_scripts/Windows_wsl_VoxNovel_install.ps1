@@ -4,11 +4,9 @@ $scriptPath = "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/she
 $logoUrl = "https://github.com/DrewThomasson/VoxNovel/raw/6f49c6a8b36927c987b1d628ff3e9c1afcb04dab/readme_files/logo.jpeg"
 $shortcutName = "VoxNovel"
 
-# Install WSL if it's not already installed
-if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -ne "Enabled") {
-    Write-Host "Installing WSL..."
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
-}
+# Install WSL
+Write-Host "Installing WSL..."
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
 
 # Install Ubuntu in WSL
 Write-Host "Installing Ubuntu in WSL..."
