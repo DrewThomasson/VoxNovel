@@ -18,7 +18,7 @@ Write-Host "Installing Ubuntu in WSL..."
 wsl --install Ubuntu
 
 # Wait for 60 seconds
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 60
 
 
 # Create the desktop shortcut
