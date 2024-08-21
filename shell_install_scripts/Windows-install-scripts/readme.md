@@ -1,3 +1,41 @@
+## Building the Executable
+
+To convert the Python script into a standalone executable, follow these steps:
+
+1. **Install PyInstaller**:
+
+   ```bash
+   pip install pyinstaller
+   ```
+
+2. **Generate the Executable**:
+
+   Run the following command to create the `.exe` file:
+
+   ```bash
+   pyinstaller --onefile --windowed VoxNovel_installer.py
+   ```
+
+3. **Locate the Output**:
+
+   The resulting executable will be found in the `dist` directory:
+
+   ```
+   dist/VoxNovel_installer.exe
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+## Depricated do not use
 To create the graphical installer for VoxNovel using the Inno Setup script I provided, you would need to follow these steps:
 
 1. Download and install Inno Setup from the official website: https://jrsoftware.org/isinfo.php
