@@ -11,6 +11,8 @@ if [ "$(uname)" == "Linux" ]; then
     sudo apt-get install -y espeak
     sudo apt-get install -y espeak-ng
     sudo apt-get install -y ffmpeg
+    sudo apt-get install -y wget
+    sudo apt-get install -y unzip
 
     # Check for and install pip if needed
     if ! command -v pip &> /dev/null; then
@@ -63,6 +65,41 @@ if [ "$(uname)" == "Linux" ]; then
     # Download the spaCy language model
     pip install spacy
     python -m spacy download en_core_web_sm
+
+
+    # This will use the backup of the nltk files instead
+    echo "Replacing the nltk folder with the nltk folder backup I Pulled from a docker image, just in case the nltk servers ever mess up."
+
+    # Variables
+    ZIP_URL="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/nltk.zip?raw=true"
+    TARGET_DIR="$HOME/miniconda/envs/VoxNovel/lib/python3.10/site-packages"
+    TEMP_DIR=$(mktemp -d)
+    
+    # Download the zip file
+    echo "Downloading zip file..."
+    wget -q -O "$TEMP_DIR/nltk.zip" "$ZIP_URL"
+    
+    # Extract the zip file
+    echo "Extracting zip file..."
+    unzip -q "$TEMP_DIR/nltk.zip" -d "$TEMP_DIR"
+    
+    # Replace contents
+    echo "Replacing contents..."
+    rm -rf "$TARGET_DIR/nltk"
+    mv "$TEMP_DIR/nltk" "$TARGET_DIR/nltk"
+    
+    # Clean up
+    echo "Cleaning up..."
+    rm -rf "$TEMP_DIR"
+    
+    echo "NLTK Files Replacement complete."
+
+
+
+
+
+
+
 
 
 
