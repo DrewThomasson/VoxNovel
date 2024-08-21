@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 import subprocess
 import requests
-from PIL import Image, ImageTk
-import io
 
 def download_file(url, filename):
     response = requests.get(url)
@@ -27,15 +25,7 @@ def create_gui():
     # Create the main window
     root = tk.Tk()
     root.title("VoxNovel Uninstaller")
-    root.geometry("300x200")
-
-    # Load and set the icon
-    icon_url = "https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/logo__1__GRD_icon.ico"
-    response = requests.get(icon_url)
-    icon_data = io.BytesIO(response.content)
-    icon_image = Image.open(icon_data)
-    icon_photo = ImageTk.PhotoImage(icon_image)
-    root.iconphoto(True, icon_photo)
+    root.geometry("300x150")
 
     # Create a label
     label = tk.Label(root, text="Click to uninstall VoxNovel", pady=20)
