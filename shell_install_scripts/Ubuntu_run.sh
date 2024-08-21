@@ -13,4 +13,4 @@ echo "Current environment: $CONDA_DEFAULT_ENV"
 cd ~/VoxNovel
 
 echo "Running Python script..."
-python gui_run.py
+cd ~ && cd VoxNovel && python gui_run.py
