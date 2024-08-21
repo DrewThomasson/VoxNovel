@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# Activate the Conda environment
-CONDA_PATH=$(dirname $(which conda))
-source $CONDA_PATH/../etc/profile.d/conda.sh
+echo "Conda path: $(which conda)"
+echo "Available environments:"
+conda env list
+
+echo "Activating environment..."
+source ~/miniconda/etc/profile.d/conda.sh
 conda activate VoxNovel
 
-# Navigate to the VoxNovel directory
-VENV_DIR=$(conda info --envs | grep VoxNovel | awk '{print $NF}')
-cd $VENV_DIR
+echo "Current environment: $CONDA_DEFAULT_ENV"
 
-# Run the Python script
+cd ~/VoxNovel
+
+echo "Running Python script..."
 python gui_run.py
