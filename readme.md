@@ -114,7 +114,6 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 
 ## 📦 SetUp Install
 
-Run in this order:
 <details>
 <summary> 🤖 Headless VoxNovel Google Colab</summary>
 
@@ -363,6 +362,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 
 <details>
 <summary> Intel mac </summary>
+Run in this order:
 
 1. `brew install calibre`
 2. `brew install ffmpeg`
@@ -394,6 +394,7 @@ pip install mecab mecab-python3 unidic
 
 <details>
 <summary> Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
+Run in this order:
 
 1. `brew install calibre`(You might have to also install it manually from their site if this doesn't work)
 2. `brew install ffmpeg`
@@ -433,16 +434,33 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 
 <details>
   <summary><strong>Windows 11 EXE Installer ✨ (Now With A Desktop Shortcut! 😲💥)</strong></summary>
+  
+### 1. Quick Exe Installation:
 
-  To install VoxNovel on Windows 11, you can use the provided executable installer. This installer will not only set up VoxNovel but also create a convenient desktop shortcut for quick access.
-
-  Download the installer from the following link:
+  Download the and run the exe installer below to start the installation process.⬇️
 
   [VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/blob/main/shell_install_scripts/VoxNovel_installer.exe)
 
-  Simply run the downloaded `.exe` file to start the installation process.
 
-  You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+This will automatically:
+
+1. **Install Ubuntu in WSL** 🐧
+2. **Run the Ubuntu Auto Installer** in the new WSL environment ⚙️
+3. **Create a Desktop Shortcut** for the application 🎯
+
+Simply double-click the Desktop shortcut to launch **VoxNovel**!
+
+You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+
+### 2. Uninstallation:
+
+To remove everything, run the following command in PowerShell:
+
+```sh
+wsl --unregister Ubuntu
+```
+
+This will completely remove the Ubuntu environment where the application is stored. 🚮
 
 </details>
 
