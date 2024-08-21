@@ -12,15 +12,22 @@ if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem
 
 # Install Ubuntu in WSL
 Write-Host "Installing Ubuntu in WSL..."
-Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-2004 -OutFile ubuntu.appx -UseBasicParsing
-Add-AppxPackage -Path ubuntu.appx
+#Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-2004 -OutFile ubuntu.appx -UseBasicParsing
+#Add-AppxPackage -Path ubuntu.appx
+# Run WSL installation for Ubuntu
+wsl --install Ubuntu
+
+# Wait for 60 seconds
+Start-Sleep -Seconds 5
+
 
 # Create the desktop shortcut
 Write-Host "Creating desktop shortcut..."
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($desktopPath)
 $Shortcut.TargetPath = "powershell.exe"
-$Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process powershell -ArgumentList '-Command wsl -d Ubuntu -- bash -c ''wget -O - $scriptPath | bash''' -NoNewWindow -Wait"
+# $Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process powershell -ArgumentList '-Command wsl -d Ubuntu -- bash -c ''wget -O - $scriptPath | bash''' -NoNewWindow -Wait"
+$Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process wsl -ArgumentList '-d Ubuntu -e bash -c \"wget -O - $scriptPath | bash\"' -NoNewWindow -Wait"
 $Shortcut.IconLocation = "powershell.exe,0" # Default PowerShell icon
 $Shortcut.Save()
 
