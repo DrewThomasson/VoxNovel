@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Activate the Conda environment
-source ~/miniconda3/etc/profile.d/conda.sh
+source /home/drew/miniconda/etc/profile.d/conda.sh
 conda activate VoxNovel
 
 # Navigate to the VoxNovel directory
