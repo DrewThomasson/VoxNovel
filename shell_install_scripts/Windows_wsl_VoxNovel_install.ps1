@@ -1,40 +1,18 @@
 # Install Ubuntu in WSL
 Write-Host "Installing Ubuntu in WSL..."
-# Run WSL installation for Ubuntu
 Start-Process powershell -ArgumentList "-Command wsl --install Ubuntu"
 
 # Wait for 60 seconds
-Start-Sleep -Seconds 60
+Start-Sleep -Seconds 5
+
+# Run Ubuntu.sh command in Ubuntu
+Write-Host "Running Ubuntu.sh in Ubuntu..."
+Start-Process powershell -ArgumentList "-Command wsl -d Ubuntu -- bash -c 'wget -O - https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Ubuntu-install.sh | bash'"
 
 
-# Define variables
-$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'VoxNovel.lnk')
-$scriptPath = "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh"
-$logoUrl = "https://github.com/DrewThomasson/VoxNovel/raw/6f49c6a8b36927c987b1d628ff3e9c1afcb04dab/readme_files/logo.jpeg"
-$shortcutName = "VoxNovel"
+# Wait for 60 seconds
+Start-Sleep -Seconds 5
 
-# Create the desktop shortcut
-Write-Host "Creating desktop shortcut..."
-$WshShell = New-Object -ComObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($desktopPath)
-$Shortcut.TargetPath = "powershell.exe"
-# $Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process powershell -ArgumentList '-Command wsl -d Ubuntu -- bash -c ''wget -O - $scriptPath | bash''' -NoNewWindow -Wait"
-$Shortcut.Arguments = "-ExecutionPolicy Bypass -Command Start-Process wsl -ArgumentList '-d Ubuntu -e bash -c \"wget -O - $scriptPath | bash\"' -NoNewWindow -Wait"
-$Shortcut.IconLocation = "powershell.exe,0" # Default PowerShell icon
-$Shortcut.Save()
-
-# Download the logo
-Write-Host "Downloading logo..."
-$logoPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'logo.jpeg')
-Invoke-WebRequest -Uri $logoUrl -OutFile $logoPath
-
-# Set the icon for the shortcut
-Write-Host "Setting icon for the shortcut..."
-$Shortcut.IconLocation = $logoPath
-$Shortcut.Save()
-
-# Ensure WSL is set up and not prompting interactively
-Write-Host "Ensuring WSL is set up and not prompting interactively..."
-wsl --list --verbose
-
-Write-Host "Process completed."
+# Open a new window that just reads 'done'
+Write-Host "Opening a window that reads 'done'..."
+Start-Process powershell -ArgumentList "-Command Write-Host 'done'; Read-Host -Prompt 'Press Enter to close'"
