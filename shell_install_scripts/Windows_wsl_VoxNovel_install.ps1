@@ -1,15 +1,3 @@
-# Define variables
-$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'VoxNovel.lnk')
-$scriptPath = "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh"
-$logoUrl = "https://github.com/DrewThomasson/VoxNovel/raw/6f49c6a8b36927c987b1d628ff3e9c1afcb04dab/readme_files/logo.jpeg"
-$shortcutName = "VoxNovel"
-
-# Install WSL if it's not already installed
-if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -ne "Enabled") {
-    Write-Host "Installing WSL..."
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
-}
-
 # Install Ubuntu in WSL
 Write-Host "Installing Ubuntu in WSL..."
 # Run WSL installation for Ubuntu
@@ -18,6 +6,12 @@ Start-Process powershell -ArgumentList "-Command wsl --install Ubuntu"
 # Wait for 60 seconds
 Start-Sleep -Seconds 60
 
+
+# Define variables
+$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'VoxNovel.lnk')
+$scriptPath = "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh"
+$logoUrl = "https://github.com/DrewThomasson/VoxNovel/raw/6f49c6a8b36927c987b1d628ff3e9c1afcb04dab/readme_files/logo.jpeg"
+$shortcutName = "VoxNovel"
 
 # Create the desktop shortcut
 Write-Host "Creating desktop shortcut..."
