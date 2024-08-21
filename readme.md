@@ -430,6 +430,52 @@ pip install mecab mecab-python3 unidic
 <summary> Windows 11 </summary>
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
 
+
+
+
+
+<details>
+<summary><strong>Super Easy Single Command Windows 11 Install ✨ (Now With A Desktop Shortcut! 😲💥)</strong></summary>
+
+### 1. Quick Installation:
+
+In your PowerShell, paste the following command:
+
+```sh
+powershell -Command "Invoke-Expression (Invoke-WebRequest -Uri 'https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Windows_wsl_VoxNovel_install.ps1').Content"
+```
+
+This will automatically:
+
+1. **Install Ubuntu in WSL** 🐧
+2. **Run the Ubuntu Auto Installer** in the new WSL environment ⚙️
+3. **Create a Desktop Shortcut** for the application 🎯
+
+Simply double-click the Desktop shortcut to launch **VoxNovel**!
+
+### 2. Uninstallation:
+
+To remove everything, run the following command in PowerShell:
+
+```sh
+wsl --unregister Ubuntu
+```
+
+This will completely remove the Ubuntu environment where the application is stored. 🚮
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
 <details>
 <summary> Easy Windows 11 install </summary>
   
