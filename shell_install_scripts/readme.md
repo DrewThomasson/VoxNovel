@@ -11,4 +11,4 @@ The test one is for if The nltk server isnt working and all the nltk moduals don
 
 ### To install on windows run this command
 
-`Start-Process powershell -ArgumentList "-Command wsl -d Ubuntu -- bash -c 'wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash'" -NoNewWindow -Wait`
+`powershell -Command "Invoke-Expression (Invoke-WebRequest -Uri 'https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Windows_wsl_VoxNovel_install.ps1').Content"`
