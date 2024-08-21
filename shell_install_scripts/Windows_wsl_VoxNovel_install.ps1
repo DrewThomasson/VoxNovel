@@ -1,26 +1,33 @@
+# Function to prompt user to press Enter to continue
+function WaitForUserInput {
+    param (
+        [string]$message
+    )
+    
+    Write-Host $message
+    Read-Host -Prompt 'Press Enter to continue'
+}
+
 # Install Ubuntu in WSL
 Write-Host "Installing Ubuntu in WSL..."
 Start-Process powershell -ArgumentList "-Command wsl --install Ubuntu"
 
-# Wait for 300 seconds
-Start-Sleep -Seconds 300
+# Prompt user to press Enter to continue
+WaitForUserInput -message "Ubuntu installation initiated. Please press Enter when the installation is complete."
 
 # Run Ubuntu.sh command in Ubuntu
 Write-Host "Running Ubuntu.sh in Ubuntu..."
 Start-Process powershell -ArgumentList "-Command wsl -d Ubuntu -- bash -c 'wget -O - https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Ubuntu-install.sh | bash'"
 
-
-# Wait for 60 seconds
-Start-Sleep -Seconds 5
+# Prompt user to press Enter to continue
+WaitForUserInput -message "Ubuntu setup is running. Please press Enter when this process is complete."
 
 # Define the desktop shortcut path
 $desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'VoxNovel.lnk')
 
 # Define the target command
 $targetPath = 'powershell.exe'
-#$arguments = '-Command wsl -d Ubuntu -- bash -c ''conda activate VoxNovel && cd ~ && cd VoxNovel && python gui_run.py'''
 $arguments = '-Command wsl -d Ubuntu -- bash -c ''yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu_run.sh | bash'''
-
 
 # Define the path to the icon file
 $iconPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'logo__1__GRD_icon.ico')
