@@ -431,11 +431,23 @@ pip install mecab mecab-python3 unidic
 Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
 
 
+<details>
+  <summary><strong>Windows 11 EXE Installer ✨ (Now With A Desktop Shortcut! 😲💥)</strong></summary>
+
+  To install VoxNovel on Windows 11, you can use the provided executable installer. This installer will not only set up VoxNovel but also create a convenient desktop shortcut for quick access.
+
+  Download the installer from the following link:
+
+  [VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/blob/main/shell_install_scripts/VoxNovel_installer.exe)
+
+  Simply run the downloaded `.exe` file to start the installation process.
+
+</details>
 
 
 
 <details>
-<summary><strong>Super Easy Single Command Windows 11 Install ✨ (Now With A Desktop Shortcut! 😲💥)</strong></summary>
+<summary><strong>🚫(OLD)Super Easy Single Command Windows 11 Install ✨ (Now With A Desktop Shortcut! 😲💥)🚫(OLD)</strong></summary>
 
 ### 1. Quick Installation:
 
@@ -477,7 +489,7 @@ This will completely remove the Ubuntu environment where the application is stor
 
 
 <details>
-<summary> Easy Windows 11 install </summary>
+<summary> 🚫(OLD) Easy Windows 11 install 🚫(OLD)</summary>
   
 Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
 
