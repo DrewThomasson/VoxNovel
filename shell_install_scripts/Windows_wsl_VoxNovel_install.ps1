@@ -2,8 +2,8 @@
 Write-Host "Installing Ubuntu in WSL..."
 Start-Process powershell -ArgumentList "-Command wsl --install Ubuntu"
 
-# Wait for 60 seconds
-Start-Sleep -Seconds 5
+# Wait for 300 seconds
+Start-Sleep -Seconds 300
 
 # Run Ubuntu.sh command in Ubuntu
 Write-Host "Running Ubuntu.sh in Ubuntu..."
