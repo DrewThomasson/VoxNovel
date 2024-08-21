@@ -1,3 +1,14 @@
+# Install Ubuntu in WSL
+Write-Host "Installing Ubuntu in WSL..."
+#Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-2004 -OutFile ubuntu.appx -UseBasicParsing
+#Add-AppxPackage -Path ubuntu.appx
+# Run WSL installation for Ubuntu
+wsl --install Ubuntu
+
+# Wait for 60 seconds
+Start-Sleep -Seconds 60
+
+
 # Define variables
 $desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'VoxNovel.lnk')
 $scriptPath = "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh"
@@ -9,16 +20,6 @@ if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem
     Write-Host "Installing WSL..."
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
 }
-
-# Install Ubuntu in WSL
-Write-Host "Installing Ubuntu in WSL..."
-#Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-2004 -OutFile ubuntu.appx -UseBasicParsing
-#Add-AppxPackage -Path ubuntu.appx
-# Run WSL installation for Ubuntu
-wsl --install Ubuntu
-
-# Wait for 60 seconds
-Start-Sleep -Seconds 60
 
 
 # Create the desktop shortcut
