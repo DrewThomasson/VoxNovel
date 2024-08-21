@@ -442,12 +442,15 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 
   Simply run the downloaded `.exe` file to start the installation process.
 
+  You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+
 </details>
 
-
+<details>
+  <summary> Manual Windows Powershell Installs 🖥️🛠️ </summary>
 
 <details>
-<summary><strong>🚫(OLD)Super Easy Single Command Windows 11 Install ✨ (Now With A Desktop Shortcut! 😲💥)🚫(OLD)</strong></summary>
+<summary><strong>Super Easy Single Command Windows 11 Install ✨ (Now With A Desktop Shortcut! 😲💥)</strong></summary>
 
 ### 1. Quick Installation:
 
@@ -464,6 +467,8 @@ This will automatically:
 3. **Create a Desktop Shortcut** for the application 🎯
 
 Simply double-click the Desktop shortcut to launch **VoxNovel**!
+
+You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
 
 ### 2. Uninstallation:
 
@@ -489,7 +494,7 @@ This will completely remove the Ubuntu environment where the application is stor
 
 
 <details>
-<summary> 🚫(OLD) Easy Windows 11 install 🚫(OLD)</summary>
+<summary>  Easy Windows 11 install </summary>
   
 Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
 
@@ -521,6 +526,8 @@ Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
    ```
 
 6. Congrats! VoxNovel should run in WSL now!
+
+7. You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
 
 ## 🚀 To Run the program
    ```sh
@@ -598,6 +605,7 @@ Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/
    `sudo apt install espeak-ng`
 
 You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+</details>
 </details>
 </details>
 
