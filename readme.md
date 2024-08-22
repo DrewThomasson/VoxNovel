@@ -465,9 +465,7 @@ Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
    cd ~ && cd VoxNovel
    ```
 
-6. Congrats! VoxNovel should run in WSL now!
-
-7. You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
+6. Now just run one of the two programs shown below ⬇️
 
 ## 🚀 To Run the program
    ```sh
@@ -478,6 +476,20 @@ Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
    ```sh
    python headless_voxnovel.py
    ```
+
+## 🌐 Access WSL Ubuntu Files from Windows
+
+You can access your WSL Ubuntu files directly in Windows File Explorer by entering the following path in the address bar:
+
+```
+\\wsl.localhost\Ubuntu\home\
+```
+
+## 🎯 To Create VoxNovel Desktop Shortcut
+```bash
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/create_desktop_shortcut.ps1").Content
+```
+
 
 ### 🗑️ Uninstallation:
 
