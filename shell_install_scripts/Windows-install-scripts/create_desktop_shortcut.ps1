@@ -24,5 +24,8 @@ $shortcut.IconLocation = "$iconPath,0"
 # Save the shortcut
 $shortcut.Save()
 
+# Wait a short time to ensure the shortcut is properly created
+Start-Sleep -Seconds 5
+
 # Remove the icon file after creating the shortcut
 Remove-Item $iconPath -Force
