@@ -486,7 +486,10 @@ You can access your WSL Ubuntu files directly in Windows File Explorer by enteri
 ```
 The output audiobook files will be located under `VoxNovel\output_audiobooks` in the wsl env
 
-## 🎯 To Create VoxNovel Desktop Shortcut
+## 🎯 To Create VoxNovel Windows Desktop Shortcut
+
+Run this command in powershell
+
 ```bash
 Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/create_desktop_shortcut.ps1").Content
 ```
