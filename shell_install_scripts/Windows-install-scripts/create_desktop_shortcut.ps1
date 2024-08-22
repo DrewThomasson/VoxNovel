@@ -23,3 +23,6 @@ $shortcut.IconLocation = "$iconPath,0"
 
 # Save the shortcut
 $shortcut.Save()
+
+# Remove the icon file after creating the shortcut
+Remove-Item $iconPath -Force
