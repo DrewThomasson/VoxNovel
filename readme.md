@@ -436,7 +436,7 @@ Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, 
 <details>
 <summary>  Easy Windows 11 install </summary>
   
-Watch the installation video [here](https://youtu.be/OmJub3uvfz4).
+## 🎥 Watch the installation video [here](https://youtu.be/OmJub3uvfz4)
 
 1. In your PowerShell, paste:
    ```sh
@@ -501,7 +501,7 @@ wsl --unregister Ubuntu
 
 This will completely remove the Ubuntu environment where the application is stored. 🚮
 
-### Troubleshooting WSL
+### 🛠️ Troubleshooting WSL
 
 If you have trouble with the WSL environment:
 
