@@ -2,6 +2,9 @@
 
 # Switch to the appropriate user
 su - drew
+export DISPLAY=:0
+
+# But I guess the sound won't work on a imported wsl env :/
 
 echo "Conda path: $(which conda)"
 echo "Available environments:"
