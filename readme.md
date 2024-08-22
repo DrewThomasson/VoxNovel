@@ -484,6 +484,7 @@ You can access your WSL Ubuntu files directly in Windows File Explorer by enteri
 ```
 \\wsl.localhost\Ubuntu\home\
 ```
+The output audiobook files will be located under `VoxNovel\output_audiobooks` in the wsl env
 
 ## 🎯 To Create VoxNovel Desktop Shortcut
 ```bash
@@ -587,10 +588,15 @@ pip install mecab mecab-python3 unidic
 
 
 ## 🚀 To Run the program
-`python gui_run.py`
+   ```sh
+   python gui_run.py
+   ```
 
 ## 🚀 Or to run headless
-`python headless_voxnovel`
+   ```sh
+   python headless_voxnovel.py
+   ```
+
 <details>
 <summary> Running with Low VRAM (4 GB) </summary>
 
@@ -636,6 +642,13 @@ This means all you do is select the book and all the voices will be auto assigne
 `python auto_noGui_run.py`
 </details>
 
+## 🌐 Access generated audiobook files
+
+You can access your generated audiobook files in the VoxNovel folder at the location
+
+```
+VoxNovel/output_audiobooks
+```
 
 ## 📚 Supported ebook File Types: 
 .epub, .pdf, .mobi, .txt, .html, .rtf, .chm, .lit, .pdb, .fb2, .odt, .cbr, .cbz, .prc, .lrf, .pml, .snb, .cbc, .rb, and .tcr,
