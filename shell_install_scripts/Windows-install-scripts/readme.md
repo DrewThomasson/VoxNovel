@@ -1,3 +1,10 @@
+## To run the script to create VoxNovel Desktop shortcut
+   ```bash
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/create_desktop_shortcut.ps1").Content
+
+   ```
+
+
 ## Building the Executable
 
 To convert the Python script into a standalone executable, follow these steps:
