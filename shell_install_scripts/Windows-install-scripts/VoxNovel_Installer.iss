@@ -2,7 +2,6 @@
 AppName=VoxNovel
 AppVersion=1.0
 DefaultDirName={pf}\VoxNovel
-DefaultGroupName=VoxNovel
 OutputBaseFilename=VoxNovel_installer
 Compression=lzma
 SolidCompression=yes
