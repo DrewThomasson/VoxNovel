@@ -308,7 +308,7 @@ docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):
 
 
 <details>
-<summary>For non Latin-based Languages TTS support (Optional)</summary>
+<summary> 🈳 For non Latin-based Languages TTS support (Optional)</summary>
 
 Install Mecab for (Non Latin-based Languages tts support)(Optional):
 - Ubuntu: `sudo apt-get install -y mecab libmecab-dev mecab-ipadic-utf8`
@@ -379,7 +379,7 @@ Run in this order:
 
 
 <details>
-<summary>For non Latin-based Languages TTS support (Optional)</summary>
+<summary> 🈳 For non Latin-based Languages TTS support (Optional)</summary>
 
 Install Mecab for (Non Latin-based Languages tts support)(Optional):
 - macOS: `brew install mecab`, `brew install mecab-ipadic`
@@ -415,7 +415,7 @@ Run in this order:
 
 
 <details>
-<summary>For non Latin-based Languages TTS support (Optional)</summary>
+<summary> 🈳 For non Latin-based Languages TTS support (Optional)</summary>
 
 Install Mecab for (Non Latin-based Languages tts support)(Optional):
 - macOS: `brew install mecab`, `brew install mecab-ipadic`
@@ -529,7 +529,7 @@ To launch WSL anytime you need to run this program, you can use the search bar i
 
 
 <details>
-<summary>For non Latin-based Languages TTS support (Optional)</summary>
+<summary> 🈳 For non Latin-based Languages TTS support (Optional)</summary>
 
 Install Mecab for (Non Latin-based Languages tts support)(Optional):
 - `sudo apt-get install -y mecab libmecab-dev mecab-ipadic-utf8`
