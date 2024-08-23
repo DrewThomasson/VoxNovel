@@ -688,6 +688,8 @@ VoxNovel/output_audiobooks
 - [x] Headless version of docker image
 - [x] Headless version of VoxNovel
 - [x] A Google Colab using the headless version
+- [x] Desktop Shortcut for Ubuntu Linux 🐧
+- [x] Desktop Shortcut for Windows 11 🪟
 
 ## 🔜 Incoming Planned Features
 - [ ] Ability to change the character for a line if incorrectly attributed by booknlp
