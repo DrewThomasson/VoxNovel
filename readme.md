@@ -322,7 +322,7 @@ pip install mecab mecab-python3 unidic
 </details>
 
 <details>
-<summary> Steam Deck) (x86_64 Arch Linux) </summary>
+<summary> 🔲 Steam Deck) (x86_64 Arch Linux) </summary>
 
 1. `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
 2. `also download it from the discovery store or flatpac I did both on my steam deck`
@@ -361,7 +361,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 
 
 <details>
-<summary> Intel mac </summary>
+<summary> 🍏 Intel mac </summary>
 Run in this order:
 
 1. `brew install calibre`
@@ -393,7 +393,7 @@ pip install mecab mecab-python3 unidic
 </details>
 
 <details>
-<summary> Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
+<summary> 🍏 Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
 Run in this order:
 
 1. `brew install calibre`(You might have to also install it manually from their site if this doesn't work)
@@ -428,13 +428,9 @@ pip install mecab mecab-python3 unidic
 
 </details>
 <details>
-<summary> Windows 11 </summary>
-Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
-
-
-
-<details>
-<summary>  Easy Windows 11 install </summary>
+<summary> 🪟 Windows 11 </summary>
+  
+### Because of BookNLP Windows issues, all of this will be run in WSL (don't worry, it's still easy).
   
 ## 🎥 Watch the installation video [here](https://youtu.be/OmJub3uvfz4)
 
@@ -529,49 +525,6 @@ To launch WSL anytime you need to run this program, you can use the search bar i
    wsl
    ```
 
-</details>
-
-<details>
-<summary> 🚫InDepth Windows 11 install 🚫(DEPRECATED-DO NOT USE, for development purposes only, using will likely break your install)🚫</summary>
-1. In your PowerShell, paste `wsl --install` to install WSL.
-
-2. After you set the username and password, you'll now be able to open WSL as an application. This will allow you to run Ubuntu software. You'll now want to open WSL if you closed it and paste these commands.
-
-   (This will install Calibre for ebook conversion)
-   `cd ~`
-   `sudo apt update`
-   `sudo apt upgrade`
-   `sudo apt install calibre`
-    `sudo apt install ffmpeg`
-
-   (This will install Miniconda)
-Mini conda code was taken from here:https://docs.conda.io/projects/miniconda/en/latest/
-   `mkdir -p ~/miniconda3`
-   `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh`
-   `bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3`
-   `rm -rf ~/miniconda3/miniconda.sh`
-
-   (This will make sure Miniconda is initialized)
-   `~/miniconda3/bin/conda init bash`
-   `~/miniconda3/bin/conda init zsh`
-
-3. Close out of your current WSL window and reopen it to be able to use Miniconda.
-
-   `conda create --name VoxNovel python=3.10`
-   `conda activate VoxNovel`
-   `cd ~`
-   `git clone https://github.com/DrewThomasson/VoxNovel.git`
-   `cd VoxNovel`
-   `pip install styletts2`
-   `pip install tts==0.21.3`
-   `pip install booknlp==1.0.7.1`
-   `pip install -r Ubuntu_requirements.txt`
-   `pip install spacy`
-   `python -m spacy download en_core_web_sm`
-   `sudo apt install espeak-ng`
-
-You can access the files on your WSL Ubuntu in Windows File Explorer by putting this into the address: `\\wsl.localhost\Ubuntu\home\`
-</details>
 </details>
 
 
