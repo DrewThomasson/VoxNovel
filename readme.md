@@ -285,11 +285,28 @@ docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):
 </details>
 <details>
 <summary> 🐧 Linux </summary>
-##  Single command Ubuntu install:(Do not use if you already have miniconda installed.)
-  
-1. `yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash`
--This will also create a desktop shortcut to run Voxnovel as well.
+## Single Command Ubuntu Install
 
+*(Do not use if you already have Miniconda installed.)*
+
+To install VoxNovel on Ubuntu, you can use the following single command:
+
+```bash
+yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu-install.sh | bash
+```
+
+
+## Desktop shortcut
+
+-That single install script above should also create a shortcut for the application as well.
+
+### Manual Launch Option
+
+OR You can manually launch the application in the terminal with the following command:
+
+```bash
+cd ~/VoxNovel && conda activate VoxNovel && python gui_run.py
+```
 
 ##  or manual install:
 1. `sudo apt-get install calibre`
