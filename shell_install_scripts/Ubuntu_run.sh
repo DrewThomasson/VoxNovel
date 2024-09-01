@@ -10,6 +10,7 @@ conda activate VoxNovel
 
 echo "Current environment: $CONDA_DEFAULT_ENV"
 
+echo "git pulling to auto-update..."
 cd ~/VoxNovel
 
 git pull
