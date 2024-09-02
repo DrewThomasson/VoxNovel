@@ -3,7 +3,7 @@ $desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('De
 
 # Define the target command
 $targetPath = 'powershell.exe'
-$arguments = '-Command "wsl -d Ubuntu -- bash -c ''yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu_run.sh | bash''; Invoke-Expression (Invoke-WebRequest -Uri ''https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/open_audiobooks_folder_after_voxnovel_run.ps1'').Content"'
+$arguments = '-Command "irm https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/open_VoxNovel_folder_windows.ps1 | iex; wsl -d Ubuntu -- bash -c ''yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Ubuntu_run.sh | bash''; Invoke-Expression (Invoke-WebRequest -Uri ''https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Windows-install-scripts/open_audiobooks_folder_after_voxnovel_run.ps1'').Content"'
 
 # Define the path to the icon file
 $iconPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'logo__1__GRD_icon.ico')
