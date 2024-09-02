@@ -487,3 +487,14 @@ process_button.pack()
 
 root.mainloop()
 
+
+#This import will run the gui that will allow you to manually check over and modify the charactor choices for each line made by booknlp
+#Then you can change a couple of lines to joe that were incorrectly found to be the Narrerator and such :)
+
+from speaker_editor import BookEditor
+
+if __name__ == "__main__":
+    app = BookEditor("Working_files/Book/book.csv")
+    app.mainloop()
+
+
