@@ -108,7 +108,7 @@ if [ "$(uname)" == "Linux" ]; then
     Version=1.0
     Type=Application
     Name=VoxNovel
-    Exec=$HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh
+    Exec=sh -c "cd $HOME/VoxNovel && git pull && $HOME/VoxNovel/shell_install_scripts/run/Ubuntu_run_voxnovel.sh"
     Icon=$HOME/VoxNovel/readme_files/logo.jpeg
     Terminal=true
     " > $HOME/Desktop/VoxNovel.desktop
