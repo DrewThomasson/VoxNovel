@@ -1,5 +1,5 @@
 # Load the necessary assembly for MessageBox
-Add-Type -AssemblyName PresentationFramework
+Add-Type -AssemblyName System.Windows.Forms
 
 # Define the WSL base path
 $homeDir = "\\wsl.localhost\Ubuntu\home"
@@ -12,7 +12,7 @@ if ($userFolder -ne $null) {
     $pathToOpen = Join-Path $userFolder.FullName "VoxNovel"
 
     # Display a pop-up message to the user
-    [System.Windows.MessageBox]::Show("Please place your ebook file in the 'VoxNovel' folder so that VoxNovel can access it.", "VoxNovel Notice", "OK", "Information")
+    [System.Windows.Forms.MessageBox]::Show("Please place your ebook file in this 'VoxNovel' folder so that VoxNovel can access it.", "VoxNovel Notice", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
     
     # Display the path to verify it is correct
     Write-Output "WSL Path to open: $pathToOpen"
