@@ -138,7 +138,8 @@ if [ "$(uname)" == "Linux" ]; then
     
     echo "File has been saved to $DEST_DIR/tos_agreed.txt"
     echo "The tos_agreed.txt file is so that you don't have to tell coqio tts yes when downloading the xtts_v2 model."
-
+    
+    echo "VoxNovel Install FINISHED!"
 
 else
     echo "This script is intended to be run on Linux."
