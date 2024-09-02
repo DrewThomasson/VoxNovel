@@ -1,3 +1,6 @@
+# Load the necessary assembly for MessageBox
+Add-Type -AssemblyName PresentationFramework
+
 # Define the WSL base path
 $homeDir = "\\wsl.localhost\Ubuntu\home"
 
