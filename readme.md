@@ -75,6 +75,7 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 ## GUI 
 
 <img width="200" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
+<img width="1000" alt="gui_2_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/GUI_1.5_.png">
 <details>
 <summary> GUI Part 1 (BookNLP Processor) Info/Features </summary>
   -"Process File" button: Click and it'll ask you to select a ebook file.
