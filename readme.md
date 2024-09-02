@@ -75,11 +75,38 @@ Explore and run the interactive version of the Headless VoxNovel project directl
 ## GUI 
 
 <img width="200" alt="gui_1_select_file" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_1_select_file.png">
-<img width="1000" alt="gui_2_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/GUI_1.5_.png">
+
 <details>
 <summary> GUI Part 1 (BookNLP Processor) Info/Features </summary>
   -"Process File" button: Click and it'll ask you to select a ebook file.
 </details>
+
+<img width="1000" alt="gui_2_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/GUI_1.5_.png">
+
+<details>
+<summary>Manual Speaker Assignment Correction Tool (GUI 1.5) </summary>
+
+This GUI is for the manual correction of speaker assignments if quotes are incorrectly assigned by BookNLP. It reads the book.csv file containing the books extracted quotes and speaker information, and allows you to visually inspect and modify speaker assignments as needed before being passed to the next TTS step.
+
+### Key Features:
+- **Scrollable Text Display:** Allows users to view the book's text with color-coded speaker assignments.
+- **Speaker Selection:** Users can select a new speaker from a dropdown menu to reassign specific lines.
+- **Checkable Quotes:** Lines from the book are displayed with checkboxes, enabling the selection of multiple lines for speaker reassignment.
+- **Speaker Color Coding:** Each speaker is assigned a unique color for easy identification.
+- **Buttons for Action:**
+  - **Update Selected Speakers:** Apply the selected speaker to all checked lines.
+  - **Deselect All:** Uncheck all selected lines.
+  - **Continue:** Save changes and exit the tool.
+
+### How to Use:
+1. **Select Lines:** Check the boxes next to the lines you want to change.
+2. **Choose Speaker:** Select the desired speaker from the dropdown menu.
+3. **Apply Changes:** Click "Update Selected Speakers" to apply the changes.
+4. **Review:** The text will update to reflect the changes.
+5. **Deselect:** Click "Deselect All" to clear your selections.
+6. **Finish:** Once satisfied with the corrections, click "Continue" to save and exit.
+</details>
+
 <img width="1000" alt="gui_2_finetune" src="https://github.com/DrewThomasson/VoxNovel/blob/e39b5e742c57cc3f88aa7549a5ce5517f392103e/readme_files/gui_3_finetune.png">
 <details>
 <summary> GUI Part 2 (Coqui TTS GUI) Info/Features </summary>
