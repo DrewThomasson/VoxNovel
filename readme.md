@@ -407,6 +407,26 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 
 <details>
 <summary> 🍏 Intel mac </summary>
+
+
+#### 💻 Install on Intel Mac:
+Run the following command in your terminal.:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Intel_Mac_Install_VoxNovel.sh)
+```
+Once it's complete you should have a desktop shortcut for VoxNovel.
+
+#### 🧹 Uninstall on Intel Mac:
+To uninstall, run the following command in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/uninstall_VoxNovel_Mac.sh)
+```
+
+  
+<details>
+<summary> (🚫 Depricated do not use 🚫) Intel Mac Manual-install</summary>
 Run in this order:
 
 1. `brew install calibre`
@@ -421,7 +441,7 @@ Run in this order:
 9.`pip install -r MAC-requirements.txt`
 10. `pip install spacy`
 11.`python -m spacy download en_core_web_sm`
-
+</details>
 
 <details>
 <summary> 🈳 For non Latin-based Languages TTS support (Optional)</summary>
@@ -439,6 +459,26 @@ pip install mecab mecab-python3 unidic
 
 <details>
 <summary> 🍏 Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
+
+#### 💻 Install on Apple Silicon Mac:
+Run the following command in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Apple_silicone_VoxNovel_install.sh)
+```
+Once it's complete you should have a desktop shortcut for VoxNovel.
+
+#### 🧹 Uninstall on Apple Silicon Mac:
+To uninstall, run the following command in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/uninstall_VoxNovel_Mac.sh)
+```
+
+<details>
+<summary> (🚫 Depricated do not use 🚫) Apple Silicon Manual-install </summary>
+  
+
 Run in this order:
 
 1. `brew install calibre`(You might have to also install it manually from their site if this doesn't work)
@@ -456,7 +496,7 @@ Run in this order:
 13. `pip install -r MAC-requirements.txt`
 14. `pip install ebooklib bs4 epub2txt pygame moviepy spacy`
 15. `python -m spacy download en_core_web_sm`
-
+</details>
 
 
 <details>
