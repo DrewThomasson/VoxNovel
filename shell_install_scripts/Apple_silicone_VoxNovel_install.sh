@@ -83,7 +83,60 @@ brew install git
 
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
+
+
+
+
+
+
+
+#This part will attempt to actiate conda by finding the conda.sh file, so it won't depend on if miniconda is called miniconda3 or miniconda or something else,
+
+# Define potential base directories
+BASE_DIRS=("$HOME" "/opt" "/usr/local")
+
+# Initialize a flag to track if Conda was found
+CONDA_FOUND=false
+
+# Loop through each base directory and look for conda.sh
+for BASE_DIR in "${BASE_DIRS[@]}"; do
+    if [ -f "$BASE_DIR/miniconda3/etc/profile.d/conda.sh" ]; then
+        source "$BASE_DIR/miniconda3/etc/profile.d/conda.sh"
+        CONDA_FOUND=true
+        break
+    elif [ -f "$BASE_DIR/miniconda/etc/profile.d/conda.sh" ]; then
+        source "$BASE_DIR/miniconda/etc/profile.d/conda.sh"
+        CONDA_FOUND=true
+        break
+    elif [ -f "$BASE_DIR/anaconda3/etc/profile.d/conda.sh" ]; then
+        source "$BASE_DIR/anaconda3/etc/profile.d/conda.sh"
+        CONDA_FOUND=true
+        break
+    elif [ -f "$BASE_DIR/anaconda/etc/profile.d/conda.sh" ]; then
+        source "$BASE_DIR/anaconda/etc/profile.d/conda.sh"
+        CONDA_FOUND=true
+        break
+    fi
+done
+
+# Check if Conda was found and sourced
+if [ "$CONDA_FOUND" = false ]; then
+    echo "Conda initialization script not found. Please ensure Conda is installed."
+    exit 1
+fi
+
+# Activate the VoxNovel environment
 conda activate VoxNovel
+
+# Verify the environment
+which python  # This should show the path to the Python executable in the VoxNovel env
+python --version  # This should show the Python version in the VoxNovel env
+
+
+
+
+
+
 
 # Clone the VoxNovel repository and navigate to the directory
 cd ~
