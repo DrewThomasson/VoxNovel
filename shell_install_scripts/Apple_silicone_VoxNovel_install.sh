@@ -1,5 +1,37 @@
 #!/bin/bash
 
+# Estimate total storage required
+total_storage_required="~7.88 GB"
+
+# Inform the user about the installation details and estimated storage usage
+echo "This script will install the following components for VoxNovel and will take up approximately $total_storage_required of storage:"
+echo "- Homebrew (if not already installed)"
+echo "- Miniconda (if not already installed)"
+echo "- Calibre (around 835 MB)"
+echo "- Ffmpeg (around 51.8 MB)"
+echo "- Git (around 51.5 MB)"
+echo "- Conda environment 'VoxNovel' (around 4 GB)"
+echo "- NLTK data (around 44.9 MB)"
+echo "- BookNLP models (around 1.2 GB)"
+echo "- Xtts TTS model (around 1.7 GB)"
+echo "- VoxNovel.app shortcut (desktop and Applications folder)"
+
+# Prompt user for confirmation
+read -p "Do you want to proceed with the installation? (y/n): " confirm
+
+if [[ "$confirm" != "y" ]]; then
+    echo "Installation cancelled."
+    exit 0
+fi
+
+echo "Starting the installation..."
+
+
+
+
+
+
+
 # Install Homebrew
 echo "Installing/updating homebrew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -124,7 +156,6 @@ echo "The tos_agreed.txt file is so that you don't have to tell coqio tts yes wh
 
 
 #This part right here will download the Desktop shortcut to your Desktop and put the shortcut in your Applications folder for easy access!
-#!/bin/bash
 
 # Define the URL of the ZIP file
 ZIP_URL="https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/VoxNovel.app.zip"
