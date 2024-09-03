@@ -776,9 +776,9 @@ VoxNovel/output_audiobooks
 - [x] A Google Colab using the headless version
 - [x] Desktop Shortcut for Ubuntu Linux 🐧
 - [x] Desktop Shortcut for Windows 11 🪟
+- [x] Ability to change the character for a line if incorrectly attributed by booknlp
 
 ## 🔜 Incoming Planned Features
-- [ ] Ability to change the character for a line if incorrectly attributed by booknlp
 - [ ] Make it so that all the included voices and models already have their premade own demo voices
 - [ ] Make it so that the demo audio for the cloned voices is not their reference audio but what their voices sound like generated
 - [ ] Using whisper transcriptions to cut hallucinations out of generated audio
