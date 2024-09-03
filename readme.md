@@ -313,7 +313,8 @@ docker run -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):
 </details>
 <details>
 <summary> 🐧 Linux </summary>
-## Single Command Ubuntu Install
+  
+## 💻 Single Command Ubuntu Install
 
 *(Do not use if you already have Miniconda installed.)*
 
