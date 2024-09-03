@@ -23,3 +23,6 @@ The test one is for if The nltk server isnt working and all the nltk moduals don
 
 `bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/uninstall_VoxNovel_Mac.sh)
 `
+
+### To insall on Intel MAc run this command in your terminal
+`bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Intel_Mac_Install_VoxNovel.sh)`
