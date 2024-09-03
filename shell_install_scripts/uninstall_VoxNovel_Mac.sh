@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # Calculate total storage to be reclaimed
-total_storage_reclaimed="7.88 GB"
+total_storage_reclaimed="7.82 GB"
 
 # Prompt user for confirmation
 echo "This script will remove the following and reclaim approximately $total_storage_reclaimed of space:"
 echo "- Conda environment 'VoxNovel' (around 4 GB)"
 echo "- Brew Ffmpeg (around 51.8 MB)"
 echo "- Brew Calibre (around 835 MB)"
-echo "- Brew Git (around 51.5 MB)"
 echo "- nltk_data (around 44.9 MB)"
 echo "- BookNLP models (around 1.2 GB)"
 echo "- Xtts TTS model (around 1.7 GB)"
