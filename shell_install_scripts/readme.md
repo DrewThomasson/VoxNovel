@@ -9,20 +9,33 @@ The test one is for if The nltk server isnt working and all the nltk moduals don
 'yes | wget -O - https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Test_Ubuntu_install.sh | bash'
 
 
-### To install on windows run this command in powershell
 
-`powershell -Command "Invoke-Expression (Invoke-WebRequest -Uri 'https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Windows_wsl_VoxNovel_install.ps1').Content"`
+### Installation Instructions
 
+#### For Windows (via PowerShell):
+Run the following command in PowerShell to install VoxNovel:
 
-### To install on Apple Silicone Mac run this command in your terminal
+```powershell
+powershell -Command "Invoke-Expression (Invoke-WebRequest -Uri 'https://github.com/DrewThomasson/VoxNovel/raw/main/shell_install_scripts/Windows_wsl_VoxNovel_install.ps1').Content"
+```
 
-`bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Apple_silicone_VoxNovel_install.sh)
-`
+#### For Apple Silicon Mac:
+Run the following command in your terminal:
 
-### To uninstall on Apple Silicone Mac run this command in your terminal
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Apple_silicone_VoxNovel_install.sh)
+```
 
-`bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/uninstall_VoxNovel_Mac.sh)
-`
+#### For Intel Mac:
+Run the following command in your terminal:
 
-### To insall on Intel MAc run this command in your terminal
-`bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Intel_Mac_Install_VoxNovel.sh)`
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Intel_Mac_Install_VoxNovel.sh)
+```
+
+#### Uninstall on Apple Silicon Mac:
+To uninstall, run the following command in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/uninstall_VoxNovel_Mac.sh)
+```
