@@ -783,7 +783,9 @@ VoxNovel/output_audiobooks
 - [x] A Google Colab using the headless version
 - [x] Desktop Shortcut for Ubuntu Linux 🐧
 - [x] Desktop Shortcut for Windows 11 🪟
+- [x] Desktop Shortcut for Mac 🍏
 - [x] Ability to change the character for a line if incorrectly attributed by booknlp
+- [x] All Desktop shortcuts automatically check for updates when run
 
 ## 🔜 Incoming Planned Features
 - [ ] Make it so that all the included voices and models already have their premade own demo voices
