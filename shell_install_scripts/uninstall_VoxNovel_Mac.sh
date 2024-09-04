@@ -43,6 +43,26 @@ conda remove --name VoxNovel --all -y
 rm -rf "/Applications/VoxNovel.app"
 rm -rf "$HOME/Desktop/VoxNovel.app"
 
+
+
+# Delete the VoxNovel Uninstaller.app from Applications
+# Path to the VoxNovel Uninstaller in the Applications folder
+APP_PATH="/Applications/VoxNovel Uninstaller.app"
+
+# Check if the app exists
+if [ -d "$APP_PATH" ]; then
+    echo "VoxNovel Uninstaller found. Deleting..."
+    rm -rf "$APP_PATH"
+    echo "VoxNovel Uninstaller has been deleted."
+else
+    echo "VoxNovel Uninstaller not found in the Applications folder."
+fi
+
+
+
+
+
+
 # Get the available storage at the end
 end_storage=$(get_available_storage)
 
