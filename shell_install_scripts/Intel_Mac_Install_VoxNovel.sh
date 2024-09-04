@@ -206,6 +206,45 @@ echo "The tos_agreed.txt file is so that you don't have to tell coqio tts yes wh
 
 
 
+
+
+
+
+#This part here will put the VoxNovel uninstaller app in the applicaions folder
+
+# Set variables
+UNINSTALLER_URL="https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/VoxNovel_Mac_Uninstaller.zip"
+UNZIP_DIR="$HOME/Downloads/VoxNovel_Uninstaller"
+ZIP_FILE="$HOME/Downloads/VoxNovel_Mac_Uninstaller.zip"
+
+# Download the VoxNovel Uninstaller zip file
+echo "Downloading VoxNovel Uninstaller..."
+curl -L $UNINSTALLER_URL -o "$ZIP_FILE"
+
+# Unzip the file
+echo "Unzipping the VoxNovel Uninstaller..."
+mkdir -p $UNZIP_DIR
+unzip "$ZIP_FILE" -d $UNZIP_DIR
+
+# Move the Uninstaller to the Applications folder
+echo "Moving VoxNovel Uninstaller to the Applications folder..."
+mv "$UNZIP_DIR/VoxNovel Uninstaller.app" /Applications/
+
+# Delete the zip file and the unzipped folder
+echo "Cleaning up..."
+rm -rf "$ZIP_FILE" "$UNZIP_DIR"
+
+echo "Uninstaller created and moved to the Applications folder. Cleanup complete."
+
+
+
+
+
+
+
+
+
+
 #This part right here will download the Desktop shortcut to your Desktop and put the shortcut in your Applications folder for easy access!
 
 # Define the URL of the ZIP file
