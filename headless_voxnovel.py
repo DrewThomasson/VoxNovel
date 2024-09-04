@@ -5,8 +5,7 @@
 #This will download the booknlp files using my huggingface backup     
 import download_missing_booknlp_models 
 
-
-
+print("Starting...")
 
 #This will print out all of the avalible voice actors in a numbered list 
 #It will also tell if a voice actor has a fine tuned xtts model or not
