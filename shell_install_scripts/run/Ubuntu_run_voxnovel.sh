@@ -14,4 +14,5 @@ if [[ "$CONDA_PREFIX" == "" ]]; then
 fi
 
 cd ~/VoxNovel
+git pull
 python gui_run.py
