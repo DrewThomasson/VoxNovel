@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Function to convert available storage to a comparable format (KB)
+get_available_storage() {
+    df / | tail -1 | awk '{print $4}'
+}
+
+# Get the available storage at the start
+start_storage=$(get_available_storage)
+
 # Calculate total storage to be reclaimed
 total_storage_reclaimed="7.82 GB"
 
@@ -35,5 +43,12 @@ conda remove --name VoxNovel --all -y
 rm -rf "/Applications/VoxNovel.app"
 rm -rf "$HOME/Desktop/VoxNovel.app"
 
+# Get the available storage at the end
+end_storage=$(get_available_storage)
+
+# Calculate the difference in available storage (KB to MB conversion)
+storage_diff=$(( (end_storage - start_storage) / 1024 ))
+
 # Display the amount of space reclaimed
 echo "You have successfully reclaimed approximately $total_storage_reclaimed of space."
+echo "Actual reclaimed space: $storage_diff MB."
