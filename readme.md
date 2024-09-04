@@ -411,7 +411,11 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 
 
 #### 💻 Install on Intel Mac:
-Run the following command in your terminal.:
+
+[Download Intel VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/Intel%20VoxNovel%20Installer.zip)
+
+
+#### Or run the following command in your terminal:
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Intel_Mac_Install_VoxNovel.sh)
@@ -462,7 +466,10 @@ pip install mecab mecab-python3 unidic
 <summary> 🍏 Apple Silicon Mac (Tested on 2020 M1 pro 8gb ram)</summary>
 
 #### 💻 Install on Apple Silicon Mac:
-Run the following command in your terminal:
+
+[Download Apple Silicon VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/Apple%20Silicon%20VoxNovel%20Installer.zip)
+
+#### Or run the following command in your terminal:
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Apple_silicone_VoxNovel_install.sh)
