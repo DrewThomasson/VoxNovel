@@ -412,7 +412,7 @@ Remove or reset all the keys installed in your system by removing the /etc/pacma
 
 #### 💻 Install on Intel Mac:
 
-[Download Intel VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/Intel%20VoxNovel%20Installer.zip)
+[Download Intel VoxNovel Installer](https://github.com/DrewThomasson/VoxNovel/raw/main/readme_files/Intel%20Mac%20VoxNovel%20Installer.zip)
 
 
 #### Or run the following command in your terminal:
