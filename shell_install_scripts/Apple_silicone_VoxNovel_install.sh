@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Estimate total storage required
-total_storage_required="~7.88 GB"
+total_storage_required="~7.89 GB"
 
 # Inform the user about the installation details and estimated storage usage
 echo "This script will install the following components for VoxNovel and will take up approximately $total_storage_required of storage:"
@@ -10,6 +10,7 @@ echo "- Miniconda (if not already installed)"
 echo "- Calibre (around 835 MB)"
 echo "- Ffmpeg (around 51.8 MB)"
 echo "- Git (around 51.5 MB)"
+echo "- Espeak-ng (around 12.5 MB)"
 echo "- Conda environment 'VoxNovel' (around 4 GB)"
 echo "- NLTK data (around 44.9 MB)"
 echo "- BookNLP models (around 1.2 GB)"
@@ -80,6 +81,7 @@ echo "Installing Calibre and ffmpeg"
 brew install calibre
 brew install ffmpeg
 brew install git
+brew install espeak-ng
 
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
