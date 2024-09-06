@@ -13,3 +13,6 @@ python --version
 
 python run gui_run.py
 
+xdg-open ~/VoxNovel/output_audiobooks/
+
+
