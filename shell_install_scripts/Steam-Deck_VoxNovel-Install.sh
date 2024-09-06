@@ -5,7 +5,7 @@ total_storage_required="~7.89 GB"
 
 # Inform the user about the installation details and estimated storage usage
 echo "This script will install the following components for VoxNovel and will take up approximately $total_storage_required of storage:"
-echo "- Homebrew (if not already installed)"
+echo "- Nix (if not already installed)"
 echo "- Miniconda (if not already installed)"
 echo "- Calibre (around 835 MB)"
 echo "- Ffmpeg (around 51.8 MB)"
@@ -33,21 +33,14 @@ echo "Starting the installation..."
 
 
 
-# Install Homebrew
-echo "Installing/updating homebrew..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install nix
+echo "Installing nix..."
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/WSL-scripts/main/Arch/arch-nix-installer.sh)
 
-# Adding homebrew to Konsol terminal bash profile
-echo "Adding homebrew to Bash profile..."
-echo 'if [ $(basename $(printf "%s" "$(ps -p $(ps -p $$ -o ppid=) -o cmd=)" | cut --delimiter " " --fields 1)) = konsole ] ; then '$'\n''eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'$'\n''fi'$'\n' >> ~/.bash_profile
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
-source ~/.bashrc
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# nix activateion manual command is
+source ~/.nix-profile/etc/profile.d/nix.sh
 
-echo "Added homebrew to Bash profile!"
-
-#For More info use follow this guide for installing homebrew on the SteamDeck
-#https://gist.github.com/uyjulian/105397c59e95f79f488297bb08c39146
+echo "Added Nix to Bash profile!"
 
 # Check if Miniconda is installed by checking if conda command is recognized
 if ! command -v conda &> /dev/null
@@ -56,31 +49,25 @@ then
     read -p "Would you like to install Miniconda? (y/n): " choice
     
     if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
-        echo "Installing Miniconda..."
+        echo "Installing Miniconda using the Arch Miniconda installer script..."
         
-        
-        # Install Miniconda
-        brew install --cask miniconda
+        # Use the one-liner to download and run the Miniconda installer script from GitHub
+        bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/WSL-scripts/main/Arch/arch-miniconda-installer.sh)
 
-        
-        # Initialize conda for bash and zsh
-        ~/miniconda3/bin/conda init bash
-        ~/miniconda3/bin/conda init zsh
-
-
-        # Initialize conda for bash and zsh (modify the path if different)
-        if [ -f /home/linuxbrew/.linuxbrew/bin/conda ]; then
-            /home/linuxbrew/.linuxbrew/bin/conda init bash
-            /home/linuxbrew/.linuxbrew/bin/conda init zsh
-        else
+        # Initialize conda for bash and zsh (if required)
+        if [ -f ~/miniconda3/bin/conda ]; then
+            echo "Initializing Conda for bash and zsh..."
             ~/miniconda3/bin/conda init bash
             ~/miniconda3/bin/conda init zsh
+        else
+            echo "Error: Miniconda installation failed or path incorrect."
+            exit 1
         fi
         
         # Source the shell to make conda available in this session
-        source ~/.bash_profile
+        echo "Reloading shell configuration..."
+        source ~/.bash_profile || source ~/.bashrc
         source ~/.zshrc
-        source ~/.bashrc
         
         echo "Miniconda installation completed."
     else
@@ -92,19 +79,23 @@ else
 fi
 
 
-# Install necessary packages with Homebrew
-echo "Installing Calibre and ffmpeg"
-brew install calibre
-brew install ffmpeg
-brew install git
-brew install espeak-ng
-brew install glibc 
-brew install gcc
+
+# Install necessary packages with nix
+echo "Installing Calibre glibc gcc wget ffmpeg git unzip and espeak"
+nix-shell -p calibre
+nix-shell -p glibc
+nix-shell -p gcc
+nix-shell -p ffmpeg
+nix-shell -p git
+nix-shell -p espeak
+nix-shell -p unzip
+nix-shell -p wget
+
+
 
 
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
-
 
 
 
@@ -183,32 +174,38 @@ python -m spacy download en_core_web_sm
 
 
 
+
 # This will use the backup of the nltk files instead
 echo "Replacing the nltk folder with the nltk folder backup I Pulled from a docker image, just in case the nltk servers ever mess up..."
 
 # Variables
 ZIP_URL="https://github.com/DrewThomasson/VoxNovel/blob/main/readme_files/nltk.zip?raw=true"
-TARGET_DIR="$HOME/miniconda/envs/VoxNovel/lib/python3.10/site-packages"
+TARGET_DIR="$HOME/miniconda3/envs/VoxNovel/lib/python3.10/site-packages"
 TEMP_DIR=$(mktemp -d)
-    
+
 # Download the zip file
 echo "Downloading zip file..."
 wget -q -O "$TEMP_DIR/nltk.zip" "$ZIP_URL"
-    
+
 # Extract the zip file
 echo "Extracting zip file..."
 unzip -q "$TEMP_DIR/nltk.zip" -d "$TEMP_DIR"
-    
+
 # Replace contents
-echo "Replacing contents..."
-rm -rf "$TARGET_DIR/nltk"
-mv "$TEMP_DIR/nltk" "$TARGET_DIR/nltk"
-    
+if [ -d "$TEMP_DIR/nltk" ]; then
+  echo "Replacing contents..."
+  rm -rf "$TARGET_DIR/nltk"
+  mv "$TEMP_DIR/nltk" "$TARGET_DIR/"
+else
+  echo "Error: Downloaded nltk folder not found."
+fi
+
 # Clean up
 echo "Cleaning up..."
 rm -rf "$TEMP_DIR"
-    
+
 echo "NLTK Files Replacement complete."
+
 
 
 
