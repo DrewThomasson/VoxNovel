@@ -78,6 +78,20 @@ else
     echo "Miniconda is already installed."
 fi
 
+# Step 5: Initialize Conda for bash and zsh
+echo "Initializing Conda..."
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
+
+# Step 6: Reload shell configuration
+echo "Reloading shell configuration..."
+source ~/.bashrc
+source ~/.zshrc
+
+echo "listing current existing conda envs"
+conda env list
+
+
 
 
 # Install necessary packages with nix
