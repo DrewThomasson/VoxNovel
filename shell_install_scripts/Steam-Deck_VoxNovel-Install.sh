@@ -103,8 +103,10 @@ conda env list
 echo "Installing Calibre, ffmpeg, git, espeak-ng, glibc, gcc, unzip, wget"
 #brew install calibre
 # installing calibre with the discover store instead becuase casks are only for mac
-sudo pkcon install calibre -y
+#sudo pkcon install calibre -y
 # To uninstall with pkcon use the 'remove' modifer like pkcon remove calibre
+#NOPE turns out for steam deck i gota use this command instead?
+flatpak install --system flathub com.calibre_ebook.calibre -y
 brew install ffmpeg
 brew install git
 brew install espeak-ng
