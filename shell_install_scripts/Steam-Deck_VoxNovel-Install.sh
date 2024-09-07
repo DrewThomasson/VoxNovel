@@ -106,7 +106,10 @@ echo "Installing Calibre, ffmpeg, git, espeak-ng, glibc, gcc, unzip, wget"
 #sudo pkcon install calibre -y
 # To uninstall with pkcon use the 'remove' modifer like pkcon remove calibre
 #NOPE turns out for steam deck i gota use this command instead?
-flatpak install --system flathub com.calibre_ebook.calibre -y
+#flatpak install --system flathub com.calibre_ebook.calibre -y
+#MY DUDE I COULD OF JUST USED THIS so much easier
+sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+#uninstall with this command 'sudo calibre-uninstall'
 brew install ffmpeg
 brew install git
 brew install espeak-ng
