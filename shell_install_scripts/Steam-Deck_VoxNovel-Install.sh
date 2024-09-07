@@ -96,6 +96,17 @@ conda env list
 
 # Install necessary packages with nix
 echo "Installing Calibre glibc gcc wget ffmpeg git unzip and espeak"
+# Install globally
+nix-env -iA nixpkgs.calibre
+nix-env -iA nixpkgs.glibc
+nix-env -iA nixpkgs.gcc
+nix-env -iA nixpkgs.ffmpeg
+nix-env -iA nixpkgs.git
+nix-env -iA nixpkgs.espeak
+nix-env -iA nixpkgs.unzip
+nix-env -iA nixpkgs.wget
+
+# Activate temporarily for the current session
 nix-shell -p calibre
 nix-shell -p glibc
 nix-shell -p gcc
@@ -104,6 +115,8 @@ nix-shell -p git
 nix-shell -p espeak
 nix-shell -p unzip
 nix-shell -p wget
+
+echo "All packages installed and activated for the current session."
 
 
 
