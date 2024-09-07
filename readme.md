@@ -370,38 +370,12 @@ pip install mecab mecab-python3 unidic
 <details>
 <summary> 🔲 Steam Deck) (x86_64 Arch Linux) </summary>
 
-1. `sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
-2. `also download it from the discovery store or flatpac I did both on my steam deck`
-3. `mkdir -p ~/miniconda3`
-4. `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh`
-5. `bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3`
-6. `rm -rf ~/miniconda3/miniconda.sh`
-7. `~/miniconda3/bin/conda init bash`
-8. `~/miniconda3/bin/conda init zsh`
-9. `restart the terminal(close out and open a new window)`
-10. `conda create --name VoxNovel python=3.10`
-11. `conda activate VoxNovel`
-12. `git clone https://github.com/DrewThomasson/VoxNovel.git`
-13. `cd VoxNovel`
-14. `sudo pacman -S espeak-ng`(make sure you have pacman fully working, there should be stuff online for the steam deck)
-guide on getting pacman wokring on steam deck(https://www.reddit.com/r/SteamDeck/comments/t8al0i/install_arch_packages_on_your_steam_deck/)
-you might have to reset the keys if something goes wrong with that: Resetting all the keys
+#### To install VoxNovel on your Steam Deck, open a terminal and run the following single command:
 
-Remove or reset all the keys installed in your system by removing the /etc/pacman.d/gnupg directory (as root) and by rerunning pacman-key --init followed by pacman-key --populate to re-add the default keys. 
-15. `pip install styletts2`
-16. `pip install tts==0.21.3`
-17. `pip install booknlp==1.0.7.1`
-18. `pip install -r SteamDeck_requirements.txt`
-19. `pip3 install spacy`
-20. `python3 -m spacy download en_core_web_sm`
-21. `sudo pacman -S calibre`
-22. mv ~/miniconda3/envs/VoxNovel/lib/libstdc++.so.6 ~/miniconda3/envs/tts/lib/libstdc++.so.6.bak
-
-23. `pip install mechanize`
-24. `pip install bs4`
-25. `pip install css_parser`
-
-
+```bash
+bash <(curl -s https://raw.githubusercontent.com/DrewThomasson/VoxNovel/main/shell_install_scripts/Steam-Deck_VoxNovel-Install.sh)
+```
+- Now you should have a Desktop shortcut for VoxNovel at the end of this script!
 
 </details>
 
