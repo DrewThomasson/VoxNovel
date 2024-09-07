@@ -338,13 +338,55 @@ echo "You can manually delete the dektop shortcut if you want."
 
 echo "Displaying installed package versions..."
 
-calibre --version
-gcc --version
-ffmpeg --version
-git --version
-espeak --version
-unzip -v
-wget --version
-conda --version
+#calibre --version
+#gcc --version
+#ffmpeg --version
+#git --version
+#espeak --version
+#unzip -v
+#wget --version
+#conda --version
+
+#no you have to activate a nix package like this before you can use it
+echo '#!/bin/bash
+
+check_package() {
+    local package_name=$1
+    local version_command=$2
+
+    if command -v $package_name >/dev/null 2>&1; then
+        echo "$package_name is installed."
+        eval "$version_command"
+    else
+        echo "$package_name is NOT installed or not in PATH."
+        return 1
+    fi
+}
+
+success=true
+
+check_package "calibre" "calibre --version" || success=false
+check_package "ldd" "ldd --version | head -n 1" || success=false
+check_package "gcc" "gcc --version | head -n 1" || success=false
+check_package "ffmpeg" "ffmpeg -version | head -n 1" || success=false
+check_package "git" "git --version" || success=false
+check_package "espeak" "espeak --version" || success=false
+check_package "unzip" "unzip -v | head -n 1" || success=false
+check_package "wget" "wget --version | head -n 1" || success=false
+
+if [ "$success" = true ]; then
+    echo "All required packages are installed. Success."
+    exit 0
+else
+    echo "Some required packages are missing. Please install them."
+    exit 1
+fi
+' > /tmp/temp_check.sh && chmod +x /tmp/temp_check.sh && nix-shell -p calibre glibc gcc ffmpeg git espeak unzip wget --run "/tmp/temp_check.sh" && rm /tmp/temp_check.sh
+
+
+
+
+
+
 
 echo "VoxNovel Install FINISHED! (You can close out of this window now)"
