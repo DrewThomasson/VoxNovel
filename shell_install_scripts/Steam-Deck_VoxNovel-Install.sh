@@ -249,6 +249,25 @@ curl -o "$DEST_DIR/tos_agreed.txt" "$FILE_URL"
 echo "File has been saved to $DEST_DIR/tos_agreed.txt"
 echo "The tos_agreed.txt file is so that you don't have to tell coqio tts yes when downloading the xtts_v2 model."
 
+echo "Checking if tos_agreed.txt file is empty or not..."
+# Define the path to the tos_agreed.txt file
+TOS_FILE="$HOME/.local/share/tts/tts_models--multilingual--multi-dataset--xtts_v2/tos_agreed.txt"
+
+# Check if the file exists and if it's empty
+if [ ! -s "$TOS_FILE" ]; then
+    echo "tos_agreed.txt is empty or doesn't exist. Adding agreement text..."
+    
+    # Ensure the destination directory exists
+    mkdir -p "$(dirname "$TOS_FILE")"
+
+    # Write the agreement text to the file
+    echo "I have read, understood and agreed to the Terms and Conditions." > "$TOS_FILE"
+    
+    echo "tos_agreed.txt has been updated with the agreement text."
+else
+    echo "tos_agreed.txt already contains text."
+fi
+
 
 
 
