@@ -92,35 +92,6 @@ echo "listing current existing conda envs"
 conda env list
 
 
-
-
-# Install necessary packages with nix
-echo "Installing Calibre glibc gcc wget ffmpeg git unzip and espeak"
-# Install globally
-nix-env -iA nixpkgs.calibre
-nix-env -iA nixpkgs.glibc
-nix-env -iA nixpkgs.gcc
-nix-env -iA nixpkgs.ffmpeg
-nix-env -iA nixpkgs.git
-nix-env -iA nixpkgs.espeak
-nix-env -iA nixpkgs.unzip
-nix-env -iA nixpkgs.wget
-
-# Activate temporarily for the current session
-nix-shell -p calibre
-nix-shell -p glibc
-nix-shell -p gcc
-nix-shell -p ffmpeg
-nix-shell -p git
-nix-shell -p espeak
-nix-shell -p unzip
-nix-shell -p wget
-
-echo "All packages installed and activated for the current session."
-
-
-
-
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
 
@@ -290,30 +261,6 @@ sudo update-desktop-database
 echo "VoxNovel.app has been successfully placed on your desktop and in the Applications folder."
 echo "You can manually delete the dektop shortcut if you want."
 
-
-
-#Just to be safe drew youll probbaly have to run all these at the beginning of the VoxNovel Launch script
-# Activate nix Packages temporarily for the current session
-#echo "Activating Nix Packages..."
-
-#nix-shell -p calibre
-#nix-shell -p glibc
-#nix-shell -p gcc
-#nix-shell -p ffmpeg
-#nix-shell -p git
-#nix-shell -p espeak
-#nix-shell -p unzip
-#nix-shell -p wget
-
-#calibre --version
-#gcc --version
-#ffmpeg --version
-#git --version
-#espeak --version
-#unzip -v
-#wget --version
-
-#echo "Nix Packages Activated!"
 
 
 
