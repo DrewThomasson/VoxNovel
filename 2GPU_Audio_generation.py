@@ -1731,7 +1731,19 @@ def fineTune_audio_generate(text, file_path, speaker_wav, language, voice_actor)
     # Add here the xtts_config path
     CONFIG_PATH = f"tortoise/voices/{voice_actor}/model/config.json"
     # Add here the vocab file that you have used to train the model
-    TOKENIZER_PATH = f"tortoise/voices/{voice_actor}/model/vocab.json_"
+    TOKENIZER_PATH = f"tortoise/voices/{voice_actor}/model/vocab.json_" 
+
+    # Check for either vocab.json_ or vocab.json and rename if necessary
+    vocab_path_with_underscore = f"tortoise/voices/{voice_actor}/model/vocab.json_"
+    vocab_path_without_underscore = f"tortoise/voices/{voice_actor}/model/vocab.json"
+
+    if os.path.exists(vocab_path_without_underscore):
+        os.rename(vocab_path_without_underscore, vocab_path_with_underscore)
+        print(f"Renamed {vocab_path_without_underscore} to {vocab_path_with_underscore}")
+    elif not os.path.exists(vocab_path_with_underscore):
+        raise FileNotFoundError("Neither vocab.json_ nor vocab.json found.")
+
+    
     # Add here the checkpoint that you want to do inference with
     XTTS_CHECKPOINT = f"tortoise/voices/{voice_actor}/model/model.pth"
     # Add here the speaker reference
