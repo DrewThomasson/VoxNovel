@@ -3,6 +3,20 @@
 # Estimate total storage required
 total_storage_required="~7.89 GB"
 
+if [ "$1" == "-q" ]; then
+    quite=true
+else
+    quite=false
+fi
+
+
+brew_require() {
+    package=$1
+    if ! command -v "$package" > /dev/null; then
+        brew install -y "$package"
+    fi
+}
+
 # Inform the user about the installation details and estimated storage usage
 echo "This script will install the following components for VoxNovel and will take up approximately $total_storage_required of storage:"
 echo "- Homebrew (if not already installed)"
@@ -17,71 +31,71 @@ echo "- BookNLP models (around 1.2 GB)"
 echo "- Xtts TTS model (around 1.7 GB)"
 echo "- VoxNovel.app shortcut (desktop and Applications folder)"
 
-# Prompt user for confirmation
-read -p "Do you want to proceed with the installation? (y/n): " confirm
 
-if [[ "$confirm" != "y" ]]; then
-    echo "Installation cancelled."
-    exit 0
+if [[ $quite == false ]]; then
+    # Prompt user for confirmation
+    read -p "Do you want to proceed with the installation? (y/n): " confirm
+
+    if [[ "$confirm" != "y" ]]; then
+        echo "Installation cancelled."
+        exit 0
+    fi
 fi
 
 echo "Starting the installation..."
 
-
-
-
-
-
-
-# Install Homebrew
-echo "Installing/updating homebrew..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if ! command -v brew > /dev/null; then
+    # Install Homebrew
+    echo "Installing/updating homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 # Check if Miniconda is installed by checking if conda command is recognized
 if ! command -v conda &> /dev/null
 then
     echo "Miniconda not found."
-    read -p "Would you like to install Miniconda? (y/n): " choice
-    
-    if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
-        echo "Installing Miniconda..."
-        
-        # Create directory for Miniconda installation
-        mkdir -p ~/miniconda3
-        
-        # Download Miniconda installer
-        curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
-        
-        # Install Miniconda
-        bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-        
-        # Remove the installer
-        rm ~/miniconda3/miniconda.sh
-        
-        # Initialize conda for bash and zsh
-        ~/miniconda3/bin/conda init bash
-        ~/miniconda3/bin/conda init zsh
-        
-        # Source the shell to make conda available in this session
-        source ~/.bash_profile
-        source ~/.zshrc
-        
-        echo "Miniconda installation completed."
-    else
-        echo "Miniconda installation skipped. VoxNovel requires Miniconda to run. Exiting install script..."
-        exit 1
-    fi
-else
-    echo "Miniconda is already installed."
-fi
 
+    if [[ $quite == false ]]; then
+        read -p "Would you like to install Miniconda? (y/n): " choice
+        if [ "$choice" != "y" ] && [ "$choice" != "Y" ]; then
+            echo "Miniconda installation skipped. VoxNovel requires Miniconda to run. Exiting install script..."
+            exit 1
+        fi
+    fi
+
+
+    echo "Installing Miniconda..."
+    
+    # Create directory for Miniconda installation
+    mkdir -p ~/miniconda3
+    
+    # Download Miniconda installer
+    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+    
+    # Install Miniconda
+    bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+    
+    # Remove the installer
+    rm ~/miniconda3/miniconda.sh
+    
+    # Initialize conda for bash and zsh
+    ~/miniconda3/bin/conda init bash
+    ~/miniconda3/bin/conda init zsh
+    
+    # Source the shell to make conda available in this session
+    source ~/.bash_profile
+    source ~/.zshrc
+    
+    echo "Miniconda installation completed."
+fi
 
 # Install necessary packages with Homebrew
 echo "Installing Calibre and ffmpeg"
-brew install calibre
-brew install ffmpeg
-brew install git
-brew install espeak-ng
+
+brew_require calibre
+brew_require ffmpeg
+brew_require git
+brwe_require espeak-ng
 
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
@@ -140,10 +154,15 @@ python --version  # This should show the Python version in the VoxNovel env
 
 
 
-# Clone the VoxNovel repository and navigate to the directory
-cd ~
-git clone https://github.com/DrewThomasson/VoxNovel.git
-cd VoxNovel
+# Get the remote URL for 'origin'
+remote_url=$(git remote get-url origin)
+# Check if the URL ends with 'VoxNovel.git'
+if [[ $remote_url != *VoxNovel.git ]]; then
+    # Clone the VoxNovel repository and navigate to the directory
+    cd ~
+    git clone https://github.com/DrewThomasson/VoxNovel.git
+    cd VoxNovel
+fi
 
 # Install Python packages
 pip install tensorflow-macos
