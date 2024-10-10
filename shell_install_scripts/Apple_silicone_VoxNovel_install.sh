@@ -95,7 +95,7 @@ echo "Installing Calibre and ffmpeg"
 brew_require calibre
 brew_require ffmpeg
 brew_require git
-brwe_require espeak-ng
+brew_require espeak-ng
 
 # Create and activate the VoxNovel conda environment
 conda create --name VoxNovel python=3.10 -y
