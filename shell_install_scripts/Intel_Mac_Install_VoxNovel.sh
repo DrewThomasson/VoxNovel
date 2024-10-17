@@ -148,7 +148,9 @@ cd VoxNovel
 
 # Install Python packages
 pip install styletts2
-pip install tts==0.21.3
+#pip install tts==0.21.3
+# This is the updated pip install for tts becuase the original repo is dead sad face
+pip install coqui-tts
 pip install booknlp==1.0.7.1 
 pip install transformers==4.30.0
 pip install -r MAC-requirements.txt
