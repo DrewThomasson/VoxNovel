@@ -55,6 +55,7 @@ if [ "$(uname)" == "Linux" ]; then
     pip install styletts2 
     #pip install tts==0.21.3
     # This is the updated tts install pip cause the official is dead now sad face
+    pip install pandas
     pip install coqui-tts
     pip install booknlp==1.0.7.1
     pip install bs4
