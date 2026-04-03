@@ -1396,6 +1396,7 @@ def update_tts_model(event):
 
 multilingual_tts_models = [model for model in tts_models if "multi-dataset" in model]
 multilingual_tts_models.append('StyleTTS2')
+multilingual_tts_models.append('MiniMax TTS')
 
 # modelse to be removed because i found that they are multi speaker and not single speaker
 models_to_remove = [multi_voice_model1, multi_voice_model2, multi_voice_model3]
@@ -1440,6 +1441,9 @@ def update_voice_comboboxes():
     combined_values.remove(multi_voice_model1)
     combined_values.remove(multi_voice_model2)
     combined_values.remove(multi_voice_model3)
+
+    # Always add MiniMax cloud voices so they are available regardless of checkbox state
+    combined_values = list(combined_values) + get_minimax_voice_actor_ids()
 
     # Now update each combobox with the new combined_values
     for speaker, combobox in voice_comboboxes.items():
@@ -1604,6 +1608,8 @@ from TTS.tts.models.xtts import Xtts
 import time
 import sys
 from styletts2 import tts as stts
+import minimax_tts
+from minimax_tts import MINIMAX_VOICE_PREFIX, get_minimax_voice_actor_ids, synthesize_to_file as minimax_synthesize
 
 # Function to install package using pip
 def install(package):
@@ -2054,6 +2060,14 @@ def generate_audio():
                     if 'STTS' not in locals():
                         STTS = stts.StyleTTS2()
                     STTS.inference(fragment, target_voice_path=list_reference_files(voice_actor)[0], output_wav_file=f"Working_files/temp/{temp_count}.wav")
+
+                elif 'MiniMax TTS' in selected_tts_model:
+                    print(f"Using MiniMax Cloud TTS with voice: {voice_actor}")
+                    minimax_synthesize(
+                        fragment,
+                        voice_actor,
+                        f"Working_files/temp/{temp_count}.wav",
+                    )
 
                 #if the model selected is one of the fast voice clone models as in not really voice clone but use voice transfer
                 #right now im setting all of the fast voice cloning to be run on the cpu come can only be run on cpu and I'm lazy rn lol
